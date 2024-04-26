@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: kfre
-Version: 0.1.1a0
+Version: 0.1.1a3
 Summary: A Python library for kidney failure risk estimation using Tangri's KFRE model
 Home-page: https://github.com/lshpaner/kfre
 Author: Leonid Shpaner
