@@ -25,6 +25,19 @@ The kfre library requires precise data input, with clear specification of the un
 
 This flexibility allows the library to be used with a variety of clinical data sources, enhancing its applicability across different healthcare settings.
 
+
+## Prerequisites
+Before you install `kfre`, ensure you have the following:
+
+- **Python**: Python 3.6 or higher is required to run `kfre`.
+
+Additionally, kfre has the following package dependencies:
+
+- **NumPy**: Version 1.18.5 or higher
+- **Pandas**: Version 1.0.5 or higher
+
+These dependencies will be automatically installed when you install kfre using pip.
+
 ## Installation
 
 You can install `kfre` directly from PyPI:
