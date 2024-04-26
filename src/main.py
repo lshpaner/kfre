@@ -52,7 +52,9 @@ class RiskPredictor:
         - Albumin from g/L to g/dL
         """
         conversion_factor = 1 / 0.11312
-        self.data["uPCR (mg/g)"] = self.data[self.columns["uPCR_mmol"]] * conversion_factor
+        self.data["uPCR (mg/g)"] = (
+            self.data[self.columns["uPCR_mmol"]] * conversion_factor
+        )
         self.data["Calcium (mg/dL)"] = self.data[self.columns["calcium_mmol"]] * 4
         self.data["Phosphate (mg/dL)"] = self.data[self.columns["phosphate_mmol"]] * 3.1
         self.data["Albumin (g/dL)"] = self.data[self.columns["albumin_g_per_l"]] / 10
@@ -130,12 +132,12 @@ class RiskPredictor:
 
 
 # Define the generalized conversion function from uPCR to uACR
-def uPCR_to_uACR(
+def upcr_uacr(
     row,
     sex_col,
     diabetes_col,
     hypertension_col,
-    uPCR_col,
+    upcr_col,
     female_str,
 ):
     """
@@ -151,7 +153,7 @@ def uPCR_to_uACR(
       diabetes (1 for yes, 0 for no).
     - hypertension_col (str): Column name indicating whether the patient has
       hypertension (1 for yes, 0 for no).
-    - uPCR_col (str): Column name containing the urinary protein-creatinine ratio.
+    - upcr_col (str): Column name containing the urinary protein-creatinine ratio.
     - female_str (str): The exact string used in the dataset to identify a
       patient as female, critical for accurate calculations.
 
@@ -164,22 +166,22 @@ def uPCR_to_uACR(
     the exact match of the 'female_str' with the dataset's representation of
     female gender.
     """
-    uPCR = row[uPCR_col]
+    upcr = row[upcr_col]
     female = 1 if row[sex_col] == female_str else 0
     diabetic = row[diabetes_col]
     hypertensive = row[hypertension_col]
 
     # Applying the provided formula
-    uACR = np.exp(
+    uacr = np.exp(
         5.2659
-        + 0.2934 * np.log(np.minimum(uPCR / 50, 1))
-        + 1.5643 * np.log(np.maximum(np.minimum(uPCR / 500, 1), 0.1))
-        + 1.1109 * np.log(np.maximum(uPCR / 500, 1))
-        - 0.0773 * female
+        + 0.2934 * np.log(np.minimum(upcr / 50, 1))
+        + 1.5643 * np.log(np.maximum(np.minimum(upcr / 500, 1), 0.1))
+        + 1.1109 * np.log(np.maximum(upcr / 500, 1))
+        - 0.0773 * upcr
         + 0.0797 * diabetic
         + 0.1265 * hypertensive
     )
-    return uACR
+    return uacr
 
 
 ################################################################################
@@ -192,7 +194,7 @@ def risk_pred(
     sex,
     eGFR,
     uACR,
-    is_north_american,  
+    is_north_american,
     dm=None,
     htn=None,
     albumin=None,
@@ -202,42 +204,42 @@ def risk_pred(
     years=2,
 ):
     """
-    Calculates the risk of chronic kidney disease progression based on a range 
-    of clinical parameters using the Tangri risk prediction model. This model 
-    can use 4, 6, or 8 variables for prediction based on the data available. 
-    The coefficients and constants used in the calculations are selected based 
-    on the geographic region of the patient (North American or not) and the time 
+    Calculates the risk of chronic kidney disease progression based on a range
+    of clinical parameters using the Tangri risk prediction model. This model
+    can use 4, 6, or 8 variables for prediction based on the data available.
+    The coefficients and constants used in the calculations are selected based
+    on the geographic region of the patient (North American or not) and the time
     horizon for the risk prediction (2 or 5 years).
 
     Parameters:
     - age (float): Age of the patient in years.
     - sex (int): Biological sex of the patient (0 for female, 1 for male).
-    - eGFR (float): Estimated Glomerular Filtration Rate, indicating kidney 
+    - eGFR (float): Estimated Glomerular Filtration Rate, indicating kidney
       function.
-    - uACR (float): Urinary Albumin to Creatinine Ratio, showing kidney damage 
+    - uACR (float): Urinary Albumin to Creatinine Ratio, showing kidney damage
       level.
     - is_north_american (bool): Indicates if the patient is from North America.
     - dm (float, optional): Indicates if the patient has diabetes (0 or 1).
     - htn (float, optional): Indicates if the patient has hypertension (0 or 1).
-    - albumin (float, optional): Serum albumin level, required for the 
+    - albumin (float, optional): Serum albumin level, required for the
       8-variable model.
-    - phosphorous (float, optional): Serum phosphorous level, required for the 
+    - phosphorous (float, optional): Serum phosphorous level, required for the
       8-variable model.
-    - bicarbonate (float, optional): Serum bicarbonate level, required for the 
+    - bicarbonate (float, optional): Serum bicarbonate level, required for the
       8-variable model.
-    - calcium (float, optional): Serum calcium level, required for the 
+    - calcium (float, optional): Serum calcium level, required for the
       8-variable model.
-    - years (int, default=2): The number of years over which the risk is 
+    - years (int, default=2): The number of years over which the risk is
       redicted (2 or 5 years).
 
     Returns:
-    - risk_prediction (float): A probability value between 0 and 1 representing 
-      the patient's risk of developing chronic kidney disease within the 
+    - risk_prediction (float): A probability value between 0 and 1 representing
+      the patient's risk of developing chronic kidney disease within the
       specified number of years.
 
     Notes:
-    The function accounts for the patient's geographic location by adjusting the 
-    alpha constants in the risk calculation. It defaults to coefficients for the 
+    The function accounts for the patient's geographic location by adjusting the
+    alpha constants in the risk calculation. It defaults to coefficients for the
     4-variable model unless additional parameters are provided, in which case it
     switches to the 6-variable or 8-variable models.
     """
