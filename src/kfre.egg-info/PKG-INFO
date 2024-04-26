@@ -1,3 +1,18 @@
+Metadata-Version: 2.1
+Name: kfre
+Version: 0.1.1a0
+Summary: A Python library for kidney failure risk estimation using Tangri's KFRE model
+Home-page: https://github.com/lshpaner/kfre
+Author: Leonid Shpaner
+Author-email: Lshpaner@ucla.edu
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.18.5
+Requires-Dist: pandas>=1.0.5
+
 # kfre: Kidney Failure Risk Estimator
 
 ![PyPI](https://img.shields.io/pypi/v/kfre.svg)
@@ -63,7 +78,7 @@ The `kfre` library is based on the risk prediction models developed in the follo
 
 - Tangri, N., Stevens, L. A., Griffith, J., Tighiouart, H., Djurdjev, O., Naimark, D., Levin, A., & Levey, A. S. (2011). A predictive model for progression of chronic kidney disease to kidney failure. JAMA, **305**(15), 1553-1559. doi: 10.1001/jama.2011.451.  
 
-- Tangri N, Grams ME, Levey AS, Coresh J, Appel LJ, Astor BC, Chodick G, Collins AJ, Djurdjev O, Elley CR, Evans M, Garg AX, Hallan SI, Inker LA, Ito S, Jee SH, Kovesdy CP, Kronenberg F, Heerspink HJL, Marks A, Nadkarni GN, Navaneethan SD, Nelson RG, Titze S, Sarnak MJ, Stengel B, Woodward M, Iseki K, for the CKD Prognosis Consortium. (2016). Multinational assessment of accuracy of equations for predicting risk of kidney failure: A meta-analysis. JAMA, **315**(2), 164–174. doi: 10.1001/jama.2015.18202.
+- Tangri N, Grams ME, Levey AS, Coresh J, Appel LJ, Astor BC, Chodick G, Collins AJ, Djurdjev O, Elley CR, Evans M, Garg AX, Hallan SI, Inker LA, Ito S, Jee SH, Kovesdy CP, Kronenberg F, Heerspink HJL, Marks A, Nadkarni GN, Navaneethan SD, Nelson RG, Titze S, Sarnak MJ, Stengel B, Woodward M, Iseki K, for the CKD Prognosis Consortium. (2016). Multinational assessment of accuracy of equations for predicting risk of kidney failure: A meta-analysis. JAMA, **315**(2), 164â€“174. doi: 10.1001/jama.2015.18202.
 
 
 Please refer to these studies for an in-depth understanding of the kidney failure risk prediction models used within this library.

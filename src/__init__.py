@@ -1,1 +1,1 @@
-from .main import RiskPredictor, risk_pred, uPCR_to_uACR
+from .main import RiskPredictor, risk_pred, upcr_uacr
