@@ -1,6 +1,0 @@
-setup.py
-src/kfre.egg-info/PKG-INFO
-src/kfre.egg-info/SOURCES.txt
-src/kfre.egg-info/dependency_links.txt
-src/kfre.egg-info/requires.txt
-src/kfre.egg-info/top_level.txt
