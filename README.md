@@ -390,7 +390,7 @@ Converted 'Albumin' to new column 'Albumin_g_dl' with factor 0.1
 
 [Leonid Shpaner](https://github.com/lshpaner) is a Data Scientist at UCLA Health. With over a decade experience in analytics and teaching, he has collaborated on a wide variety of projects within financial services, education, personal development, and healthcare. He serves as a course facilitator for Data Analytics and Applied Statistics at Cornell University and is a lecturer of Statistics in Python for the University of San Diego’s M.S. Applied Artificial Intelligence program.
 
-<br><br><br><br>
+<br><br><br>
 
 ## License
 `kfre` is distributed under the MIT License. See [`LICENSE`](LICENSE.md) for more information.
