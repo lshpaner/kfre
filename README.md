@@ -200,7 +200,6 @@ data = pd.DataFrame(
     }
 )
 
-# Assuming 'data' and 'columns' are already defined as per your data structure
 data_with_risks = add_kfre_risk_col(
     df=data,
     age_col="Age",
