@@ -14,6 +14,7 @@ setup(
     project_urls={  # Optional
         "Author Website": "https://www.leonshpaner.com",
         # "Documentation": "https://example.com/project-documentation",
+        "DOI": "https://zenodo.org/records/11100223",
         "Source Code": "https://github.com/lshpaner/kfre",
     },
     classifiers=[
