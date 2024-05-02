@@ -1,9 +1,10 @@
 # KFRE: Kidney Failure Risk Estimator
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/lshpaner/kfre/main/LICENSE.md)
 ![PyPI](https://img.shields.io/pypi/v/kfre.svg)
 [![PyPI](https://img.shields.io/badge/PyPi-Page-blue)](https://pypi.org/project/kfre/)
 [![Downloads](https://pepy.tech/badge/kfre)](https://pepy.tech/project/kfre)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/lshpaner/kfre/main/LICENSE.md)
+[![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.11100223.svg)](https://doi.org/10.5281/zenodo.11100223)
 
 `kfre` is a Python library designed to estimate the risk of chronic kidney disease (CKD) progression over two distinct timelines: 2 years and 5 years. Using Tangri's Kidney Failure Risk Equation (KFRE), the library provides tools for healthcare professionals and researchers to predict CKD risk based on patient data. It supports predictions for both males and females and includes specific adjustments for individuals from North American and non-North American regions.
 
