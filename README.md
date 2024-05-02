@@ -1,7 +1,6 @@
 # KFRE: Kidney Failure Risk Estimator
 
-![PyPI](https://img.shields.io/pypi/v/kfre.svg)
-[![PyPI](https://img.shields.io/badge/PyPi-Page-blue)](https://pypi.org/project/kfre/)
+[![PyPI](https://img.shields.io/pypi/v/kfre.svg)](https://pypi.org/project/kfre/)
 [![Downloads](https://pepy.tech/badge/kfre)](https://pepy.tech/project/kfre)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/lshpaner/kfre/tree/main?tab=License-1-ov-file)
 [![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.11100223.svg)](https://doi.org/10.5281/zenodo.11100223)
