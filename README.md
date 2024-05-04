@@ -342,7 +342,7 @@ These conversions help ensure consistency in reporting and interpreting lab valu
 
 **Usage Example**
 
-The following is a mock example to illustrate the usage of the perform_conversions function. This example shows how to convert values from mmol to mg for various clinical parameters within a DataFrame.
+The following is a mock example to illustrate the usage of the `perform_conversions` function. This example shows how to convert values from mmol to mg for various clinical parameters within a DataFrame.
 
 ```python
 # Sample DataFrame
@@ -400,16 +400,15 @@ If you have any questions or issues with `kfre`, please open an issue on this Gi
 ## Acknowledgements
 Tangri's KFRE model and its contributions to kidney disease research.
 
+The `kfre` library is based on the risk prediction models developed in the following studies. Please refer to these studies for an in-depth understanding of the kidney failure risk prediction models used within this library.
+
+
 ## References
-The `kfre` library is based on the risk prediction models developed in the following studies:
 
 1. Tangri N, Grams ME, Levey AS, Coresh J, Appel LJ, Astor BC, Chodick G, Collins AJ, Djurdjev O, Elley CR, Evans M, Garg AX, Hallan SI, Inker LA, Ito S, Jee SH, Kovesdy CP, Kronenberg F, Heerspink HJL, Marks A, Nadkarni GN, Navaneethan SD, Nelson RG, Titze S, Sarnak MJ, Stengel B, Woodward M, Iseki K, for the CKD Prognosis Consortium. (2016). *Multinational assessment of accuracy of equations for predicting risk of kidney failure: A meta-analysis. JAMA,* **315**(2), 164–174. doi: 10.1001/jama.2015.18202.
 
 2. Tangri, N., Stevens, L. A., Griffith, J., Tighiouart, H., Djurdjev, O., Naimark, D., Levin, A., & Levey, A. S. (2011). *A predictive model for progression of chronic kidney disease to kidney failure. JAMA,* **305**(15), 1553-1559. doi: 10.1001/jama.2011.451.  
 
 3. Sumida K, Nadkarni GN, Grams ME, Sang Y, Ballew SH, Coresh J, Matsushita K, Surapaneni A, Brunskill N, Chadban SJ, Chang AR, Cirillo M, Daratha KB, Gansevoort RT, Garg AX, Iacoviello L, Kayama T, Konta T, Kovesdy CP, Lash J, Lee BJ, Major RW, Metzger M, Miura K, Naimark DMJ, Nelson RG, Sawhney S, Stempniewicz N, Tang M, Townsend RR, Traynor JP, Valdivielso JM, Wetzels J, Polkinghorne KR, Heerspink HJL, for the Chronic Kidney Disease Prognosis Consortium. (2020). Conversion of urine protein-creatinine ratio or urine dipstick protein to urine albumin-creatinine ratio for use in chronic kidney disease screening and prognosis. *Ann Intern Med,* ***173***(6), 426-435. doi: 10.7326/M20-0529.
-
-
-Please refer to these studies for an in-depth understanding of the kidney failure risk prediction models used within this library.
 
 
