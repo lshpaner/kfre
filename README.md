@@ -400,7 +400,8 @@ If you have any questions or issues with `kfre`, please open an issue on this Gi
 ## Acknowledgements
 Tangri's KFRE model and its contributions to kidney disease research.
 
-The `kfre` library is based on the risk prediction models developed in the following studies:
+The `kfre` library is based on the risk prediction models developed in the following studies. Please refer to these studies for an in-depth understanding of the kidney failure risk prediction models used within this library.
+
 
 ## References
 
@@ -409,8 +410,5 @@ The `kfre` library is based on the risk prediction models developed in the follo
 2. Tangri, N., Stevens, L. A., Griffith, J., Tighiouart, H., Djurdjev, O., Naimark, D., Levin, A., & Levey, A. S. (2011). *A predictive model for progression of chronic kidney disease to kidney failure. JAMA,* **305**(15), 1553-1559. doi: 10.1001/jama.2011.451.  
 
 3. Sumida K, Nadkarni GN, Grams ME, Sang Y, Ballew SH, Coresh J, Matsushita K, Surapaneni A, Brunskill N, Chadban SJ, Chang AR, Cirillo M, Daratha KB, Gansevoort RT, Garg AX, Iacoviello L, Kayama T, Konta T, Kovesdy CP, Lash J, Lee BJ, Major RW, Metzger M, Miura K, Naimark DMJ, Nelson RG, Sawhney S, Stempniewicz N, Tang M, Townsend RR, Traynor JP, Valdivielso JM, Wetzels J, Polkinghorne KR, Heerspink HJL, for the Chronic Kidney Disease Prognosis Consortium. (2020). Conversion of urine protein-creatinine ratio or urine dipstick protein to urine albumin-creatinine ratio for use in chronic kidney disease screening and prognosis. *Ann Intern Med,* ***173***(6), 426-435. doi: 10.7326/M20-0529.
-
-
-Please refer to these studies for an in-depth understanding of the kidney failure risk prediction models used within this library.
 
 
