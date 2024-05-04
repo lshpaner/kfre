@@ -342,7 +342,7 @@ These conversions help ensure consistency in reporting and interpreting lab valu
 
 **Usage Example**
 
-The following is a mock example to illustrate the usage of the perform_conversions function. This example shows how to convert values from mmol to mg for various clinical parameters within a DataFrame.
+The following is a mock example to illustrate the usage of the `perform_conversions` function. This example shows how to convert values from mmol to mg for various clinical parameters within a DataFrame.
 
 ```python
 # Sample DataFrame
@@ -400,8 +400,9 @@ If you have any questions or issues with `kfre`, please open an issue on this Gi
 ## Acknowledgements
 Tangri's KFRE model and its contributions to kidney disease research.
 
-## References
 The `kfre` library is based on the risk prediction models developed in the following studies:
+
+## References
 
 1. Tangri N, Grams ME, Levey AS, Coresh J, Appel LJ, Astor BC, Chodick G, Collins AJ, Djurdjev O, Elley CR, Evans M, Garg AX, Hallan SI, Inker LA, Ito S, Jee SH, Kovesdy CP, Kronenberg F, Heerspink HJL, Marks A, Nadkarni GN, Navaneethan SD, Nelson RG, Titze S, Sarnak MJ, Stengel B, Woodward M, Iseki K, for the CKD Prognosis Consortium. (2016). *Multinational assessment of accuracy of equations for predicting risk of kidney failure: A meta-analysis. JAMA,* **315**(2), 164–174. doi: 10.1001/jama.2015.18202.
 
