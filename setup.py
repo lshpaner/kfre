@@ -1,9 +1,5 @@
 from setuptools import setup, find_packages
 
-# Read the contents of your custom README file
-with open("basic_readme.md", "r", encoding="utf-8") as f:
-    long_description = f.read()
-
 setup(
     name="kfre",
     version="0.1.2_beta",
@@ -11,7 +7,7 @@ setup(
     author_email="Lshpaner@ucla.edu",
     description="A Python library for kidney failure risk estimation using Tangri's KFRE model",
     # long_description=open("README.md").read(),
-    long_description=long_description,
+    long_description=open("basic_readme.md").read(),
     long_description_content_type="text/markdown",  # Type of the long description
     package_dir={"": "src"},  # Directory where your package files are located
     # Automatically find packages in the specified directory
