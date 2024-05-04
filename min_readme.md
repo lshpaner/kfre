@@ -7,7 +7,6 @@
 
 <img src="https://raw.githubusercontent.com/lshpaner/lshpaner.github.io/main/docs/kfre_docs/_static/kfre_logo.svg?token=GHSAT0AAAAAACQTRN6VMOSVD5HGPUNSZQUQZRV6EQQ" width="200" style="border: none; outline: none; box-shadow: none;" oncontextmenu="return false;">
 
-<br>
 
 `kfre` is a Python library designed to estimate the risk of chronic kidney disease (CKD) progression over two distinct timelines: 2 years and 5 years. Using Tangri's Kidney Failure Risk Equation (KFRE), the library provides tools for healthcare professionals and researchers to predict CKD risk based on patient data. It supports predictions for both males and females and includes specific adjustments for individuals from North American and non-North American regions.
 
