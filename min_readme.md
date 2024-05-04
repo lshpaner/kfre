@@ -1,5 +1,3 @@
-# KFRE: Kidney Failure Risk Estimator
-
 [![PyPI](https://img.shields.io/pypi/v/kfre.svg)](https://pypi.org/project/kfre/)
 [![Downloads](https://pepy.tech/badge/kfre)](https://pepy.tech/project/kfre)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/lshpaner/kfre/tree/main?tab=License-1-ov-file)
@@ -9,8 +7,7 @@
 
 <img src="https://raw.githubusercontent.com/lshpaner/kfre/main/assets/kfre_logo.svg" width="200" style="border: none; outline: none; box-shadow: none;" oncontextmenu="return false;">
 
-
-`kfre` is a Python library designed to estimate the risk of chronic kidney disease (CKD) progression over two distinct timelines: 2 years and 5 years. Using Tangri's Kidney Failure Risk Equation (KFRE), the library provides tools for healthcare professionals and researchers to predict CKD risk based on patient data. It supports predictions for both males and females and includes specific adjustments for individuals from North American and non-North American regions.
+`kfre` is a Python library designed to estimate the risk of chronic kidney disease (CKD) progression using the Kidney Failure Risk Equation (KFRE) developed by Tangri et al. It provides risk assessments over two distinct timelines: 2 years and 5 years. The library is tailored for healthcare professionals and researchers, enabling precise CKD risk predictions based on patient data. It supports predictions for both males and females and includes adjustments for individuals from North American and non-North American regions.
 
 ## Prerequisites
 Before you install `kfre`, ensure you have the following:
@@ -31,6 +28,51 @@ You can install `kfre` directly from PyPI:
 pip install kfre
 ```
 
-## Official Documentation
+## 📄 Official Documentation
 
-https://lshpaner.github.io/kfre_docs/
+https://lshpaner.github.io/kfre_docs
+
+## 🌐 Author Website
+
+https://www.leonshpaner.com
+
+## ⚖️ License
+
+`kfre` is distributed under the MIT License. See [LICENSE](https://github.com/lshpaner/kfre/blob/main/LICENSE.md) for more information.
+
+## 📚 Citing `kfre`
+
+If you use `kfre` in your research or projects, please consider citing it.
+
+```bibtex
+    @software{shpaner_2024_11100222,
+      author       = {Shpaner, Leonid},
+      title        = {{kfre: A Python Library for Reproducing Kidney 
+                       Failure Risk Equations (KFRE)}},
+      month        = may,
+      year         = 2024,
+      publisher    = {Zenodo},
+      version      = {0.1.2},
+      doi          = {10.5281/zenodo.11100222},
+      url          = {https://doi.org/10.5281/zenodo.11100222}
+    }
+```
+
+## Support
+If you have any questions or issues with `kfre`, please open an issue on this GitHub repository.
+
+## Acknowledgements
+The KFRE model developed by Tangri et al. has made significant contributions to kidney disease research.
+
+The `kfre` library is based on the risk prediction models developed in the studies referenced below. Please refer to these studies for an in-depth understanding of the kidney failure risk prediction models used within this library.
+
+## References 
+
+Sumida, K., Nadkarni, G. N., Grams, M. E., Sang, Y., Ballew, S. H., Coresh, J., Matsushita, K., Surapaneni, A., Brunskill, N., Chadban, S. J., Chang, A. R., Cirillo, M., Daratha, K. B., Gansevoort, R. T., Garg, A. X., Iacoviello, L., Kayama, T., Konta, T., Kovesdy, C. P., Lash, J., Lee, B. J., Major, R. W., Metzger, M., Miura, K., Naimark, D. M. J., Nelson, R. G., Sawhney, S., Stempniewicz, N., Tang, M., Townsend, R. R., Traynor, J. P., Valdivielso, J. M., Wetzels, J., Polkinghorne, K. R., & Heerspink, H. J. L. (2020). Conversion of urine protein-creatinine ratio or urine dipstick protein to urine albumin-creatinine ratio for use in chronic kidney disease screening and prognosis. *Annals of Internal Medicine*, *173*(6), 426-435. https://doi.org/10.7326/M20-0529
+
+Tangri, N., Grams, M. E., Levey, A. S., Coresh, J., Appel, L. J., Astor, B. C., Chodick, G., Collins, A. J., Djurdjev, O., Elley, C. R., Evans, M., Garg, A. X., Hallan, S. I., Inker, L. A., Ito, S., Jee, S. H., Kovesdy, C. P., Kronenberg, F., Heerspink, H. J. L., Marks, A., Nadkarni, G. N., Navaneethan, S. D., Nelson, R. G., Titze, S., Sarnak, M. J., Stengel, B., Woodward, M., Iseki, K., & for the CKD Prognosis Consortium. (2016). Multinational assessment of accuracy of equations for predicting risk of kidney failure: A meta-analysis. *JAMA, 315*(2), 164–174. https://doi.org/10.1001/jama.2015.18202
+
+Tangri, N., Stevens, L. A., Griffith, J., Tighiouart, H., Djurdjev, O., Naimark, D., Levin, A., & Levey, A. S. (2011). A predictive model for progression of chronic kidney disease to kidney failure. *JAMA*, *305*(15), 1553-1559. https://doi.org/10.1001/jama.2011.451
+  
+
+
