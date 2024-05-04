@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="kfre",
-    version="0.1.2_b3",
+    version="0.1.2_b4",
     author="Leonid Shpaner",
     author_email="Lshpaner@ucla.edu",
     description="A Python library for kidney failure risk estimation using Tangri's KFRE model",
