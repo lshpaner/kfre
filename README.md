@@ -398,7 +398,7 @@ Converted 'Albumin' to new column 'Albumin_g_dl' with factor 0.1
 If you have any questions or issues with `kfre`, please open an issue on this GitHub repository.
 
 ## Acknowledgements
-The KFRE model developed by Tangri et al. has made significant contributions to kidney disease research
+The KFRE model developed by Tangri et al. has made significant contributions to kidney disease research.
 
 The `kfre` library is based on the risk prediction models developed in the studies referenced below. Please refer to these studies for an in-depth understanding of the kidney failure risk prediction models used within this library.
 
