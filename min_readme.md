@@ -52,7 +52,7 @@ If you use `kfre` in your research or projects, please consider citing it.
       month        = may,
       year         = 2024,
       publisher    = {Zenodo},
-      version      = {0.1.5},
+      version      = {0.1.6},
       doi          = {10.5281/zenodo.11100222},
       url          = {https://doi.org/10.5281/zenodo.11100222}
     }
@@ -66,10 +66,7 @@ The KFRE model developed by Tangri et al. has made significant contributions to 
 
 The `kfre` library is based on the risk prediction models developed in the studies referenced below. Please refer to these studies for an in-depth understanding of the kidney failure risk prediction models used within this library.
 
-I would like to extend my gratitude to Panayiotis Petousis, PhD, Obidiugwu Duru, MD, MS, Kenn B. Daratha, PhD, Keith C. Norris, MD, PhD, Katherine R. Tuttle MD, FASN, FACP, FNKF, Susanne B. Nicholas, MD, MPH, PhD, and Alex Bui, PhD. Their exceptional work on end-stage kidney disease has greatly inspired the creation of this library.
-
 ## References 
-
 Sumida, K., Nadkarni, G. N., Grams, M. E., Sang, Y., Ballew, S. H., Coresh, J., Matsushita, K., Surapaneni, A., Brunskill, N., Chadban, S. J., Chang, A. R., Cirillo, M., Daratha, K. B., Gansevoort, R. T., Garg, A. X., Iacoviello, L., Kayama, T., Konta, T., Kovesdy, C. P., Lash, J., Lee, B. J., Major, R. W., Metzger, M., Miura, K., Naimark, D. M. J., Nelson, R. G., Sawhney, S., Stempniewicz, N., Tang, M., Townsend, R. R., Traynor, J. P., Valdivielso, J. M., Wetzels, J., Polkinghorne, K. R., & Heerspink, H. J. L. (2020). Conversion of urine protein-creatinine ratio or urine dipstick protein to urine albumin-creatinine ratio for use in chronic kidney disease screening and prognosis. *Annals of Internal Medicine*, *173*(6), 426-435. https://doi.org/10.7326/M20-0529
 
 Tangri, N., Grams, M. E., Levey, A. S., Coresh, J., Appel, L. J., Astor, B. C., Chodick, G., Collins, A. J., Djurdjev, O., Elley, C. R., Evans, M., Garg, A. X., Hallan, S. I., Inker, L. A., Ito, S., Jee, S. H., Kovesdy, C. P., Kronenberg, F., Heerspink, H. J. L., Marks, A., Nadkarni, G. N., Navaneethan, S. D., Nelson, R. G., Titze, S., Sarnak, M. J., Stengel, B., Woodward, M., Iseki, K., & for the CKD Prognosis Consortium. (2016). Multinational assessment of accuracy of equations for predicting risk of kidney failure: A meta-analysis. *JAMA, 315*(2), 164–174. https://doi.org/10.1001/jama.2015.18202
