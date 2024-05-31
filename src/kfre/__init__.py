@@ -1,3 +1,5 @@
+__version__ = "0.1.5b"
+
 from .main import (
     RiskPredictor,
     upcr_uacr,
