@@ -52,7 +52,7 @@ If you use `kfre` in your research or projects, please consider citing it.
       month        = may,
       year         = 2024,
       publisher    = {Zenodo},
-      version      = {0.1.6},
+      version      = {0.1.7},
       doi          = {10.5281/zenodo.11100222},
       url          = {https://doi.org/10.5281/zenodo.11100222}
     }
@@ -65,6 +65,9 @@ If you have any questions or issues with `kfre`, please open an issue on this Gi
 The KFRE model developed by Tangri et al. has made significant contributions to kidney disease research.
 
 The `kfre` library is based on the risk prediction models developed in the studies referenced below. Please refer to these studies for an in-depth understanding of the kidney failure risk prediction models used within this library.
+
+Special thanks to Panayiotis Petousis, PhD, Obidiugwu Duru, MD, MS, Kenn B. Daratha, PhD, Keith C. Norris, MD, PhD, Katherine R. Tuttle MD, FASN, FACP, FNKF, Susanne B. Nicholas, MD, MPH, PhD, and Alex Bui, PhD. Their exceptional work on end-stage kidney disease has greatly inspired the creation of this library.
+
 
 ## References 
 Sumida, K., Nadkarni, G. N., Grams, M. E., Sang, Y., Ballew, S. H., Coresh, J., Matsushita, K., Surapaneni, A., Brunskill, N., Chadban, S. J., Chang, A. R., Cirillo, M., Daratha, K. B., Gansevoort, R. T., Garg, A. X., Iacoviello, L., Kayama, T., Konta, T., Kovesdy, C. P., Lash, J., Lee, B. J., Major, R. W., Metzger, M., Miura, K., Naimark, D. M. J., Nelson, R. G., Sawhney, S., Stempniewicz, N., Tang, M., Townsend, R. R., Traynor, J. P., Valdivielso, J. M., Wetzels, J., Polkinghorne, K. R., & Heerspink, H. J. L. (2020). Conversion of urine protein-creatinine ratio or urine dipstick protein to urine albumin-creatinine ratio for use in chronic kidney disease screening and prognosis. *Annals of Internal Medicine*, *173*(6), 426-435. https://doi.org/10.7326/M20-0529
