@@ -194,6 +194,30 @@ class RiskPredictor:
         Returns:
         - float: The computed risk of developing CKD.
         """
+        if age is None:
+            raise ValueError("Must supply a value for age.")
+
+        if is_male is None:
+            raise ValueError("Must specify sex using True or False for is_male.")
+
+        if eGFR is None:
+            raise ValueError("Must supply a value for eGFR.")
+
+        if uACR is None:
+            raise ValueError("Must supply a value for uACR.")
+
+        if years not in [2, 5]:
+            raise ValueError("Value must be 2 or 5 for 2-year risk or 5-year risk.")
+
+        if dm is not None and dm not in [0, 1, True, False]:
+            raise ValueError("The dm parameter must be either 0, 1, True, or False.")
+
+        if htn is not None and htn not in [0, 1, True, False]:
+            raise ValueError("The htn parameter must be either 0, 1, True, or False.")
+
+        if is_north_american is None:
+            raise ValueError("Must specify True or False for is_north_american.")
+
         # Use is_male directly, since it's already a boolean
         # Call the risk prediction function with the parameters
         risk_prediction = risk_pred(
