@@ -221,7 +221,7 @@ class RiskPredictor:
             errors.append("Must specify True or False for is_north_american.")
 
         if errors:
-            raise ValueError(" ; ".join(errors))
+            raise ValueError("\n".join(errors))
 
         # Use is_male directly, since it's already a boolean
         # Call the risk prediction function with the parameters
