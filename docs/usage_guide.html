@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage Guide &mdash; KFRE 0.1.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1965cd86" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=22607128"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=a0ccc04e"></script>
+        <script src="_static/custom.js?v=fecc5f50"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Acknowledgements" href="acknowledgements.html" />
+    <link rel="prev" title="Welcome to the KFRE Python Library Documentation!" href="getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            KFRE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Welcome to the KFRE Python Library Documentation!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#single-patient-risk-calculation">Single Patient Risk Calculation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#kfre_person"><code class="docutils literal notranslate"><span class="pre">kfre_person()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#batch-risk-calculation-for-multiple-patients">Batch Risk Calculation for Multiple Patients</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#add_kfre_risk_col"><code class="docutils literal notranslate"><span class="pre">add_kfre_risk_col()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#conversion-of-clinical-parameters">Conversion of Clinical Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#perform_conversions"><code class="docutils literal notranslate"><span class="pre">perform_conversions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upcr-to-uacr">uPCR to uACR</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#upcr_uacr"><code class="docutils literal notranslate"><span class="pre">upcr_uacr()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#calcium">Calcium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phosphate">Phosphate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#albumin">Albumin</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About KFRE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citations.html">Citing KFRE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">KFRE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage Guide</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="no-click"><a class="reference internal image-reference" href="_images/kfre_logo.svg"><img alt="KFRE Library Logo" class="align-left" src="_images/kfre_logo.svg" width="200px" /></a>
+<div style="height: 106px;"></div><section id="id1">
+<h1>Usage Guide<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>This section provides guidance on using the KFRE library.</p>
+</section>
+<section id="single-patient-risk-calculation">
+<h1>Single Patient Risk Calculation<a class="headerlink" href="#single-patient-risk-calculation" title="Link to this heading"></a></h1>
+<p>The kfre library offers a flexible and user-friendly interface to estimate the
+risk of kidney failure for individual patients using Tangri’s KFRE model. With
+<code class="docutils literal notranslate"><span class="pre">kfre</span></code>, you can calculate the risk using the classic 4-variable model, the
+detailed 8-variable model, and, uniquely, a 6-variable model that is not commonly
+found in online calculators.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">kfre_person</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="kfre_person">
+<span class="sig-name descname"><span class="pre">kfre_person</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">age</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_male</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eGFR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uACR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_north_american</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">htn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albumin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phosphorous</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bicarbonate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kfre_person" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>age</strong> – Age of the patient.</p></li>
+<li><p><strong>is_male</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the patient is male, <code class="docutils literal notranslate"><span class="pre">False</span></code> if female.</p></li>
+<li><p><strong>eGFR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Estimated Glomerular Filtration Rate.</p></li>
+<li><p><strong>uACR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Urinary Albumin to Creatinine Ratio.</p></li>
+<li><p><strong>is_north_american</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the patient is from North America, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p></li>
+<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Time horizon for the risk prediction (default is 2 years).</p></li>
+<li><p><strong>dm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – (<cite>optional</cite>) Diabetes mellitus indicator. <code class="docutils literal notranslate"><span class="pre">(1=yes;</span> <span class="pre">0=no).</span></code></p></li>
+<li><p><strong>htn</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – (<cite>optional</cite>) Hypertension indicator. <code class="docutils literal notranslate"><span class="pre">(1=yes;</span> <span class="pre">0=no).</span></code></p></li>
+<li><p><strong>albumin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – (<cite>optional</cite>) Serum albumin level.</p></li>
+<li><p><strong>phosphorous</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – (<cite>optional</cite>) Serum phosphorous level.</p></li>
+<li><p><strong>bicarbonate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – (<cite>optional</cite>) Serum bicarbonate level.</p></li>
+<li><p><strong>calcium</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – (<cite>optional</cite>) Serum calcium level.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">float</span></code>: The risk of developing CKD within the specified timeframe, as a decimal. Multiply by 100 to convert to a percentage.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Description</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">kfre_person</span></code> function allows for detailed, personalized risk assessments
+based on a range of clinical parameters. Depending on the completeness of the
+data provided, the function can apply a basic 4-variable model or more
+comprehensive models incorporating additional risk factors like diabetes,
+hypertension, and various biochemical markers.</p>
+<p>The function is designed for ease of use in clinical settings or research,
+providing immediate risk estimations that are crucial for patient management or
+further analysis.</p>
+<p><strong>Example Usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">risk_percentage</span> <span class="o">=</span> <span class="n">kfre_person</span><span class="p">(</span>
+    <span class="n">age</span><span class="o">=</span><span class="mf">57.28</span><span class="p">,</span>
+    <span class="n">is_male</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">eGFR</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span>
+    <span class="n">uACR</span><span class="o">=</span><span class="mf">1762.001840</span><span class="p">,</span>
+    <span class="n">is_north_american</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">years</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">dm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">htn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">albumin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">phosphorous</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">bicarbonate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">calcium</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>  <span class="c1"># Convert to percentage</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;The 2-year risk of kidney failure for this patient is&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">risk_percentage</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>The<span class="w"> </span><span class="m">2</span>-year<span class="w"> </span>risk<span class="w"> </span>of<span class="w"> </span>kidney<span class="w"> </span>failure<span class="w"> </span><span class="k">for</span><span class="w"> </span>this<span class="w"> </span>patient<span class="w"> </span>is<span class="w"> </span><span class="m">44</span>.66%.
+</pre></div>
+</div>
+<p><strong>Example Calculation for 2-year and 5-year Risk</strong></p>
+<p>Here’s how to estimate the 2-year and 5-year kidney failure risk for a
+hypothetical 57.28-year-old female who is not from North America and has
+specific clinical characteristics.</p>
+<p>Ensure to:
+- Uncomment <code class="docutils literal notranslate"><span class="pre">dm</span></code> and <code class="docutils literal notranslate"><span class="pre">htn</span></code> if you are using the 6-variable KFRE model.
+- For the 8-variable KFRE, keep <code class="docutils literal notranslate"><span class="pre">dm</span></code> and <code class="docutils literal notranslate"><span class="pre">htn</span></code> commented out and instead,
+uncomment the <code class="docutils literal notranslate"><span class="pre">albumin</span></code>, <code class="docutils literal notranslate"><span class="pre">phosphorous</span></code>, <code class="docutils literal notranslate"><span class="pre">bicarbonate</span></code>, and <code class="docutils literal notranslate"><span class="pre">calcium</span></code> variables.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">years</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]:</span>
+    <span class="n">risk_percentage</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">kfre_person</span><span class="p">(</span>
+            <span class="n">age</span><span class="o">=</span><span class="mf">57.28</span><span class="p">,</span>
+            <span class="n">is_male</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># is the patient male?</span>
+            <span class="n">eGFR</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span>  <span class="c1"># ml/min/1.73 m^2</span>
+            <span class="n">uACR</span><span class="o">=</span><span class="mf">1762.001840</span><span class="p">,</span>  <span class="c1"># mg/g</span>
+            <span class="n">is_north_american</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># is the patient from North America?</span>
+            <span class="n">years</span><span class="o">=</span><span class="n">years</span><span class="p">,</span>
+            <span class="c1">################################################################</span>
+            <span class="c1"># Uncomment &quot;dm&quot; and &quot;htn&quot; for the 6-variable model:</span>
+            <span class="c1">################################################################</span>
+            <span class="c1"># dm=0,</span>
+            <span class="c1"># htn=1,</span>
+            <span class="c1">################################################################</span>
+            <span class="c1"># Comment out &quot;dm&quot; and &quot;htn&quot;; uncomment the following lines for</span>
+            <span class="c1"># the 8-variable model:</span>
+            <span class="c1">################################################################</span>
+            <span class="c1"># albumin=3.0, # g/dL</span>
+            <span class="c1"># phosphorous=3.162, # mg/dL</span>
+            <span class="c1"># bicarbonate=21.3, # mEq/L</span>
+            <span class="c1"># calcium=9.72, # mg/dL</span>
+        <span class="p">)</span>
+        <span class="o">*</span> <span class="mi">100</span>  <span class="c1"># multiply by 100 to convert to percentage</span>
+    <span class="p">)</span>
+
+    <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;The </span><span class="si">{</span><span class="n">years</span><span class="si">}</span><span class="s2">-year risk of kidney failure for this patient is&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">risk_percentage</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>The<span class="w"> </span><span class="m">2</span>-year<span class="w"> </span>risk<span class="w"> </span>of<span class="w"> </span>kidney<span class="w"> </span>failure<span class="w"> </span><span class="k">for</span><span class="w"> </span>this<span class="w"> </span>patient<span class="w"> </span>is<span class="w"> </span><span class="m">44</span>.66%.
+The<span class="w"> </span><span class="m">5</span>-year<span class="w"> </span>risk<span class="w"> </span>of<span class="w"> </span>kidney<span class="w"> </span>failure<span class="w"> </span><span class="k">for</span><span class="w"> </span>this<span class="w"> </span>patient<span class="w"> </span>is<span class="w"> </span><span class="m">89</span>.89%.
+</pre></div>
+</div>
+</section>
+<section id="batch-risk-calculation-for-multiple-patients">
+<h1>Batch Risk Calculation for Multiple Patients<a class="headerlink" href="#batch-risk-calculation-for-multiple-patients" title="Link to this heading"></a></h1>
+<p>The kfre library provides the functionality to perform batch processing of
+patient data, allowing for the computation of kidney failure risk predictions
+across multiple patients in a single operation. This capability is especially
+valuable for researchers and clinicians needing to assess risks for large cohorts
+or patient groups.</p>
+<p><strong>Key Features</strong></p>
+<p>When using the <code class="docutils literal notranslate"><span class="pre">add_kfre_risk_col</span></code> function, the library will append new columns
+for each specified variable model (4-variable, 6-variable, 8-variable) and each
+time frame (2 years, 5 years) directly to the original DataFrame. This facilitates
+a seamless integration of risk predictions into existing patient datasets without
+the need for additional data manipulation steps.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library is designed to facilitate risk prediction using Tangri’s KFRE
+model based on a given set of patient data. It is crucial to ensure that all
+patient data within a batch calculation are consistent in terms of regional
+categorization—that is, either all North American or all non-North American. To
+this end, it is crucial to ensure that all patient data within a batch calculation
+are consistent in terms of regional categorization. Mixing patient data from
+different regions within a single batch is not supported, as the function is set
+to apply one regional coefficient set at a time. This approach ensures the accuracy
+and reliability of the risk predictions.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">add_kfre_risk_col</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="add_kfre_risk_col">
+<span class="sig-name descname"><span class="pre">add_kfre_risk_col</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eGFR_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uACR_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dm_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">htn_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albumin_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phosphorous_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bicarbonate_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_north_american</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#add_kfre_risk_col" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – The DataFrame containing the patient data. This DataFrame should include columns for patient-specific parameters that are relevant for calculating kidney failure risk.</p></li>
+<li><p><strong>age_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name in df that contains the patient’s age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).</p></li>
+<li><p><strong>sex_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name in df that contains the patient’s age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).</p></li>
+<li><p><strong>eGFR_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name for estimated Glomerular Filtration Rate (eGFR), which is a crucial measure of kidney function. This parameter is essential for all models.</p></li>
+<li><p><strong>uACR_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name for urinary Albumin-Creatinine Ratio (uACR), indicating kidney damage level. This parameter is included in all model calculations.</p></li>
+<li><p><strong>dm_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for indicating the presence of diabetes mellitus (<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">=</span> <span class="pre">yes,</span> <span class="pre">0</span> <span class="pre">=</span> <span class="pre">no</span></code>). This parameter is necessary for the 6-variable and 8-variable models.</p></li>
+<li><p><strong>htn_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for indicating the presence of diabetes mellitus (<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">=</span> <span class="pre">yes,</span> <span class="pre">0</span> <span class="pre">=</span> <span class="pre">no</span></code>). This parameter is necessary for the 6-variable and 8-variable models.</p></li>
+<li><p><strong>albumin_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for serum albumin levels, which are included in the 8-variable model. Serum albumin is a protein in the blood that can indicate health issues including kidney function.</p></li>
+<li><p><strong>phosphorous_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for serum phosphorus levels. This parameter is part of the 8-variable model and is important for assessing kidney health.</p></li>
+<li><p><strong>calcium_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for serum calcium levels. This parameter is included in the 8-variable model and is crucial for assessing overall metabolic functions and kidney health.</p></li>
+<li><p><strong>num_vars</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) – Specifies the number of variables to be used in the model (options: <code class="docutils literal notranslate"><span class="pre">4</span></code>, <code class="docutils literal notranslate"><span class="pre">6</span></code>, <code class="docutils literal notranslate"><span class="pre">8</span></code>). This determines which variables must be provided and which risk model is applied.</p></li>
+<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) – Time frames for which to calculate the risk, typically provided as a tuple or list (e.g., (<code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">5</span></code>)). This parameter specifies over how many years the kidney failure risk is projected.</p></li>
+<li><p><strong>is_north_american</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Specifies whether the calculations should use coefficients adjusted for North American populations. Different geographical regions may have different risk profiles due to genetic, environmental, and healthcare-related differences.</p></li>
+<li><p><strong>copy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – If set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the function operates on a copy of the DataFrame, thereby preserving the original data. If set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, it modifies the DataFrame in place.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>: The modified DataFrame with new columns added for each model and time frame specified. Columns are named following the pattern <code class="docutils literal notranslate"><span class="pre">pred_{model_var}var_{year}year</span></code>, where <code class="docutils literal notranslate"><span class="pre">{model_var}</span></code> is the number of variables (<code class="docutils literal notranslate"><span class="pre">4</span></code>,  <code class="docutils literal notranslate"><span class="pre">6</span></code>, or <code class="docutils literal notranslate"><span class="pre">8</span></code>) and <code class="docutils literal notranslate"><span class="pre">{year}</span></code> is the time frame (<code class="docutils literal notranslate"><span class="pre">2</span></code> or <code class="docutils literal notranslate"><span class="pre">5</span></code>).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>This function is designed to compute the risk of chronic kidney disease (CKD) over specified or all possible models and time frames, directly appending the results as new columns to the provided DataFrame. It organizes the results by model (4-variable, 6-variable, 8-variable) first, followed by the time frame (2 years, 5 years) for each model type.</p>
+<p><strong>Example Usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">add_kfre_risk_col</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="n">age_col</span><span class="o">=</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span>
+    <span class="n">sex_col</span><span class="o">=</span><span class="s2">&quot;SEX&quot;</span><span class="p">,</span>
+    <span class="n">eGFR_col</span><span class="o">=</span><span class="s2">&quot;eGFR-EPI&quot;</span><span class="p">,</span>
+    <span class="n">uACR_col</span><span class="o">=</span><span class="s2">&quot;uACR&quot;</span><span class="p">,</span>
+    <span class="n">dm_col</span><span class="o">=</span><span class="s2">&quot;Diabetes (1=yes; 0=no)&quot;</span><span class="p">,</span>
+    <span class="n">htn_col</span><span class="o">=</span><span class="s2">&quot;Hypertension (1=yes; 0=no)&quot;</span><span class="p">,</span>
+    <span class="n">albumin_col</span><span class="o">=</span><span class="s2">&quot;Albumin_g_dl&quot;</span><span class="p">,</span>
+    <span class="n">phosphorous_col</span><span class="o">=</span><span class="s2">&quot;Phosphate_mg_dl&quot;</span><span class="p">,</span>
+    <span class="n">bicarbonate_col</span><span class="o">=</span><span class="s2">&quot;Bicarbonate (mmol/L)&quot;</span><span class="p">,</span>
+    <span class="n">calcium_col</span><span class="o">=</span><span class="s2">&quot;Calcium_mg_dl&quot;</span><span class="p">,</span>
+    <span class="n">num_vars</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">years</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+    <span class="n">is_north_american</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">copy</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># Modify the original DataFrame directly</span>
+<span class="p">)</span>
+<span class="c1"># The resulting DataFrame &#39;df&#39; now includes new columns with risk</span>
+<span class="c1"># predictions for each model and time frame</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Age</strong></p></th>
+<th class="head"><p><strong>Sex</strong></p></th>
+<th class="head"><p><strong>eGFR</strong></p></th>
+<th class="head"><p><strong>uACR</strong></p></th>
+<th class="head"><p><strong>Diabetes</strong></p></th>
+<th class="head"><p><strong>Hypertension</strong></p></th>
+<th class="head"><p><strong>Albumin</strong></p></th>
+<th class="head"><p><strong>Phosphorus</strong></p></th>
+<th class="head"><p><strong>Bicarbonate</strong></p></th>
+<th class="head"><p><strong>Calcium</strong></p></th>
+<th class="head"><p><strong>kfre_4var_2year</strong></p></th>
+<th class="head"><p><strong>kfre_4var_5year</strong></p></th>
+<th class="head"><p><strong>kfre_6var_2year</strong></p></th>
+<th class="head"><p><strong>kfre_6var_5year</strong></p></th>
+<th class="head"><p><strong>kfre_8var_2year</strong></p></th>
+<th class="head"><p><strong>kfre_8var_5year</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>65</p></td>
+<td><p>male</p></td>
+<td><p>19</p></td>
+<td><p>30</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>3.5</p></td>
+<td><p>3.5</p></td>
+<td><p>24</p></td>
+<td><p>9.5</p></td>
+<td><p>0.063123</p></td>
+<td><p>0.223128</p></td>
+<td><p>0.060014</p></td>
+<td><p>0.209336</p></td>
+<td><p>0.069774</p></td>
+<td><p>0.277728</p></td>
+</tr>
+<tr class="row-odd"><td><p>70</p></td>
+<td><p>female</p></td>
+<td><p>50</p></td>
+<td><p>35</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>4</p></td>
+<td><p>4.1</p></td>
+<td><p>22</p></td>
+<td><p>9.7</p></td>
+<td><p>0.00155</p></td>
+<td><p>0.005987</p></td>
+<td><p>0.001717</p></td>
+<td><p>0.006501</p></td>
+<td><p>0.00303</p></td>
+<td><p>0.013559</p></td>
+</tr>
+<tr class="row-even"><td><p>60</p></td>
+<td><p>female</p></td>
+<td><p>45</p></td>
+<td><p>25</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>3.8</p></td>
+<td><p>3.9</p></td>
+<td><p>25</p></td>
+<td><p>9.4</p></td>
+<td><p>0.002893</p></td>
+<td><p>0.011156</p></td>
+<td><p>0.002773</p></td>
+<td><p>0.010484</p></td>
+<td><p>0.004705</p></td>
+<td><p>0.020993</p></td>
+</tr>
+<tr class="row-odd"><td><p>75</p></td>
+<td><p>male</p></td>
+<td><p>22</p></td>
+<td><p>40</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>3.3</p></td>
+<td><p>4.5</p></td>
+<td><p>21</p></td>
+<td><p>8.8</p></td>
+<td><p>0.041757</p></td>
+<td><p>0.152247</p></td>
+<td><p>0.039731</p></td>
+<td><p>0.142611</p></td>
+<td><p>0.09375</p></td>
+<td><p>0.357774</p></td>
+</tr>
+<tr class="row-even"><td><p>80</p></td>
+<td><p>female</p></td>
+<td><p>30</p></td>
+<td><p>50</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>3.7</p></td>
+<td><p>3.2</p></td>
+<td><p>23</p></td>
+<td><p>9.6</p></td>
+<td><p>0.013457</p></td>
+<td><p>0.051111</p></td>
+<td><p>0.011059</p></td>
+<td><p>0.041325</p></td>
+<td><p>0.016574</p></td>
+<td><p>0.072424</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conversion-of-clinical-parameters">
+<h1>Conversion of Clinical Parameters<a class="headerlink" href="#conversion-of-clinical-parameters" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library includes a utility function <code class="docutils literal notranslate"><span class="pre">perform_conversions</span></code>
+designed to convert clinical measurement units. This function is especially
+useful when preparing data for analyses that require specific units. It can
+handle conversions for multiple parameters, such as urinary protein-creatinine
+ratio (uPCR), calcium, phosphate, and albumin levels.</p>
+<p><strong>Key Features</strong></p>
+<ul class="simple">
+<li><p><strong>Flexible Conversion:</strong> The function supports both standard and reverse conversions, allowing users to switch between units as needed.</p></li>
+<li><p><strong>Batch Processing:</strong> It can process entire columns of data, making it suitable for datasets with multiple patients.</p></li>
+<li><p><strong>Custom Column Names:</strong> Users can specify which columns to convert, providing flexibility in handling datasets with varied naming conventions.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">perform_conversions</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="perform_conversions">
+<span class="sig-name descname"><span class="pre">perform_conversions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upcr_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albumin_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_all</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#perform_conversions" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – The DataFrame containing the data that needs unit conversion. This DataFrame should include columns that contain measurements in either original units or units that need conversion according to specified clinical or scientific standards.</p></li>
+<li><p><strong>reverse</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – (<cite>optional</cite>) Determines the direction of the conversion. If set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the function will convert units from a converted state back to the original state (e.g., from mmol/L back to mg/dL). If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the function performs the standard conversion from original to new units (e.g., from mg/dL to mmol/L). Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>convert_all</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – (<cite>optional</cite>) If set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the function attempts to automatically identify and convert all recognized columns based on standard medical or chemical units present in the DataFrame. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the function will only convert the columns explicitly specified by the other parameters (e.g., upcr_col, calcium_col). Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>upcr_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) Specifies the column name for urine protein-creatinine ratio (uPCR) in the DataFrame, which often needs conversion between mg/g and mmol/L for clinical assessments. If provided, this column will be converted according to the specified <code class="docutils literal notranslate"><span class="pre">reverse</span></code> flag.</p></li>
+<li><p><strong>calcium_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) Specifies the column name for calcium measurements in the DataFrame. This parameter allows the conversion between common units of calcium concentration, enhancing comparability across different data sets or aligning with specific analysis requirements.</p></li>
+<li><p><strong>phosphate_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) Specifies the column name for phosphate measurements in the DataFrame. Similar to <code class="docutils literal notranslate"><span class="pre">calcium_col</span></code>, this parameter enables unit conversion for phosphate levels, important for biochemical and clinical assessments.</p></li>
+<li><p><strong>albumin_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) Specifies the column name for albumin measurements. Albumin, often measured in different units across various medical tests, can be converted using this parameter to standardize the data for analysis or reporting purposes.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p>These parameters provide the flexibility to tailor the unit conversion process to specific data needs, enabling precise and appropriate conversions crucial for accurate data analysis and interpretation in clinical or scientific research.</p>
+<p><strong>Example Usage</strong></p>
+<p>The following is a mock example to illustrate the usage of the
+<code class="docutils literal notranslate"><span class="pre">perform_conversions</span></code> function. This example shows how to convert values from mmol
+to mg for various clinical parameters within a DataFrame.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="c1"># Example values that need conversion</span>
+        <span class="s2">&quot;uPCR (mmol)&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+        <span class="s2">&quot;Calcium (mmol)&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">],</span>
+        <span class="s2">&quot;Phosphate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">],</span>
+        <span class="s2">&quot;Albumin&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Perform conversions using the wrapper function, specifying all parameters</span>
+<span class="c1"># Perform conversions and specify new column names</span>
+<span class="n">converted_df</span> <span class="o">=</span> <span class="n">perform_conversions</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">upcr_col</span><span class="o">=</span><span class="s2">&quot;uPCR (mmol)&quot;</span><span class="p">,</span>
+    <span class="n">calcium_col</span><span class="o">=</span><span class="s2">&quot;Calcium&quot;</span><span class="p">,</span>
+    <span class="n">albumin_col</span><span class="o">=</span><span class="s2">&quot;Albumin&quot;</span><span class="p">,</span>
+    <span class="n">convert_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Print the DataFrame to see the changes</span>
+<span class="n">converted_df</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Converted<span class="w"> </span><span class="s1">&#39;uPCR (mmol)&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;uPCR_mg_g&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">8</span>.84016973125884
+Converted<span class="w"> </span><span class="s1">&#39;Calcium (mmol)&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Calcium_mg_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">4</span>
+Converted<span class="w"> </span><span class="s1">&#39;Phosphate&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Phosphate_mg_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">3</span>.1
+Converted<span class="w"> </span><span class="s1">&#39;Albumin&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Albumin_g_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">0</span>.1
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>uPCR   (mmol)</strong></p></th>
+<th class="head"><p><strong>Calcium (mmol)</strong></p></th>
+<th class="head"><p><strong>Phosphate</strong></p></th>
+<th class="head"><p><strong>Albumin</strong></p></th>
+<th class="head"><p><strong>uPCR_mg_g</strong></p></th>
+<th class="head"><p><strong>Calcium_mg_dl</strong></p></th>
+<th class="head"><p><strong>Phosphate_mg_dl</strong></p></th>
+<th class="head"><p><strong>Albumin_g_dl</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0.5</p></td>
+<td><p>2.5</p></td>
+<td><p>1.2</p></td>
+<td><p>0.45</p></td>
+<td><p>4.420085</p></td>
+<td><p>10</p></td>
+<td><p>3.72</p></td>
+<td><p>0.045</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.7</p></td>
+<td><p>2</p></td>
+<td><p>1.3</p></td>
+<td><p>0.5</p></td>
+<td><p>6.188119</p></td>
+<td><p>8</p></td>
+<td><p>4.03</p></td>
+<td><p>0.05</p></td>
+</tr>
+<tr class="row-even"><td><p>0.2</p></td>
+<td><p>2.2</p></td>
+<td><p>1.1</p></td>
+<td><p>0.47</p></td>
+<td><p>1.768034</p></td>
+<td><p>8.8</p></td>
+<td><p>3.41</p></td>
+<td><p>0.047</p></td>
+</tr>
+</tbody>
+</table>
+<section id="upcr-to-uacr">
+<h2>uPCR to uACR<a class="headerlink" href="#upcr-to-uacr" title="Link to this heading"></a></h2>
+<p>The conversion of uPCR from mg/mmol to mg/g involves understanding that both
+mg/mmol and mg/g are ratios that can be related through their units.</p>
+<ul class="simple">
+<li><p>mg/mmol is a ratio of mass (in milligrams) to molar concentration (in millimoles), while</p></li>
+<li><p>mg/g is a ratio of mass (in milligrams) to mass (in grams).</p></li>
+</ul>
+<p>To convert mg/mmol to mg/g, we need to know the molar mass of creatinine,
+because uPCR is the ratio of the mass of protein to the mass of creatinine.
+The molar mass of creatinine is approximately 113.12 g/mol. Therefore, 1 mmol of
+creatinine is 113.12 mg.</p>
+<p>Here’s the conversion:</p>
+<p>1 mg/mmol means that you have 1 mg of protein for every 1 mmol of creatinine.
+Since 1 mmol of creatinine is 113.12 mg:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\text{1 mg protein}}{\text{0.11312 g creatinine}} \approx 8.84  {\text{ mg/g}}\]</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="upcr_uacr">
+<span class="sig-name descname"><span class="pre">upcr_uacr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diabetes_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hypertension_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upcr_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">female_str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#upcr_uacr" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – This parameter should be a pandas DataFrame containing the patient data. The DataFrame needs to include specific columns that will be referenced by the other parameters in the function for the conversion process.</p></li>
+<li><p><strong>sex_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column in the DataFrame that identifies the patient’s sex. This is used to apply gender-specific adjustments in the conversion formula, as biological sex can influence the levels of urinary protein and albumin.</p></li>
+<li><p><strong>diabetes_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column that indicates whether the patient has diabetes, typically marked as <code class="docutils literal notranslate"><span class="pre">1</span></code> for <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> for <code class="docutils literal notranslate"><span class="pre">no</span></code>. Diabetes status is used to adjust the conversion because diabetes can impact kidney function and alter protein and albumin excretion rates.</p></li>
+<li><p><strong>hypertension_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column that shows whether the patient has hypertension, also typically marked as <code class="docutils literal notranslate"><span class="pre">1</span></code> for <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> for <code class="docutils literal notranslate"><span class="pre">no</span></code>. Hypertension can affect kidney function, making it a necessary factor in the conversion calculations.</p></li>
+<li><p><strong>upcr_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column containing the urinary protein-creatinine ratio (uPCR) values that need to be converted to urinary albumin-creatinine ratio (uACR). This is the primary input for the conversion process.</p></li>
+<li><p><strong>female_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The string used in the dataset to identify female patients. This string is crucial for applying the correct conversion factors, as the function adjusts differently based on the patient being male or female, reflecting the biological differences in albumin excretion.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.Series</span></code>: The function returns a pandas Series containing the computed urinary albumin-creatinine ratio (uACR) for each patient in the DataFrame. This Series is indexed in the same way as the original DataFrame (<code class="docutils literal notranslate"><span class="pre">df.index</span></code>), ensuring that the uACR values align correctly with the corresponding patient data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>The upcr_uacr function is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.</p>
+</section>
+<section id="calcium">
+<h2>Calcium<a class="headerlink" href="#calcium" title="Link to this heading"></a></h2>
+<p>Calcium is often measured in millimoles per liter (mmol/L) and needs to be
+converted to milligrams per deciliter (mg/dL) for certain clinical applications
+or study comparisons.
+- Molecular weight of Calcium (Ca): Calcium’s atomic weight is approximately 40.08 g/mol.
+- Conversion factor: To convert mmol/L to mg/dL for calcium, you multiply by 4.
+This is derived as follows:</p>
+<div class="math notranslate nohighlight">
+\[\text{1 mmol/L} \times  \frac{\text{40.08 mg}}{{\text{1 mmol}}} \times \frac{\text {1L} } {\text{10 dL}} = 4.008 \text{ mg/dL}\]</div>
+</section>
+<section id="phosphate">
+<h2>Phosphate<a class="headerlink" href="#phosphate" title="Link to this heading"></a></h2>
+<p>Phosphate concentrations are similarly reported in mmol/L but often need to be expressed in mg/dL.</p>
+<ul class="simple">
+<li><p>Molecular weight of Phosphate (PO₄³⁻): The molar mass of phosphate as an ion (considering phosphorus and oxygen) is approximately 94.97 g/mol.</p></li>
+<li><p>Conversion factor: To convert mmol/L to mg/dL for phosphate:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{1 mmol/L} \times  \frac{\text{94.97 mg}}{{\text{1 mmol}}} \times \frac{\text {1L} } {\text{10 dL}} \approx 9.497 \text{ mg/dL}\]</div>
+</section>
+<section id="albumin">
+<h2>Albumin<a class="headerlink" href="#albumin" title="Link to this heading"></a></h2>
+<p>Albumin measurements are often made in grams per liter (g/L) and converted to
+grams per deciliter (g/dL) for standard reporting in many clinical contexts.</p>
+<p>Conversion factor: Converting g/L to g/dL is straightforward as it involves
+shifting the decimal point:</p>
+<div class="math notranslate nohighlight">
+\[1\text{ g/L} \div 10 = 0.1 \text { g/dL}\]</div>
+<p>These conversions help ensure consistency in reporting and interpreting lab
+values across different systems and studies, facilitating better comparison and
+understanding of patient data.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="Welcome to the KFRE Python Library Documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="acknowledgements.html" class="btn btn-neutral float-right" title="Acknowledgements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Leonid Shpaner.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
