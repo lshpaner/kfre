@@ -1,0 +1,410 @@
+.. _usage_guide:   
+
+.. image:: /_static/kfre_logo.svg
+   :alt: KFRE Library Logo
+   :align: left
+   :width: 200px
+
+.. raw:: html
+
+   <div style="height: 106px;"></div>
+
+
+Usage Guide
+===========
+This section provides guidance on using the KFRE library.
+
+Single Patient Risk Calculation
+===============================
+
+The kfre library offers a flexible and user-friendly interface to estimate the 
+risk of kidney failure for individual patients using Tangri's KFRE model. With 
+``kfre``, you can calculate the risk using the classic 4-variable model, the 
+detailed 8-variable model, and, uniquely, a 6-variable model that is not commonly 
+found in online calculators.
+
+.. code-block:: python
+
+    from kfre import kfre_person
+
+
+.. function:: kfre_person(age, is_male, eGFR, uACR, is_north_american, years, dm, htn, albumin, phosphorous, bicarbonate, calcium)
+
+    :param age: Age of the patient.
+    :param bool is_male: ``True`` if the patient is male, ``False`` if female.
+    :param float eGFR: Estimated Glomerular Filtration Rate.
+    :param float uACR: Urinary Albumin to Creatinine Ratio.
+    :param bool is_north_american: ``True`` if the patient is from North America, ``False`` otherwise.
+    :param int years: Time horizon for the risk prediction (default is 2 years). 
+    :param float dm: (:bolditalic:`optional`) Diabetes mellitus indicator. ``(1=yes; 0=no).``
+    :param float htn: (:bolditalic:`optional`) Hypertension indicator. ``(1=yes; 0=no).``
+    :param float albumin: (:bolditalic:`optional`) Serum albumin level.
+    :param float phosphorous: (:bolditalic:`optional`) Serum phosphorous level.
+    :param float bicarbonate: (:bolditalic:`optional`) Serum bicarbonate level.
+    :param float calcium: (:bolditalic:`optional`) Serum calcium level.
+
+    :returns:  ``float``: The risk of developing CKD within the specified timeframe, as a decimal. Multiply by 100 to convert to a percentage.
+
+**Description**
+
+The ``kfre_person`` function allows for detailed, personalized risk assessments 
+based on a range of clinical parameters. Depending on the completeness of the 
+data provided, the function can apply a basic 4-variable model or more 
+comprehensive models incorporating additional risk factors like diabetes, 
+hypertension, and various biochemical markers.
+
+The function is designed for ease of use in clinical settings or research, 
+providing immediate risk estimations that are crucial for patient management or 
+further analysis.
+
+   
+**Example Usage** 
+
+.. code-block:: python
+
+    risk_percentage = kfre_person(
+        age=57.28,
+        is_male=False,
+        eGFR=15.0,
+        uACR=1762.001840,
+        is_north_american=False,
+        years=2,
+        dm=None,
+        htn=None,
+        albumin=None,
+        phosphorous=None,
+        bicarbonate=None,
+        calcium=None
+    ) * 100  # Convert to percentage
+
+    message = f"The 2-year risk of kidney failure for this patient is"
+    print(f"{message} {risk_percentage:.2f}%.")    
+
+.. code-block:: bash
+
+    The 2-year risk of kidney failure for this patient is 44.66%.
+
+**Example Calculation for 2-year and 5-year Risk**
+
+Here's how to estimate the 2-year and 5-year kidney failure risk for a 
+hypothetical 57.28-year-old female who is not from North America and has 
+specific clinical characteristics.
+
+Ensure to:
+- Uncomment ``dm`` and ``htn`` if you are using the 6-variable KFRE model.
+- For the 8-variable KFRE, keep ``dm`` and ``htn`` commented out and instead, 
+uncomment the ``albumin``, ``phosphorous``, ``bicarbonate``, and ``calcium`` variables.
+
+.. code-block:: python
+
+    for years in [2, 5]:
+        risk_percentage = (
+            kfre_person(
+                age=57.28,
+                is_male=False,  # is the patient male?
+                eGFR=15.0,  # ml/min/1.73 m^2
+                uACR=1762.001840,  # mg/g
+                is_north_american=False,  # is the patient from North America?
+                years=years,
+                ################################################################
+                # Uncomment "dm" and "htn" for the 6-variable model:
+                ################################################################
+                # dm=0,
+                # htn=1,
+                ################################################################
+                # Comment out "dm" and "htn"; uncomment the following lines for
+                # the 8-variable model:
+                ################################################################
+                # albumin=3.0, # g/dL
+                # phosphorous=3.162, # mg/dL
+                # bicarbonate=21.3, # mEq/L
+                # calcium=9.72, # mg/dL
+            )
+            * 100  # multiply by 100 to convert to percentage
+        )
+
+        message = f"The {years}-year risk of kidney failure for this patient is"
+        print(f"{message} {risk_percentage:.2f}%.")    
+
+.. code-block:: bash
+
+    The 2-year risk of kidney failure for this patient is 44.66%.
+    The 5-year risk of kidney failure for this patient is 89.89%.    
+
+
+Batch Risk Calculation for Multiple Patients
+============================================
+
+The kfre library provides the functionality to perform batch processing of 
+patient data, allowing for the computation of kidney failure risk predictions 
+across multiple patients in a single operation. This capability is especially 
+valuable for researchers and clinicians needing to assess risks for large cohorts 
+or patient groups.
+
+
+**Key Features**
+
+When using the ``add_kfre_risk_col`` function, the library will append new columns 
+for each specified variable model (4-variable, 6-variable, 8-variable) and each 
+time frame (2 years, 5 years) directly to the original DataFrame. This facilitates 
+a seamless integration of risk predictions into existing patient datasets without 
+the need for additional data manipulation steps.
+
+
+.. important::
+
+    The ``kfre`` library is designed to facilitate risk prediction using Tangri's KFRE 
+    model based on a given set of patient data. It is crucial to ensure that all 
+    patient data within a batch calculation are consistent in terms of regional 
+    categorization—that is, either all North American or all non-North American. To 
+    this end, it is crucial to ensure that all patient data within a batch calculation 
+    are consistent in terms of regional categorization. Mixing patient data from 
+    different regions within a single batch is not supported, as the function is set 
+    to apply one regional coefficient set at a time. This approach ensures the accuracy 
+    and reliability of the risk predictions.
+
+.. code-block:: python
+
+    from kfre import add_kfre_risk_col
+
+.. function:: add_kfre_risk_col(df, age_col, sex_col, eGFR_col, uACR_col, dm_col, htn_col, albumin_col, phosphorous_col, bicarbonate_col, calcium_col, num_vars, years, is_north_american, copy)
+    
+    :param DataFrame df: The DataFrame containing the patient data. This DataFrame should include columns for patient-specific parameters that are relevant for calculating kidney failure risk.
+    :param str age_col: The column name in df that contains the patient's age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).
+    :param str sex_col: The column name in df that contains the patient's age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).
+    :param str eGFR_col: The column name for estimated Glomerular Filtration Rate (eGFR), which is a crucial measure of kidney function. This parameter is essential for all models.
+    :param str uACR_col: The column name for urinary Albumin-Creatinine Ratio (uACR), indicating kidney damage level. This parameter is included in all model calculations.
+    :param str dm_col: (:bolditalic:`optional`) The column name for indicating the presence of diabetes mellitus (``1 = yes, 0 = no``). This parameter is necessary for the 6-variable and 8-variable models.
+    :param str htn_col: (:bolditalic:`optional`) The column name for indicating the presence of diabetes mellitus (``1 = yes, 0 = no``). This parameter is necessary for the 6-variable and 8-variable models.
+    :param str albumin_col: (:bolditalic:`optional`) The column name for serum albumin levels, which are included in the 8-variable model. Serum albumin is a protein in the blood that can indicate health issues including kidney function.
+    :param str phosphorous_col: (:bolditalic:`optional`) The column name for serum phosphorus levels. This parameter is part of the 8-variable model and is important for assessing kidney health.
+    :param str calcium_col: (:bolditalic:`optional`) The column name for serum calcium levels. This parameter is included in the 8-variable model and is crucial for assessing overall metabolic functions and kidney health.
+    :param int or list num_vars: Specifies the number of variables to be used in the model (options: ``4``, ``6``, ``8``). This determines which variables must be provided and which risk model is applied.
+    :param tuple or list years: Time frames for which to calculate the risk, typically provided as a tuple or list (e.g., (``2``, ``5``)). This parameter specifies over how many years the kidney failure risk is projected.
+    :param bool is_north_american: Specifies whether the calculations should use coefficients adjusted for North American populations. Different geographical regions may have different risk profiles due to genetic, environmental, and healthcare-related differences.
+    :param bool copy:  If set to ``True``, the function operates on a copy of the DataFrame, thereby preserving the original data. If set to ``False``, it modifies the DataFrame in place.
+
+    :returns: ``pd.DataFrame``: The modified DataFrame with new columns added for each model and time frame specified. Columns are named following the pattern ``pred_{model_var}var_{year}year``, where ``{model_var}`` is the number of variables (``4``,  ``6``, or ``8``) and ``{year}`` is the time frame (``2`` or ``5``).
+
+This function is designed to compute the risk of chronic kidney disease (CKD) over specified or all possible models and time frames, directly appending the results as new columns to the provided DataFrame. It organizes the results by model (4-variable, 6-variable, 8-variable) first, followed by the time frame (2 years, 5 years) for each model type.
+
+
+**Example Usage**
+
+.. code-block:: python    
+    
+    df = add_kfre_risk_col(
+        df=df,
+        age_col="Age",
+        sex_col="SEX",
+        eGFR_col="eGFR-EPI",
+        uACR_col="uACR",
+        dm_col="Diabetes (1=yes; 0=no)",
+        htn_col="Hypertension (1=yes; 0=no)",
+        albumin_col="Albumin_g_dl",
+        phosphorous_col="Phosphate_mg_dl",
+        bicarbonate_col="Bicarbonate (mmol/L)",
+        calcium_col="Calcium_mg_dl",
+        num_vars=8,
+        years=(2, 5),
+        is_north_american=False,
+        copy=False  # Modify the original DataFrame directly
+    )
+    # The resulting DataFrame 'df' now includes new columns with risk 
+    # predictions for each model and time frame
+    df
+
+
++---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
+| **Age** | **Sex**   | **eGFR** | **uACR** | **Diabetes** | **Hypertension** | **Albumin** | **Phosphorus** | **Bicarbonate** | **Calcium** | **kfre_4var_2year** | **kfre_4var_5year** | **kfre_6var_2year** | **kfre_6var_5year** | **kfre_8var_2year** | **kfre_8var_5year** |
++=========+===========+==========+==========+==============+==================+=============+================+=================+=============+=====================+=====================+=====================+=====================+=====================+=====================+
+|   65    |  male     |    19    |    30    |      1       |        1         |     3.5     |      3.5       |       24        |     9.5     |      0.063123       |      0.223128       |      0.060014       |      0.209336       |      0.069774       |      0.277728       |
++---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
+|   70    | female    |    50    |    35    |      0       |        1         |      4      |      4.1       |       22        |     9.7     |       0.00155       |      0.005987       |      0.001717       |      0.006501       |       0.00303       |      0.013559       |
++---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
+|   60    | female    |    45    |    25    |      0       |        0         |     3.8     |      3.9       |       25        |     9.4     |      0.002893       |      0.011156       |      0.002773       |      0.010484       |      0.004705       |      0.020993       |
++---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
+|   75    |  male     |    22    |    40    |      1       |        1         |     3.3     |      4.5       |       21        |     8.8     |      0.041757       |      0.152247       |      0.039731       |      0.142611       |       0.09375       |      0.357774       |
++---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
+|   80    | female    |    30    |    50    |      1       |        0         |     3.7     |      3.2       |       23        |     9.6     |      0.013457       |      0.051111       |      0.011059       |      0.041325       |      0.016574       |      0.072424       |
++---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
+
+Conversion of Clinical Parameters
+=================================
+
+The ``kfre`` library includes a utility function ``perform_conversions`` 
+designed to convert clinical measurement units. This function is especially 
+useful when preparing data for analyses that require specific units. It can 
+handle conversions for multiple parameters, such as urinary protein-creatinine 
+ratio (uPCR), calcium, phosphate, and albumin levels.
+
+**Key Features**
+
+- **Flexible Conversion:** The function supports both standard and reverse conversions, allowing users to switch between units as needed.
+- **Batch Processing:** It can process entire columns of data, making it suitable for datasets with multiple patients.
+- **Custom Column Names:** Users can specify which columns to convert, providing flexibility in handling datasets with varied naming conventions.
+
+.. code-block:: python
+
+    from kfre import perform_conversions
+
+.. function:: perform_conversions(df,reverse,upcr_col,calcium_col,albumin_col,convert_all)
+
+    :param DataFrame df: The DataFrame containing the data that needs unit conversion. This DataFrame should include columns that contain measurements in either original units or units that need conversion according to specified clinical or scientific standards.
+    :param bool reverse: (:bolditalic:`optional`) Determines the direction of the conversion. If set to ``True``, the function will convert units from a converted state back to the original state (e.g., from mmol/L back to mg/dL). If ``False``, the function performs the standard conversion from original to new units (e.g., from mg/dL to mmol/L). Default is ``False``.
+    :param bool convert_all: (:bolditalic:`optional`) If set to ``True``, the function attempts to automatically identify and convert all recognized columns based on standard medical or chemical units present in the DataFrame. If ``False``, the function will only convert the columns explicitly specified by the other parameters (e.g., upcr_col, calcium_col). Default is ``False``.
+    :param str upcr_col: (:bolditalic:`optional`) Specifies the column name for urine protein-creatinine ratio (uPCR) in the DataFrame, which often needs conversion between mg/g and mmol/L for clinical assessments. If provided, this column will be converted according to the specified ``reverse`` flag.
+    :param str calcium_col: (:bolditalic:`optional`) Specifies the column name for calcium measurements in the DataFrame. This parameter allows the conversion between common units of calcium concentration, enhancing comparability across different data sets or aligning with specific analysis requirements.
+    :param str phosphate_col: (:bolditalic:`optional`) Specifies the column name for phosphate measurements in the DataFrame. Similar to ``calcium_col``, this parameter enables unit conversion for phosphate levels, important for biochemical and clinical assessments.
+    :param str albumin_col: (:bolditalic:`optional`) Specifies the column name for albumin measurements. Albumin, often measured in different units across various medical tests, can be converted using this parameter to standardize the data for analysis or reporting purposes.
+
+These parameters provide the flexibility to tailor the unit conversion process to specific data needs, enabling precise and appropriate conversions crucial for accurate data analysis and interpretation in clinical or scientific research.
+
+**Example Usage**
+
+The following is a mock example to illustrate the usage of the 
+``perform_conversions`` function. This example shows how to convert values from mmol 
+to mg for various clinical parameters within a DataFrame.
+
+.. code-block:: python
+
+    # Sample DataFrame
+    df = pd.DataFrame(
+        {
+            # Example values that need conversion
+            "uPCR (mmol)": [0.5, 0.7, 0.2], 
+            "Calcium (mmol)": [2.5, 2.0, 2.2],
+            "Phosphate": [1.2, 1.3, 1.1],
+            "Albumin": [0.45, 0.50, 0.47],
+        }
+    )
+
+    # Perform conversions using the wrapper function, specifying all parameters
+    # Perform conversions and specify new column names
+    converted_df = perform_conversions(
+        df=df,
+        reverse=False,
+        upcr_col="uPCR (mmol)",
+        calcium_col="Calcium",
+        albumin_col="Albumin",
+        convert_all=True,
+    )
+
+    # Print the DataFrame to see the changes
+    converted_df
+
+.. code:: bash
+
+    Converted 'uPCR (mmol)' to new column 'uPCR_mg_g' with factor 8.84016973125884
+    Converted 'Calcium (mmol)' to new column 'Calcium_mg_dl' with factor 4
+    Converted 'Phosphate' to new column 'Phosphate_mg_dl' with factor 3.1
+    Converted 'Albumin' to new column 'Albumin_g_dl' with factor 0.1
+
+
++-------------------+--------------------+---------------+-------------+---------------+-------------------+---------------------+------------------+
+| **uPCR   (mmol)** | **Calcium (mmol)** | **Phosphate** | **Albumin** | **uPCR_mg_g** | **Calcium_mg_dl** | **Phosphate_mg_dl** | **Albumin_g_dl** |
++===================+====================+===============+=============+===============+===================+=====================+==================+
+|        0.5        |        2.5         |      1.2      |    0.45     |   4.420085    |        10         |        3.72         |      0.045       |
++-------------------+--------------------+---------------+-------------+---------------+-------------------+---------------------+------------------+
+|        0.7        |         2          |      1.3      |     0.5     |   6.188119    |         8         |        4.03         |       0.05       |
++-------------------+--------------------+---------------+-------------+---------------+-------------------+---------------------+------------------+
+|        0.2        |        2.2         |      1.1      |    0.47     |   1.768034    |        8.8        |        3.41         |      0.047       |
++-------------------+--------------------+---------------+-------------+---------------+-------------------+---------------------+------------------+
+
+
+uPCR to uACR
+-------------
+
+The conversion of uPCR from mg/mmol to mg/g involves understanding that both 
+mg/mmol and mg/g are ratios that can be related through their units.
+
+- mg/mmol is a ratio of mass (in milligrams) to molar concentration (in millimoles), while
+- mg/g is a ratio of mass (in milligrams) to mass (in grams).
+
+To convert mg/mmol to mg/g, we need to know the molar mass of creatinine, 
+because uPCR is the ratio of the mass of protein to the mass of creatinine. 
+The molar mass of creatinine is approximately 113.12 g/mol. Therefore, 1 mmol of 
+creatinine is 113.12 mg.
+
+Here's the conversion:
+
+1 mg/mmol means that you have 1 mg of protein for every 1 mmol of creatinine.
+Since 1 mmol of creatinine is 113.12 mg:
+
+.. math::
+
+    \frac{\text{1 mg protein}}{\text{0.11312 g creatinine}} \approx 8.84  {\text{ mg/g}}
+
+.. function:: upcr_uacr(df, sex_col, diabetes_col, hypertension_col, upcr_col, female_str)
+
+    :param DataFrame df: This parameter should be a pandas DataFrame containing the patient data. The DataFrame needs to include specific columns that will be referenced by the other parameters in the function for the conversion process.
+    :param str sex_col: The name of the column in the DataFrame that identifies the patient's sex. This is used to apply gender-specific adjustments in the conversion formula, as biological sex can influence the levels of urinary protein and albumin.
+    :param str diabetes_col: The name of the column that indicates whether the patient has diabetes, typically marked as ``1`` for ``yes`` and ``0`` for ``no``. Diabetes status is used to adjust the conversion because diabetes can impact kidney function and alter protein and albumin excretion rates.
+    :param str hypertension_col: The name of the column that shows whether the patient has hypertension, also typically marked as ``1`` for ``yes`` and ``0`` for ``no``. Hypertension can affect kidney function, making it a necessary factor in the conversion calculations.
+    :param str upcr_col: The name of the column containing the urinary protein-creatinine ratio (uPCR) values that need to be converted to urinary albumin-creatinine ratio (uACR). This is the primary input for the conversion process.
+    :param str female_str: The string used in the dataset to identify female patients. This string is crucial for applying the correct conversion factors, as the function adjusts differently based on the patient being male or female, reflecting the biological differences in albumin excretion.
+
+    :returns: ``pd.Series``: The function returns a pandas Series containing the computed urinary albumin-creatinine ratio (uACR) for each patient in the DataFrame. This Series is indexed in the same way as the original DataFrame (``df.index``), ensuring that the uACR values align correctly with the corresponding patient data.
+ 
+The upcr_uacr function is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.
+
+Calcium
+-------
+
+Calcium is often measured in millimoles per liter (mmol/L) and needs to be 
+converted to milligrams per deciliter (mg/dL) for certain clinical applications 
+or study comparisons.
+- Molecular weight of Calcium (Ca): Calcium's atomic weight is approximately 40.08 g/mol.
+- Conversion factor: To convert mmol/L to mg/dL for calcium, you multiply by 4. 
+This is derived as follows:
+
+.. math::
+
+    \text{1 mmol/L} \times  \frac{\text{40.08 mg}}{{\text{1 mmol}}} \times \frac{\text {1L} } {\text{10 dL}} = 4.008 \text{ mg/dL}
+
+Phosphate
+---------
+
+Phosphate concentrations are similarly reported in mmol/L but often need to be expressed in mg/dL.
+
+- Molecular weight of Phosphate (PO₄³⁻): The molar mass of phosphate as an ion (considering phosphorus and oxygen) is approximately 94.97 g/mol.
+- Conversion factor: To convert mmol/L to mg/dL for phosphate:
+
+.. math::
+
+    \text{1 mmol/L} \times  \frac{\text{94.97 mg}}{{\text{1 mmol}}} \times \frac{\text {1L} } {\text{10 dL}} \approx 9.497 \text{ mg/dL}
+
+Albumin
+-------
+
+Albumin measurements are often made in grams per liter (g/L) and converted to 
+grams per deciliter (g/dL) for standard reporting in many clinical contexts.
+
+Conversion factor: Converting g/L to g/dL is straightforward as it involves 
+shifting the decimal point:
+
+.. math::
+
+    1\text{ g/L} \div 10 = 0.1 \text { g/dL}
+
+These conversions help ensure consistency in reporting and interpreting lab 
+values across different systems and studies, facilitating better comparison and 
+understanding of patient data.
+
+.. toctree::
+   :hidden:
+   :maxdepth: 2
+   :caption: Getting Started
+
+   getting_started
+
+
+.. toctree::
+   :hidden:
+   :maxdepth: 3
+   :caption: About KFRE
+
+   acknowledgements
+   citations
+   changelog
+   references
