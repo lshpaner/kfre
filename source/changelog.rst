@@ -5,7 +5,7 @@
 .. raw:: html
 
    <div class="no-click">
-   
+
 .. image:: ../assets/kfre_logo.svg
    :alt: KFRE Library Logo
    :align: left
@@ -13,7 +13,13 @@
 
 .. raw:: html
 
+   </div>
+
+.. raw:: html
+   
    <div style="height: 106px;"></div>
+
+\
 
 
 

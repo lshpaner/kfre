@@ -16,6 +16,10 @@
 
 .. raw:: html
 
+   </div>
+
+.. raw:: html
+   
    <div style="height: 106px;"></div>
 
 \
