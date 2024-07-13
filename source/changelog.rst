@@ -26,6 +26,11 @@
 Changelog
 =========
 
+0.1.8
+-----
+
+- Updated docs toc format and published on new site
+
 0.1.7
 -----
 
