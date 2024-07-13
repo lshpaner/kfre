@@ -1,0 +1,9 @@
+img {
+    pointer-events: none;
+    cursor: default; /* Change cursor style to default to indicate non-interactivity */
+}
+
+.wy-table-responsive table td, .wy-table-responsive table th {
+    text-align: center;
+}
+
