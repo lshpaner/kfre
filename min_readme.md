@@ -30,7 +30,7 @@ pip install kfre
 
 ## 📄 Official Documentation
 
-https://lshpaner.github.io/kfre_docs
+https://lshpaner.github.io/kfre
 
 ## 🌐 Author Website
 
@@ -52,7 +52,7 @@ If you use `kfre` in your research or projects, please consider citing it.
       month        = may,
       year         = 2024,
       publisher    = {Zenodo},
-      version      = {0.1.7},
+      version      = {0.1.8},
       doi          = {10.5281/zenodo.11100222},
       url          = {https://doi.org/10.5281/zenodo.11100222}
     }
