@@ -1,0 +1,4 @@
+/* This file intentionally left blank. */
+.no-click {
+    pointer-events: none;
+}
