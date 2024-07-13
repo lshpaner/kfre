@@ -29,7 +29,7 @@ Changelog
 0.1.8
 -----
 
-- Updated docs toc format and published on new site
+- Updated docs toc format and published on new site `lshpaner.github.io/kfre_docs <https://lshpaner.github.io/kfre>`_
 
 0.1.7
 -----
@@ -96,9 +96,9 @@ New Calculator Function: The introduction of the ``kfre_person()`` function enab
 
 **Formula Correction:** The formula for the 6-variable calculation has been updated with the correct coefficients from Tangri et al., enhancing prediction accuracy.
 
-**Conversion Tools:** The new `perform_conversions()`` function facilitates the conversion of relevant clinical metrics, streamlining data preparation for analysis.
+**Conversion Tools:** The new ``perform_conversions()`` function facilitates the conversion of relevant clinical metrics, streamlining data preparation for analysis.
 
-This release reflects ongoing efforts to enhance and refine `kfre`, driven by feedback from users and continuous research into improving its utility and functionality.
+This release reflects ongoing efforts to enhance and refine ``kfre``, driven by feedback from users and continuous research into improving its utility and functionality.
 
 
 
