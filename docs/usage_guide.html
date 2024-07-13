@@ -116,7 +116,7 @@
 </section>
 <section id="single-patient-risk-calculation">
 <h1>Single Patient Risk Calculation<a class="headerlink" href="#single-patient-risk-calculation" title="Link to this heading"></a></h1>
-<p>The kfre library offers a flexible and user-friendly interface to estimate the
+<p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library offers a flexible and user-friendly interface to estimate the
 risk of kidney failure for individual patients using Tangri’s KFRE model. With
 <code class="docutils literal notranslate"><span class="pre">kfre</span></code>, you can calculate the risk using the classic 4-variable model, the
 detailed 8-variable model, and, uniquely, a 6-variable model that is not commonly
@@ -186,10 +186,11 @@ further analysis.</p>
 <p>Here’s how to estimate the 2-year and 5-year kidney failure risk for a
 hypothetical 57.28-year-old female who is not from North America and has
 specific clinical characteristics.</p>
-<p>Ensure to:
-- Uncomment <code class="docutils literal notranslate"><span class="pre">dm</span></code> and <code class="docutils literal notranslate"><span class="pre">htn</span></code> if you are using the 6-variable KFRE model.
-- For the 8-variable KFRE, keep <code class="docutils literal notranslate"><span class="pre">dm</span></code> and <code class="docutils literal notranslate"><span class="pre">htn</span></code> commented out and instead,
-uncomment the <code class="docutils literal notranslate"><span class="pre">albumin</span></code>, <code class="docutils literal notranslate"><span class="pre">phosphorous</span></code>, <code class="docutils literal notranslate"><span class="pre">bicarbonate</span></code>, and <code class="docutils literal notranslate"><span class="pre">calcium</span></code> variables.</p>
+<p>Ensure to:</p>
+<ul class="simple">
+<li><p>Uncomment <code class="docutils literal notranslate"><span class="pre">dm</span></code> and <code class="docutils literal notranslate"><span class="pre">htn</span></code> if you are using the 6-variable KFRE model.</p></li>
+<li><p>For the 8-variable KFRE, keep <code class="docutils literal notranslate"><span class="pre">dm</span></code> and <code class="docutils literal notranslate"><span class="pre">htn</span></code> commented out and instead, uncomment the <code class="docutils literal notranslate"><span class="pre">albumin</span></code>, <code class="docutils literal notranslate"><span class="pre">phosphorous</span></code>, <code class="docutils literal notranslate"><span class="pre">bicarbonate</span></code>, and <code class="docutils literal notranslate"><span class="pre">calcium</span></code> variables.</p></li>
+</ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">years</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]:</span>
     <span class="n">risk_percentage</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">kfre_person</span><span class="p">(</span>

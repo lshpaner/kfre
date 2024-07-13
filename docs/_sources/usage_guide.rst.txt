@@ -29,7 +29,7 @@ This section provides guidance on using the KFRE library.
 Single Patient Risk Calculation
 ===============================
 
-The kfre library offers a flexible and user-friendly interface to estimate the 
+The ``kfre`` library offers a flexible and user-friendly interface to estimate the 
 risk of kidney failure for individual patients using Tangri's KFRE model. With 
 ``kfre``, you can calculate the risk using the classic 4-variable model, the 
 detailed 8-variable model, and, uniquely, a 6-variable model that is not commonly 
@@ -102,10 +102,11 @@ Here's how to estimate the 2-year and 5-year kidney failure risk for a
 hypothetical 57.28-year-old female who is not from North America and has 
 specific clinical characteristics.
 
-Ensure to:
-- Uncomment ``dm`` and ``htn`` if you are using the 6-variable KFRE model.
-- For the 8-variable KFRE, keep ``dm`` and ``htn`` commented out and instead, 
-uncomment the ``albumin``, ``phosphorous``, ``bicarbonate``, and ``calcium`` variables.
+Ensure to:  
+
+- Uncomment ``dm`` and ``htn`` if you are using the 6-variable KFRE model.  
+
+- For the 8-variable KFRE, keep ``dm`` and ``htn`` commented out and instead, uncomment the ``albumin``, ``phosphorous``, ``bicarbonate``, and ``calcium`` variables.
 
 .. code-block:: python
 
