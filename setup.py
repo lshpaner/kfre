@@ -26,5 +26,8 @@ setup(
     install_requires=[
         "numpy>=1.18.5",  # Minimum version of numpy required
         "pandas>=1.0.5",  # Minimum version of pandas required
+        "matplotlib>=3.2.2",  # Minimum version of matplotlib required
+        "seaborn>=0.10.1",  # Minimum version of seaborn required
+        "scikit-learn>=0.23.1",  # Minimum version of scikit-learn required
     ],
 )
