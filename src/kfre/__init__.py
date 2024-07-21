@@ -1,4 +1,4 @@
-__version__ = "0.1.8a"
+__version__ = "0.1.8a1"
 
 from .main import *
 
@@ -61,8 +61,8 @@ __all__ = [
     "perform_conversions",
     "add_kfre_risk_col",
     "RiskPredictor",
-    "calculate_outcome",
-    "classify_ckd_stages",
-    "prep_and_plot_metrics_vars",
-    "calculate_metrics_for_n_var",
+    "calc_esrd_outcome",
+    "class_ckd_stages",
+    "plot_kfre_metrics",
+    "eval_kfre_metrics",
 ]

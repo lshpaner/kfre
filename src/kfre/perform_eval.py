@@ -20,7 +20,7 @@ from sklearn.metrics import (
 ################################################################################
 
 
-def calculate_outcome(df, col, years, duration_col, prefix=None):
+def calc_esrd_outcome(df, col, years, duration_col, prefix=None):
     """Calculate outcome based on a given number of years.
 
     This function creates a new column in the dataframe which is populated with
@@ -53,7 +53,7 @@ def calculate_outcome(df, col, years, duration_col, prefix=None):
 ################################################################################
 
 
-def classify_ckd_stages(
+def class_ckd_stages(
     df,
     egfr_col="eGFR",
     stage_col=None,
@@ -95,7 +95,7 @@ def classify_ckd_stages(
         ]
 
         # Create a new column in the DataFrame
-        df[stage_col] = np.select(conditions, choices, default="Not classified")
+        df[stage_col] = np.select(conditions, choices, default="Not Classified")
 
     if combined_stage_col:
         # Combine conditions for CKD stages 3, 4, and 5 according to eGFR values
@@ -106,7 +106,7 @@ def classify_ckd_stages(
 
         # Create a new column in the DataFrame
         df[combined_stage_col] = np.select(
-            [combined_conditions], combined_choices, default="Not classified"
+            [combined_conditions], combined_choices, default="Not Classified"
         )
 
     return df
@@ -117,7 +117,7 @@ def classify_ckd_stages(
 ################################################################################
 
 
-def prep_and_plot_metrics_vars(
+def plot_kfre_metrics(
     df,
     num_vars,
     fig_size=(12, 6),
@@ -524,7 +524,7 @@ def prep_and_plot_metrics_vars(
 ################################################################################
 
 
-def calculate_metrics_for_n_var(df, n_var_list):
+def eval_kfre_metrics(df, n_var_list):
     """
     Calculate metrics for multiple outcomes and store the results in a DataFrame.
 
