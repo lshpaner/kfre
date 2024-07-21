@@ -52,7 +52,7 @@ If you use `kfre` in your research or projects, please consider citing it.
       month        = may,
       year         = 2024,
       publisher    = {Zenodo},
-      version      = {0.1.8},
+      version      = {0.1.8a},
       doi          = {10.5281/zenodo.11100222},
       url          = {https://doi.org/10.5281/zenodo.11100222}
     }
