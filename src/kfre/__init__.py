@@ -1,13 +1,6 @@
-__version__ = "0.1.8"
+__version__ = "0.1.8a"
 
-from .main import (
-    RiskPredictor,
-    upcr_uacr,
-    risk_pred,
-    predict_kfre,
-    perform_conversions,
-    add_kfre_risk_col,
-)
+from .main import *
 
 
 def kfre_person(
@@ -60,7 +53,7 @@ def kfre_person(
     )
 
 
-# Export the RiskPredictor class for direct use
+# Export functions for direct use
 __all__ = [
     "kfre_person",
     "upcr_uacr",
@@ -68,4 +61,8 @@ __all__ = [
     "perform_conversions",
     "add_kfre_risk_col",
     "RiskPredictor",
+    "calculate_outcome",
+    "classify_ckd_stages",
+    "prep_and_plot_metrics_vars",
+    "calculate_metrics_for_n_var",
 ]
