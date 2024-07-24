@@ -66,15 +66,15 @@ Prerequisites
 -------------
 Before you install ``kfre``, ensure your system meets the following requirements:
 
-- **Python**: Version ``3.6`` or higher is required to run ``kfre``.
+- **Python**: version ``3.6`` or higher is required to run ``kfre``.
 
 Additionally, ``kfre`` depends on the following packages, which will be automatically installed when you install ``kfre`` using pip:
 
-- **numpy**: Version ``1.18.5`` or higher
-- **pandas**: Version ``1.0.5`` or higher
-- **matplotlib**: Version ``3.2.2`` or higher
-- **seaborn**: Version ``0.10.1`` or higher
-- **scikit-learn**: Version ``0.23.1`` or higher
+- **numpy**: version ``1.18.5`` or higher
+- **pandas**: version ``1.0.5`` or higher
+- **matplotlib**: version ``3.2.2`` or higher
+- **seaborn**: version ``0.10.1`` or higher
+- **scikit-learn**: version ``0.23.1`` or higher
 
 .. _installation:
 
