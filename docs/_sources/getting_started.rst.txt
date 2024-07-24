@@ -70,9 +70,11 @@ Before you install ``kfre``, ensure your system meets the following requirements
 
 Additionally, ``kfre`` depends on the following packages, which will be automatically installed when you install ``kfre`` using pip:
 
-- **NumPy**: Version ``1.18.5`` or higher
-- **Pandas**: Version ``1.0.5`` or higher
-
+- **numpy**: Version ``1.18.5`` or higher
+- **pandas**: Version ``1.0.5`` or higher
+- **matplotlib**: Version ``3.2.2`` or higher
+- **seaborn**: Version ``0.10.1`` or higher
+- **scikit-learn**: Version ``0.23.1`` or higher
 
 .. _installation:
 
