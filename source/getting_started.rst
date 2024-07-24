@@ -66,7 +66,7 @@ Prerequisites
 -------------
 Before you install ``kfre``, ensure your system meets the following requirements:
 
-- **Python**: Version ``3.6`` or higher is required to run ``kfre``.
+- **Python**: version ``3.6`` or higher is required to run ``kfre``.
 
 Additionally, ``kfre`` depends on the following packages, which will be automatically installed when you install ``kfre`` using pip:
 
