@@ -68,7 +68,7 @@ Before you install ``kfre``, ensure your system meets the following requirements
 
 - **Python**: version ``3.6`` or higher is required to run ``kfre``.
 
-Additionally, ``kfre`` depends on the following packages, which will be automatically installed when you install ``kfre`` using pip:
+Additionally, ``kfre`` depends on the following packages, which will be automatically installed when you install ``kfre``:
 
 - **numpy**: version ``1.18.5`` or higher
 - **pandas**: version ``1.0.5`` or higher
