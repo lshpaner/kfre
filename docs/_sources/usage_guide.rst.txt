@@ -148,7 +148,7 @@ Ensure to:
 Batch Risk Calculation for Multiple Patients
 ============================================
 
-The kfre library provides the functionality to perform batch processing of 
+The ``kfre`` library provides the functionality to perform batch processing of 
 patient data, allowing for the computation of kidney failure risk predictions 
 across multiple patients in a single operation. This capability is especially 
 valuable for researchers and clinicians needing to assess risks for large cohorts 
@@ -359,7 +359,7 @@ Since 1 mmol of creatinine is 113.12 mg:
 
     :returns: ``pd.Series``: The function returns a pandas Series containing the computed urinary albumin-creatinine ratio (uACR) for each patient in the DataFrame. This Series is indexed in the same way as the original DataFrame (``df.index``), ensuring that the uACR values align correctly with the corresponding patient data.
  
-The upcr_uacr function is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.
+The ``upcr_uacr function`` is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.
 
 Calcium
 -------

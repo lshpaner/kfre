@@ -29,7 +29,21 @@ Changelog
 0.1.8
 -----
 
-- Updated docs toc format and published on new site `lshpaner.github.io/kfre_docs <https://lshpaner.github.io/kfre>`_
+- Updated docs toc format and published on new site `lshpaner.github.io/kfre <https://lshpaner.github.io/kfre>`_
+- new functions for classifying outcomes and ckd stages
+   - ``calc_esrd_outcome()``,
+   - ``class_ckd_stages()``,
+- new functions for performance assessment:
+   - ``plot_kfre_metrics()``
+      - roc_auc curves
+      - precision-recall curves
+   - ``eval_kfre_metrics()``:
+      - Precision/PPV
+      - Average PRecision
+      - Sensitivity
+      - Specificity
+      - AUC ROC
+      - Brier Score
 
 0.1.7
 -----
