@@ -70,7 +70,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#id4">0.1.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id5">0.1.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id6">0.1.4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">0.1.2</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
@@ -106,7 +106,41 @@
 <section id="id2">
 <h2>0.1.8<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Updated docs toc format and published on new site <a class="reference external" href="https://lshpaner.github.io/kfre">lshpaner.github.io/kfre_docs</a></p></li>
+<li><p>Updated docs toc format and published on new site <a class="reference external" href="https://lshpaner.github.io/kfre">lshpaner.github.io/kfre</a></p></li>
+<li><dl class="simple">
+<dt>new functions for classifying outcomes and ckd stages</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">calc_esrd_outcome()</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">class_ckd_stages()</span></code>,</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>new functions for performance assessment:</dt><dd><ul>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">plot_kfre_metrics()</span></code></dt><dd><ul>
+<li><p>roc_auc curves</p></li>
+<li><p>precision-recall curves</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">eval_kfre_metrics()</span></code>:</dt><dd><ul>
+<li><p>Precision/PPV</p></li>
+<li><p>Average PRecision</p></li>
+<li><p>Sensitivity</p></li>
+<li><p>Specificity</p></li>
+<li><p>AUC ROC</p></li>
+<li><p>Brier Score</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </section>
 <section id="id3">
@@ -146,8 +180,8 @@
 <p>Why no version <code class="docutils literal notranslate"><span class="pre">0.1.3</span></code>? In alignment with common superstitions, version <code class="docutils literal notranslate"><span class="pre">0.1.3</span></code> was skipped, much like how many buildings lack a 13th floor.</p>
 </div>
 </section>
-<section id="id8">
-<h2>0.1.2<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<section id="id7">
+<h2>0.1.2<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
 <p>This release, <code class="docutils literal notranslate"><span class="pre">kfre</span> <span class="pre">0.1.2</span></code>, marks a substantial update from the preliminary alpha versions, introducing significant enhancements and features that elevate the tool’s flexibility, accuracy, and ease of use:</p>
 <p><strong>Enhanced Core Functionality:</strong> A comprehensive overhaul from earlier minimal viable products to a more robust and feature-rich application.</p>
 <p>New Calculator Function: The introduction of the <code class="docutils literal notranslate"><span class="pre">kfre_person()</span></code> function enables risk metrics calculations for individuals one at a time, customizing the analysis to each unique dataset.</p>
