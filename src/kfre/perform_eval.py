@@ -14,13 +14,19 @@ from sklearn.metrics import (
     precision_score,
 )
 
-
 ################################################################################
 ################################ ESRD Outcome ##################################
 ################################################################################
 
 
-def calc_esrd_outcome(df, col, years, duration_col, prefix=None):
+def calc_esrd_outcome(
+    df,
+    col,
+    years,
+    duration_col,
+    prefix=None,
+    create_years_col=True,
+):
     """Calculate outcome based on a given number of years.
 
     This function creates a new column in the dataframe which is populated with
@@ -31,20 +37,33 @@ def calc_esrd_outcome(df, col, years, duration_col, prefix=None):
     col (str): The column name with ESRD (should be eGFR < 15 flag).
     years (int): The number of years to use in the condition.
     duration_col (str): The name of the column containing the duration data.
-    prefix (str): Custom prefix for the new column name. Defaults to "ESRD_in".
+    prefix (str, optional): Custom prefix for the new column name.
+    If None, no prefix is added.
+    create_years_col (bool, optional): Whether to create the 'years' column.
+    Default is True.
 
     Returns:
     pd.DataFrame: DataFrame with the new column added.
     """
-    # Compute the 'years' column if it doesn't already exist
-    if "years" not in df.columns:
-        df["years"] = round(df[duration_col] / 365.25)
+    if create_years_col:
+        # Create a 'years' column based on the duration_col
+        years_col = "ESRD_duration_years"
+        df[years_col] = round(df[duration_col] / 365.25)
+
+    else:
+        # Use the provided duration_col directly
+        years_col = duration_col
 
     if prefix is None:
-        prefix = "ESRD_in"
+        column_name = f"{years}_year_outcome"
+    else:
+        column_name = f"{prefix}_{years}_year_outcome"
 
-    column_name = f"{prefix}_{years}_year_outcome"
-    df[column_name] = np.where((df[col] == 1) & (df["years"] <= years), 1, 0)
+    # Remove the column if it already exists
+    if column_name in df.columns:
+        df.drop(columns=[column_name], inplace=True)
+
+    df[column_name] = np.where((df[col] == 1) & (df[years_col] <= years), 1, 0)
     return df
 
 
@@ -127,7 +146,7 @@ def plot_kfre_metrics(
     image_prefix=None,
     bbox_inches="tight",
     plot_type="both",
-    save_plots=True,
+    save_plots=False,
     show_years=[2, 5],
     plot_combinations=False,
     show_grids=False,
@@ -198,6 +217,7 @@ def plot_kfre_metrics(
         If 'save_plots' is True without specifying 'image_path_png' or 'image_path_svg'.
         If 'bbox_inches' is not a string or None.
         If 'show_years' contains invalid year values.
+        If required KFRE probability columns are missing in the DataFrame.
     """
 
     # Define valid years for outcome analysis. Only 2 and 5 years are considered
@@ -205,21 +225,18 @@ def plot_kfre_metrics(
     valid_years = [2, 5]
 
     # Ensure show_years is a list, even if a single integer or tuple is provided.
-    # This simplifies processing later.
     if isinstance(show_years, int):
         show_years = [show_years]
     elif isinstance(show_years, tuple):
         show_years = list(show_years)
 
     # Validate that all years in show_years are within the allowed valid_years.
-    # Raise an error if not.
     if any(year not in valid_years for year in show_years):
         raise ValueError(
             f"The 'show_years' parameter must be a list or tuple containing any of {valid_years}."
         )
 
     # Ensure num_vars is a list, even if a single integer or tuple is provided.
-    # This simplifies processing later.
     if isinstance(num_vars, int):
         num_vars = [num_vars]
     elif isinstance(num_vars, tuple):
@@ -237,13 +254,32 @@ def plot_kfre_metrics(
     if not isinstance(bbox_inches, (str, type(None))):
         raise ValueError("The 'bbox_inches' parameter must be a string or None.")
 
+    # Check for the required KFRE probability columns in the DataFrame
+    missing_columns = []
+    for year in show_years:
+        for n in num_vars:
+            required_col = f"kfre_{n}var_{year}year"
+            if required_col not in df.columns:
+                missing_columns.append(required_col)
+
+    if missing_columns:
+        raise ValueError(
+            "Must derive KFRE probabilities before generating performance evaluation metrics. "
+            f"Missing columns: {', '.join(missing_columns)}"
+        )
+
     # Prepare lists to hold true labels and outcomes for the specified years.
     y_true = []
     outcomes = []
     for year in show_years:
-        # Append true labels for the specified year outcomes. These are the
-        # actual outcomes.
-        y_true.append(df[f"{year}_year_outcome"])
+        # Use regex to find columns that match the pattern for outcome labels.
+        outcome_cols = df.filter(regex=f".*{year}_year_outcome").columns
+        if outcome_cols.empty:
+            raise ValueError(
+                f"No outcome columns found matching pattern for {year}-year outcomes."
+            )
+        # Append the true labels for the first matching outcome column.
+        y_true.append(df[outcome_cols[0]])
         # Append outcome labels as strings, e.g., "2-year" and "5-year".
         outcomes.append(f"{year}-year")
 
@@ -255,7 +291,8 @@ def plot_kfre_metrics(
         # outcome year.
         preds[f"{n}var"] = [df[f"kfre_{n}var_{year}year"] for year in show_years]
 
-    # If mode includes preparation (either 'prep' or 'both'), prepare the result to return.
+    # If mode includes preparation (either 'prep' or 'both'), prepare the result
+    #  to return.
     if mode in ["prep", "both"]:
         result = (y_true, preds, outcomes)
         if mode == "prep":
@@ -524,21 +561,25 @@ def plot_kfre_metrics(
 ################################################################################
 
 
-def eval_kfre_metrics(df, n_var_list):
+def eval_kfre_metrics(df, n_var_list, outcome_years=[2, 5]):
     """
     Calculate metrics for multiple outcomes and store the results in a DataFrame.
 
     This function computes a set of performance metrics for multiple binary
     classification models given the true labels and the predicted probabilities
-    for each outcome. The metrics calculated include precision (positive predictive value),
-    average precision, sensitivity (recall), specificity, AUC ROC, and Brier score.
+    for each outcome. The metrics calculated include precision
+    (positive predictive value), average precision, sensitivity (recall),
+    specificity, AUC ROC, and Brier score.
 
     Parameters:
     ----------
     df : pd.DataFrame
-        The input DataFrame containing the necessary columns for truth and predictions.
+        The input DataFrame containing the necessary columns for truth and
+        predictions.
     n_var_list : list of int
         List of variable numbers to consider, e.g., [4, 6, 8].
+    outcome_years : list of int, optional
+        List of outcome years to consider, default is [2, 5].
 
     Returns:
     -------
@@ -547,7 +588,8 @@ def eval_kfre_metrics(df, n_var_list):
 
     Notes:
     -----
-    - Precision is calculated with a threshold of 0.5 for the predicted probabilities.
+    - Precision is calculated with a threshold of 0.5 for the predicted
+      probabilities.
     - Sensitivity is also known as recall.
     - Specificity is calculated as the recall for the negative class.
     - AUC ROC is calculated using the receiver operating characteristic curve.
@@ -555,15 +597,16 @@ def eval_kfre_metrics(df, n_var_list):
       probabilities and the true binary outcomes.
     """
 
-    # Define the outcomes we are interested in, here 2-year and 5-year outcomes
-    outcomes = ["2_year", "5_year"]
-
-    # Extract the true labels for the 2-year and 5-year outcomes from the DataFrame
-    y_true_2_yr = df["2_year_outcome"]
-    y_true_5_yr = df["5_year_outcome"]
-
-    # Store the true labels in a list for easier iteration later
-    y_true = [y_true_2_yr, y_true_5_yr]
+    # Extract the true labels for the outcomes using regex
+    y_true = []
+    outcomes = []
+    for year in outcome_years:
+        outcome_col = df.filter(regex=f".*{year}_year_outcome").columns
+        if not outcome_col.empty:
+            y_true.append(df[outcome_col[0]])
+            outcomes.append(f"{year}_year")
+        else:
+            raise ValueError(f"{year}_year_outcome must exist to derive these metrics.")
 
     # Initialize a dictionary to store the predicted probabilities for each
     # number of variables
@@ -575,17 +618,13 @@ def eval_kfre_metrics(df, n_var_list):
         # number of variables
         preds_n_var_dict[n_var] = []
 
-        # Iterate over each outcome (2-year and 5-year)
-        for outcome in outcomes:
+        # Iterate over each outcome
+        for year in outcome_years:
             # Construct the column name for the predicted probabilities
-            col_name = f"kfre_{n_var}var_{outcome.replace('_year', 'year')}"
-
-            # Check if the column exists in the DataFrame
+            col_name = f"kfre_{n_var}var_{year}year"
             if col_name in df.columns:
-                # Append the predicted probabilities to the list
                 preds_n_var_dict[n_var].append(df[col_name])
             else:
-                # If the column does not exist, append None
                 preds_n_var_dict[n_var].append(None)
 
     # Initialize an empty list to store the calculated metrics for each
@@ -615,7 +654,10 @@ def eval_kfre_metrics(df, n_var_list):
                 # predicted probabilities and true binary outcomes)
                 brier = brier_score_loss(true_labels, pred_labels)
                 # Calculate average precision (area under the precision-recall curve)
-                average_precision = average_precision_score(true_labels, pred_labels)
+                average_precision = average_precision_score(
+                    true_labels,
+                    pred_labels,
+                )
 
                 # Create a dictionary to store the calculated metrics
                 metrics = {
