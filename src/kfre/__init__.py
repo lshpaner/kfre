@@ -1,5 +1,7 @@
 __version__ = "0.1.8a1"
 
+
+from .perform_eval import *
 from .main import *
 
 
