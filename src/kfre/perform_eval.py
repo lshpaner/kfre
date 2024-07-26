@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 from sklearn.metrics import (
     roc_curve,
     auc,
@@ -685,3 +686,160 @@ def eval_kfre_metrics(df, n_var_list, outcome_years=[2, 5]):
 
     # Return the resulting DataFrame containing the performance metrics
     return metrics_df_n_var
+
+
+################################################################################
+######################### CKD Random Data Generator ############################
+################################################################################
+
+
+class CKDDataGenerator:
+    def __new__(cls, *args, **kwargs):
+        instance = super(CKDDataGenerator, cls).__new__(cls)
+        instance.__init__(*args, **kwargs)
+        return instance.df
+
+    def __init__(
+        self,
+        n_samples=100,
+        n=1000,
+        random_state=42,
+        use_bootstrap=True,
+        ranges=None,
+    ):
+        self.n_samples = n_samples
+        self.n = n
+        self.random_state = random_state
+        self.use_bootstrap = use_bootstrap
+        self.samples = []
+        self.ranges = ranges if ranges else self.default_ranges()
+        self.df = (
+            self._generate_data()
+        )  # Automatically generate data upon initialization
+
+    def default_ranges(self):
+        return {
+            "Age": (18, 100),
+            "eGFR-EPI": (2, 120),
+            "uACR": (0.1, 2000),
+            "Albumin_g_dl": (3.0, 5.5),
+            "Phosphorous_mg_dl": (2.5, 5.0),
+            "Bicarbonate (mmol/L)": (16, 32),
+            "Calcium_mg_dl": (8.5, 10.5),
+        }
+
+    def generate_ckd_data(self, n, random_state):
+        """
+        Generate a DataFrame with random CKD data.
+
+        Parameters:
+        ----------
+        n : int
+            Number of random rows to generate.
+        random_state : int
+            Random seed for reproducibility.
+
+        Returns:
+        -------
+        pd.DataFrame
+            A DataFrame with random CKD data, including ESRD status and duration.
+        """
+        # Set random seed for reproducibility
+        np.random.seed(random_state)
+
+        # Generate random values that are clinically relevant for CKD patients
+        data = {
+            "Age": np.random.randint(
+                self.ranges["Age"][0], self.ranges["Age"][1], size=n
+            ),  # Age in years, typical range for CKD patients
+            "SEX": np.random.choice(["male", "female"], size=n),
+            "eGFR-EPI": np.random.uniform(
+                self.ranges["eGFR-EPI"][0], self.ranges["eGFR-EPI"][1], size=n
+            ),  # eGFR in mL/min/1.73 m^2, covering all CKD stages
+            "uACR": np.random.uniform(
+                self.ranges["uACR"][0], self.ranges["uACR"][1], size=n
+            ),  # uACR in mg/g, covering all CKD stages
+            "Diabetes (1=yes; 0=no)": np.random.choice(
+                [0, 1], size=n
+            ),  # Prevalence of diabetes in CKD
+            "Hypertension (1=yes; 0=no)": np.random.choice(
+                [0, 1], size=n
+            ),  # Prevalence of hypertension in CKD
+            "Albumin_g_dl": np.random.uniform(
+                self.ranges["Albumin_g_dl"][0],
+                self.ranges["Albumin_g_dl"][1],
+                size=n,
+            ),  # Serum albumin in g/dL, lower range for CKD
+            "Phosphorous_mg_dl": np.random.uniform(
+                self.ranges["Phosphorous_mg_dl"][0],
+                self.ranges["Phosphorous_mg_dl"][1],
+                size=n,
+            ),  # Serum phosphorus in mg/dL, can be elevated in CKD
+            "Bicarbonate (mmol/L)": np.random.uniform(
+                self.ranges["Bicarbonate (mmol/L)"][0],
+                self.ranges["Bicarbonate (mmol/L)"][1],
+                size=n,
+            ),  # Serum bicarbonate in mEq/L, often lower in CKD
+            "Calcium_mg_dl": np.random.uniform(
+                self.ranges["Calcium_mg_dl"][0],
+                self.ranges["Calcium_mg_dl"][1],
+                size=n,
+            ),  # Serum calcium in mg/dL, slightly adjusted for CKD
+        }
+
+        df = pd.DataFrame(data)
+
+        # Ensure no values fall below their specified ranges
+        for col in df.columns:
+            if col in self.ranges:
+                min_val = self.ranges[col][0]
+                df[col] = df[col].clip(lower=min_val)
+
+        # Define ESRD based on eGFR value
+        df["ESRD (1=yes; 0=no)"] = df["eGFR-EPI"].apply(lambda x: 1 if x < 15 else 0)
+
+        # Create a column with random ESRD duration in years between 0 and 10
+        df["ESRD_duration_years"] = np.random.uniform(0, 10, size=n)
+
+        return df
+
+    def bootstrap_ckd_data(self):
+        """
+        Bootstrap CKD data multiple times and store all samples.
+
+        Parameters:
+        ----------
+        None
+
+        Returns:
+        -------
+        None
+        """
+        np.random.seed(self.random_state)
+        self.samples = []
+
+        for i in tqdm(range(self.n_samples)):
+            sample_random_state = self.random_state + i
+            sample = self.generate_ckd_data(
+                self.n,
+                random_state=sample_random_state,
+            )
+            self.samples.append(sample)
+
+    def _generate_data(self):
+        """
+        Generate CKD data, optionally using bootstrapping.
+
+        Parameters:
+        ----------
+        None
+
+        Returns:
+        -------
+        pd.DataFrame
+        """
+        if self.use_bootstrap:
+            self.bootstrap_ckd_data()
+            return self.samples[np.random.randint(0, self.n_samples)]
+        else:
+            return self.generate_ckd_data(self.n, self.random_state)

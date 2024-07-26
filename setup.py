@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="kfre",
-    version="0.1.8a2",
+    version="0.1.8a3",
     author="Leonid Shpaner",
     author_email="lshpaner@ucla.edu",
     description="A Python library for estimating kidney failure risk using the KFRE model developed by Tangri et al.",
@@ -29,5 +29,6 @@ setup(
         "matplotlib>=3.2.2",  # Minimum version of matplotlib required
         "seaborn>=0.10.1",  # Minimum version of seaborn required
         "scikit-learn>=0.23.1",  # Minimum version of scikit-learn required
+        "tqdm>=4.48.0",  # Minimum version of tqdm required
     ],
 )
