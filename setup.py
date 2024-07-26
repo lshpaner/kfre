@@ -13,7 +13,7 @@ setup(
     packages=find_packages(where="src"),
     project_urls={  # Optional
         "Author Website": "https://www.leonshpaner.com",
-        "Documentation": "https://lshpaner.github.io/kfre_docs/",
+        "Documentation": "https://lshpaner.github.io/kfre/",
         "Zenodo Archive": "https://zenodo.org/records/11100222",
         "Source Code": "https://github.com/lshpaner/kfre",
     },
