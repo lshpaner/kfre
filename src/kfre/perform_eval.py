@@ -146,7 +146,7 @@ def plot_kfre_metrics(
     image_path_svg=None,
     image_prefix=None,
     bbox_inches="tight",
-    plot_type="both",
+    plot_type="all_plots",
     save_plots=False,
     show_years=[2, 5],
     plot_combinations=False,
@@ -161,7 +161,8 @@ def plot_kfre_metrics(
     Parameters:
     ----------
     df : pd.DataFrame
-        The input DataFrame containing the necessary columns for truth and predictions.
+        The input DataFrame containing the necessary columns for truth and
+        predictions.
 
     num_vars : int, list of int, or tuple of int
         Number of variables (e.g., 4) or a list/tuple of numbers of variables
@@ -189,7 +190,8 @@ def plot_kfre_metrics(
         Bounding box in inches for the saved images. Default is 'tight'.
 
     plot_type : str, optional
-        Type of plot to generate, can be 'roc', 'pr', or 'both'. Default is 'both'.
+        Type of plot to generate, can be 'auc_roc', 'precision_recall', or
+        'all_plots'. Default is 'all_plots'.
 
     save_plots : bool, optional
         Whether to save plots. Default is True.
@@ -220,11 +222,16 @@ def plot_kfre_metrics(
     Raises:
     -------
     ValueError
-        If 'save_plots' is True without specifying 'image_path_png' or 'image_path_svg'.
+        If 'save_plots' is True without specifying 'image_path_png' or
+           'image_path_svg'.
         If 'bbox_inches' is not a string or None.
         If 'show_years' contains invalid year values.
         If required KFRE probability columns are missing in the DataFrame.
+        If 'plot_type' is not one of 'auc_roc', 'precision_recall', or 'all_plots'.
     """
+
+    def format_list_or_tuple(items):
+        return ", ".join(map(str, items))
 
     # Define valid years for outcome analysis. Only 2 and 5 years are considered
     # valid in this function.
@@ -239,7 +246,8 @@ def plot_kfre_metrics(
     # Validate that all years in show_years are within the allowed valid_years.
     if any(year not in valid_years for year in show_years):
         raise ValueError(
-            f"The 'show_years' parameter must be a list or tuple containing any of {valid_years}."
+            f"The 'show_years' parameter must be a list or tuple containing "
+            f"any of {valid_years}."
         )
 
     # Ensure num_vars is a list, even if a single integer or tuple is provided.
@@ -247,6 +255,14 @@ def plot_kfre_metrics(
         num_vars = [num_vars]
     elif isinstance(num_vars, tuple):
         num_vars = list(num_vars)
+
+    # Validate the plot_type parameter
+    valid_plot_types = ["auc_roc", "precision_recall", "all_plots"]
+    if plot_type not in valid_plot_types:
+        raise ValueError(
+            f"The 'plot_type' parameter must be one of {valid_plot_types}. "
+            f"Provided: {plot_type}"
+        )
 
     # Check for invalid image saving configuration. If save_plots is True,
     # either image_path_png or image_path_svg must be specified.
@@ -270,7 +286,8 @@ def plot_kfre_metrics(
 
     if missing_columns:
         raise ValueError(
-            "Must derive KFRE probabilities before generating performance evaluation metrics. "
+            "Must derive KFRE probabilities before generating performance "
+            "evaluation metrics. "
             f"Missing columns: {', '.join(missing_columns)}"
         )
 
@@ -305,7 +322,7 @@ def plot_kfre_metrics(
             # If mode is 'prep', return the prepared data immediately.
             return result
 
-    # Initialize lists to hold figure objects for ROC and Precision-Recall (PR) plots.
+    # Initialize lists to hold fig. objects for ROC & Precision-Recall (PR) plots.
     roc_figs, pr_figs = [], []
 
     # If mode includes plotting (either 'plot' or 'both'), generate the plots.
@@ -313,7 +330,7 @@ def plot_kfre_metrics(
         if plot_combinations:
             # If plot_combinations is True, plot all variable combinations in a
             # single plot for each year outcome.
-            if plot_type in ["roc", "both"]:
+            if plot_type in ["auc_roc", "all_plots"]:
                 fig = plt.figure(figsize=fig_size)
                 for n in num_vars:
                     for true_labels, pred_labels, outcome in zip(
@@ -326,21 +343,24 @@ def plot_kfre_metrics(
                         plt.plot(
                             fpr,
                             tpr,
-                            label=f"{n}-variable {outcome} outcome (AUC = {auc_score:.{decimal_places}f})",
+                            label=(
+                                f"{n}-variable {outcome} outcome "
+                                f"(AUC = {auc_score:.{decimal_places}f})"
+                            ),
                         )  # Plot ROC curve
                 plt.plot(
                     [0, 1], [0, 1], linestyle="--", color="red"
                 )  # Add diagonal line for reference
                 plt.xlabel("1 - Specificity")
                 plt.ylabel("Sensitivity")
-                plt.title(f"AUC ROC for KFRE Outcomes with Different Variables")
+                plt.title(f"AUC ROC: {format_list_or_tuple(num_vars)} Variable KFRE")
                 plt.legend(loc="best")
                 if save_plots and not show_grids:
                     # Save the plot if save_plots is True and show_grids is False.
                     filename = (
-                        f"{image_prefix}_roc_curve_combined"
+                        f"{image_prefix}_auc_roc_curve_combined"
                         if image_prefix
-                        else "roc_curve_combined"
+                        else "auc_roc_curve_combined"
                     )
                     if image_path_png:
                         os.makedirs(image_path_png, exist_ok=True)
@@ -360,7 +380,7 @@ def plot_kfre_metrics(
                 else:
                     plt.close(fig)
 
-            if plot_type in ["pr", "both"]:
+            if plot_type in ["precision_recall", "all_plots"]:
                 fig = plt.figure(figsize=fig_size)
                 for n in num_vars:
                     for true_labels, pred_labels, outcome in zip(
@@ -375,20 +395,23 @@ def plot_kfre_metrics(
                         plt.plot(
                             recall,
                             precision,
-                            label=f"{n}-variable {outcome} outcome (AP = {ap_score:.{decimal_places}f})",
+                            label=(
+                                f"{n}-variable {outcome} outcome "
+                                f"(AP = {ap_score:.{decimal_places}f})"
+                            ),
                         )  # Plot PR curve
                 plt.xlabel("Recall")
                 plt.ylabel("Precision")
                 plt.title(
-                    f"Precision-Recall Curve for Outcomes with Different Variables"
+                    f"Precision-Recall: {format_list_or_tuple(num_vars)} Variable KFRE"
                 )
                 plt.legend(loc="best")
                 if save_plots and not show_grids:
-                    # Save the plot if save_plots is True and show_grids is False.
+                    # Save plot if save_plots is True & show_grids is False.
                     filename = (
                         f"{image_prefix}_pr_curve_combined"
                         if image_prefix
-                        else "pr_curve_combined"
+                        else "pr_curve__combined"
                     )
                     if image_path_png:
                         os.makedirs(image_path_png, exist_ok=True)
@@ -412,9 +435,11 @@ def plot_kfre_metrics(
             # combination in separate plots.
             for n in num_vars:
                 pred_list = preds[f"{n}var"]
-                if plot_type in ["roc", "both"]:
+                if plot_type in ["auc_roc", "all_plots"]:
                     fig = plt.figure(figsize=fig_size)
-                    for i, (true_labels, outcome) in enumerate(zip(y_true, outcomes)):
+                    for i, (true_labels, outcome) in enumerate(
+                        zip(y_true, outcomes),
+                    ):
                         pred_labels = pred_list[i]
                         fpr, tpr, _ = roc_curve(
                             true_labels, pred_labels
@@ -423,21 +448,24 @@ def plot_kfre_metrics(
                         plt.plot(
                             fpr,
                             tpr,
-                            label=f"{n}-variable {outcome} outcome (AUC = {auc_score:.{decimal_places}f})",
+                            label=(
+                                f"{n}-variable {outcome} outcome "
+                                f"(AUC = {auc_score:.{decimal_places}f})"
+                            ),
                         )  # Plot ROC curve
                     plt.plot(
                         [0, 1], [0, 1], linestyle="--", color="red"
                     )  # Add diagonal line for reference
                     plt.xlabel("1 - Specificity")
                     plt.ylabel("Sensitivity")
-                    plt.title(f"AUC ROC for Outcomes with {n} Variables")
+                    plt.title(f"AUC ROC: {n} Variable KFRE")
                     plt.legend(loc="best")
                     if save_plots and not show_grids:
-                        # Save the plot if save_plots is True and show_grids is False.
+                        # Save plot if save_plots is True & show_grids is False.
                         filename = (
-                            f"{image_prefix}_{n}var_roc_curve"
+                            f"{image_prefix}_{n}var_auc_roc"
                             if image_prefix
-                            else f"{n}var_roc_curve"
+                            else f"{n}var_auc_roc"
                         )
                         if image_path_png:
                             os.makedirs(image_path_png, exist_ok=True)
@@ -457,9 +485,11 @@ def plot_kfre_metrics(
                     else:
                         plt.close(fig)
 
-                if plot_type in ["pr", "both"]:
+                if plot_type in ["precision_recall", "all_plots"]:
                     fig = plt.figure(figsize=fig_size)
-                    for i, (true_labels, outcome) in enumerate(zip(y_true, outcomes)):
+                    for i, (true_labels, outcome) in enumerate(
+                        zip(y_true, outcomes),
+                    ):
                         pred_labels = pred_list[i]
                         precision, recall, _ = precision_recall_curve(
                             true_labels, pred_labels
@@ -470,18 +500,21 @@ def plot_kfre_metrics(
                         plt.plot(
                             recall,
                             precision,
-                            label=f"{n}-variable {outcome} outcome (AP = {ap_score:.{decimal_places}f})",
+                            label=(
+                                f"{n}-variable {outcome} outcome "
+                                f"(AP = {ap_score:.{decimal_places}f})"
+                            ),
                         )  # Plot PR curve
                     plt.xlabel("Recall")
                     plt.ylabel("Precision")
-                    plt.title(f"Precision-Recall Curve for Outcomes with {n} Variables")
+                    plt.title(f"Precision-Recall: {n} Variable KFRE")
                     plt.legend(loc="best")
                     if save_plots and not show_grids:
-                        # Save the plot if save_plots is True and show_grids is False.
+                        # Save plot if save_plots is True & show_grids is False.
                         filename = (
-                            f"{image_prefix}_{n}var_pr_curve"
+                            f"{image_prefix}_{n}var_precision_recall"
                             if image_prefix
-                            else f"{n}var_pr_curve"
+                            else f"{n}var_precision_recall"
                         )
                         if image_path_png:
                             os.makedirs(image_path_png, exist_ok=True)
@@ -503,9 +536,14 @@ def plot_kfre_metrics(
 
         # Create and save grid plots if show_grids is True.
         if show_grids:
-            grid_figs = roc_figs + pr_figs
+            grid_figs = []
+            if plot_type in ["auc_roc", "all_plots"]:
+                grid_figs += roc_figs
+            if plot_type in ["precision_recall", "all_plots"]:
+                grid_figs += pr_figs
+
             if grid_figs:
-                grid_cols = min(len(grid_figs), 3)  # Number of columns in the grid
+                grid_cols = min(len(grid_figs), 3)  # No. of columns in the grid
                 grid_rows = (
                     len(grid_figs) + grid_cols - 1
                 ) // grid_cols  # Number of rows in the grid
@@ -514,6 +552,13 @@ def plot_kfre_metrics(
                     grid_cols,
                     figsize=(fig_size[0] * grid_cols, fig_size[1] * grid_rows),
                 )
+
+                # Ensure axs is a 2D array even if there's only one subplot
+                if grid_rows == 1 and grid_cols == 1:
+                    axs = np.array([axs])
+                elif grid_rows == 1 or grid_cols == 1:
+                    axs = np.expand_dims(axs, axis=0 if grid_rows == 1 else 1)
+
                 axs = axs.flatten()
                 for ax, fig_ in zip(axs, grid_figs):
                     fig_.axes[0].get_figure().sca(fig_.axes[0])
@@ -523,7 +568,9 @@ def plot_kfre_metrics(
                         if (
                             len(xdata) != 2
                             or len(ydata) != 2
-                            or not ((xdata == [0, 1]).all() and (ydata == [0, 1]).all())
+                            or not (
+                                (xdata == [0, 1]).all() and (ydata == [0, 1]).all(),
+                            )
                         ):
                             ax.plot(xdata, ydata, label=line.get_label())
                     # Add dotted red diagonal line for ROC
@@ -542,13 +589,13 @@ def plot_kfre_metrics(
                     if image_path_png:
                         os.makedirs(image_path_png, exist_ok=True)
                         plt.savefig(
-                            os.path.join(image_path_png, f"{filename}.png"),
+                            os.path.join(image_path_png, f"{filename}_{plot_type}.png"),
                             bbox_inches=bbox_inches,
                         )
                     if image_path_svg:
                         os.makedirs(image_path_svg, exist_ok=True)
                         plt.savefig(
-                            os.path.join(image_path_svg, f"{filename}.svg"),
+                            os.path.join(image_path_svg, f"{filename}_{plot_type}.svg"),
                             bbox_inches=bbox_inches,
                         )
                 plt.show()
