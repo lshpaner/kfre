@@ -1,4 +1,4 @@
-__version__ = "0.1.8a3"
+__version__ = "0.1.8a4"
 
 
 from .perform_eval import *
