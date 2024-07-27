@@ -366,12 +366,65 @@ Classifying ESRD Outcome by 2 and 5 Year Outcomes
     :param str col: The column name with ESRD (should be eGFR < 15 flag).
     :param int years: The number of years to use in the condition.
     :param str duration_col: The name of the column containing the duration data.
-    :param str prefix: (`optional`) Custom prefix for the new column name. If None, no prefix is added.
+    :param str prefix: (`optional`) Custom prefix for the new column name. If ``None``, no prefix is added.
     :param bool create_years_col: (`optional`) Whether to create the 'years' column. Default is True.
 
     :returns: ``pd.DataFrame``: The modified DataFrame with the new column added.
 
-This function creates a new column in the DataFrame which is populated with a 1 or a 0 based on whether the ESRD condition (eGFR < 15) is met within the specified number of years. If `create_years_col` is set to True, it calculates the 'years' column based on the `duration_col` provided. If False, it uses the `duration_col` directly. The new column is named using the specified prefix and number of years, or just the number of years if no prefix is provided.
+This function creates a new column in the DataFrame which is populated with a ``1`` or a ``0`` based on whether the ESRD condition (eGFR < 15) is met within the specified number of years. If ``create_years_col`` is set to ``True``, it calculates the 'years' column based on the ``duration_col`` provided. If ``False``, it uses the ``duration_col`` directly. The new column is named using the specified prefix and number of years, or just the number of years if no prefix is provided.
+
+
+**Example Usage**
+
+.. code-block:: python
+
+    from kfre import class_esrd_outcome
+
+.. code-block:: python
+    
+    # 2-year outcome
+    df = class_esrd_outcome(
+        df=df,
+        col="ESRD",
+        years=2,
+        duration_col="Follow-up YEARS",
+        prefix=None,
+        create_years_col=False,
+    )
+
+    # 5-year outcome
+    df = class_esrd_outcome(
+        df=df,
+        col="ESRD",
+        years=5,
+        duration_col="Follow-up YEARS",
+        prefix=None,
+        create_years_col=False,
+    )
+
+
+.. raw:: html
+
+    <div style="text-align: left; margin-bottom: 10px;">
+    <i>
+    First 5 Rows of Outcome Data
+    </i>
+    </div>
+
+.. table:: 
+   :align: left
+
+
+   ====== =============== ===============
+   Index   2_year_outcome   5_year_outcome
+   ====== =============== ===============
+   0          0               0
+   1          1               1
+   2          0               0
+   3          1               1
+   4          0               0
+   ====== =============== ===============
+
 
 
 Batch Risk Calculation for Multiple Patients
@@ -435,6 +488,30 @@ This function is designed to compute the risk of chronic kidney disease (CKD) ov
     The ``sex_col`` must contain strings (case-insensitive) indicating either `female` or `male`.
 
 
+**Example Usage**
+
+.. code-block:: python    
+    
+    df = add_kfre_risk_col(
+        df=df,
+        age_col="Age",
+        sex_col="SEX",
+        eGFR_col="eGFR-EPI",
+        uACR_col="uACR",
+        dm_col="Diabetes (1=yes; 0=no)",
+        htn_col="Hypertension (1=yes; 0=no)",
+        albumin_col="Albumin_g_dl",
+        phosphorous_col="Phosphate_mg_dl",
+        bicarbonate_col="Bicarbonate (mmol/L)",
+        calcium_col="Calcium_mg_dl",
+        num_vars=8,
+        years=(2, 5),
+        is_north_american=False,
+        copy=False  # Modify the original DataFrame directly
+    )
+    # The resulting DataFrame 'df' now includes new columns with risk 
+    # predictions for each model and time frame
+
 .. raw:: html
 
     <div style="text-align: left;">
@@ -459,29 +536,3 @@ This function is designed to compute the risk of chronic kidney disease (CKD) ov
     69.92    Male           0                     0                     12.0      74.299919              1                1             0.524577         0.174712         0.190458         0.551506         0.305670         0.806220
     81.14   Female          1                     1                     15.0      59.683881              0                0             0.255029         0.073213         0.068968         0.237542         0.060353         0.244235
    ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================ 
-
-
-**Example Usage**
-
-.. code-block:: python    
-    
-    df = add_kfre_risk_col(
-        df=df,
-        age_col="Age",
-        sex_col="SEX",
-        eGFR_col="eGFR-EPI",
-        uACR_col="uACR",
-        dm_col="Diabetes (1=yes; 0=no)",
-        htn_col="Hypertension (1=yes; 0=no)",
-        albumin_col="Albumin_g_dl",
-        phosphorous_col="Phosphate_mg_dl",
-        bicarbonate_col="Bicarbonate (mmol/L)",
-        calcium_col="Calcium_mg_dl",
-        num_vars=8,
-        years=(2, 5),
-        is_north_american=False,
-        copy=False  # Modify the original DataFrame directly
-    )
-    # The resulting DataFrame 'df' now includes new columns with risk 
-    # predictions for each model and time frame
-    df
