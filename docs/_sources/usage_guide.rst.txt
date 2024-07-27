@@ -296,19 +296,6 @@ Since 1 mmol of creatinine is 113.12 mg:
 
     \frac{\text{1 mg protein}}{\text{0.11312 g creatinine}} \approx 8.84  {\text{ mg/g}}
 
-.. function:: upcr_uacr(df, sex_col, diabetes_col, hypertension_col, upcr_col, female_str)
-
-    :param DataFrame df: This parameter should be a pandas DataFrame containing the patient data. The DataFrame needs to include specific columns that will be referenced by the other parameters in the function for the conversion process.
-    :param str sex_col: The name of the column in the DataFrame that identifies the patient's sex. This is used to apply gender-specific adjustments in the conversion formula, as biological sex can influence the levels of urinary protein and albumin.
-    :param str diabetes_col: The name of the column that indicates whether the patient has diabetes, typically marked as ``1`` for ``yes`` and ``0`` for ``no``. Diabetes status is used to adjust the conversion because diabetes can impact kidney function and alter protein and albumin excretion rates.
-    :param str hypertension_col: The name of the column that shows whether the patient has hypertension, also typically marked as ``1`` for ``yes`` and ``0`` for ``no``. Hypertension can affect kidney function, making it a necessary factor in the conversion calculations.
-    :param str upcr_col: The name of the column containing the urinary protein-creatinine ratio (uPCR) values that need to be converted to urinary albumin-creatinine ratio (uACR). This is the primary input for the conversion process.
-    :param str female_str: The string used in the dataset to identify female patients. This string is crucial for applying the correct conversion factors, as the function adjusts differently based on the patient being male or female, reflecting the biological differences in albumin excretion.
-
-    :returns: ``pd.Series``: The function returns a pandas Series containing the computed urinary albumin-creatinine ratio (uACR) for each patient in the DataFrame. This Series is indexed in the same way as the original DataFrame (``df.index``), ensuring that the uACR values align correctly with the corresponding patient data.
- 
-The ``upcr_uacr function`` is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.
-
 Calcium
 -------
 
@@ -352,8 +339,8 @@ These conversions help ensure consistency in reporting and interpreting lab
 values across different systems and studies, facilitating better comparison and 
 understanding of patient data.
 
-Conversion Function (uPCR, Calcium, Albumin, Phosphate)
----------------------------------------------------------
+Conversion Functions
+---------------------
 
 .. function:: perform_conversions(df,reverse,upcr_col,calcium_col,albumin_col,convert_all)
 
@@ -369,10 +356,7 @@ These parameters provide the flexibility to tailor the unit conversion process t
 
 **Example Usage**
 
-The following is a mock example to illustrate the usage of the 
-``perform_conversions`` function. This example shows how to convert values from mmol 
-to mg for various clinical parameters within a DataFrame.
-
+The following is an example to illustrate the usage of the ``perform_conversions`` function. This example shows how to convert values from mmol to mg for various clinical parameters within a DataFrame.
 
 .. table:: First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)
 
@@ -437,3 +421,48 @@ to mg for various clinical parameters within a DataFrame.
    217.0  2.45                43.0             1.39               1918.316832  9.80             4.309             4.3
    ====== =================== ================ ================== ============ ================ ================ ================
 
+
+.. function:: upcr_uacr(df, sex_col, diabetes_col, hypertension_col, upcr_col, female_str)
+
+    :param DataFrame df: This parameter should be a pandas DataFrame containing the patient data. The DataFrame needs to include specific columns that will be referenced by the other parameters in the function for the conversion process.
+    :param str sex_col: The name of the column in the DataFrame that identifies the patient's sex. This is used to apply gender-specific adjustments in the conversion formula, as biological sex can influence the levels of urinary protein and albumin.
+    :param str diabetes_col: The name of the column that indicates whether the patient has diabetes, typically marked as ``1`` for ``yes`` and ``0`` for ``no``. Diabetes status is used to adjust the conversion because diabetes can impact kidney function and alter protein and albumin excretion rates.
+    :param str hypertension_col: The name of the column that shows whether the patient has hypertension, also typically marked as ``1`` for ``yes`` and ``0`` for ``no``. Hypertension can affect kidney function, making it a necessary factor in the conversion calculations.
+    :param str upcr_col: The name of the column containing the urinary protein-creatinine ratio (uPCR) values that need to be converted to urinary albumin-creatinine ratio (uACR). This is the primary input for the conversion process.
+    :param str female_str: The string used in the dataset to identify female patients. This string is crucial for applying the correct conversion factors, as the function adjusts differently based on the patient being male or female, reflecting the biological differences in albumin excretion.
+
+    :returns: ``pd.Series``: The function returns a pandas Series containing the computed urinary albumin-creatinine ratio (uACR) for each patient in the DataFrame. This Series is indexed in the same way as the original DataFrame (``df.index``), ensuring that the uACR values align correctly with the corresponding patient data.
+ 
+The ``upcr_uacr`` function is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.
+
+.. code-block:: python
+
+    df["uACR"] = upcr_uacr(
+    df=df,
+    sex_col="SEX",
+    diabetes_col="Diabetes (1=yes; 0=no)",
+    hypertension_col="Hypertension (1=yes; 0=no)",
+    upcr_col="uPCR_mg_g",
+    female_str="Female",
+    )
+
+
+
+.. code-block:: python
+
+    print(df["uACR"])
+
+.. code-block:: python
+
+    0       102.438624
+    1      1762.039423
+    2       659.136129
+    3      1145.245058
+    4       980.939665
+            ...     
+    740    3462.801185
+    741    5977.278911
+    742    3787.896473
+    743            NaN
+    744            NaN
+    Name: uACR, Length: 745, dtype: float64
