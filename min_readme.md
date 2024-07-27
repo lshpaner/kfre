@@ -12,7 +12,7 @@
 ## Prerequisites
 Before you install `kfre`, ensure you have the following:
 
-- **Python**: Python 3.74 or higher is required to run `kfre`.
+- **Python**: Python 3.7.4 or higher is required to run `kfre`.
 
 Additionally, kfre has the following package dependencies:
 
