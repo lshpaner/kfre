@@ -61,10 +61,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#kfre_person"><code class="docutils literal notranslate"><span class="pre">kfre_person()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#batch-risk-calculation-for-multiple-patients">Batch Risk Calculation for Multiple Patients</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#add_kfre_risk_col"><code class="docutils literal notranslate"><span class="pre">add_kfre_risk_col()</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="#conversion-of-clinical-parameters">Conversion of Clinical Parameters</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#upcr-to-uacr">uPCR to uACR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#calcium">Calcium</a></li>
@@ -75,6 +71,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#upcr_uacr"><code class="docutils literal notranslate"><span class="pre">upcr_uacr()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#batch-risk-calculation-for-multiple-patients">Batch Risk Calculation for Multiple Patients</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#add_kfre_risk_col"><code class="docutils literal notranslate"><span class="pre">add_kfre_risk_col()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -224,195 +224,6 @@ specific clinical characteristics.</p>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>The<span class="w"> </span><span class="m">2</span>-year<span class="w"> </span>risk<span class="w"> </span>of<span class="w"> </span>kidney<span class="w"> </span>failure<span class="w"> </span><span class="k">for</span><span class="w"> </span>this<span class="w"> </span>patient<span class="w"> </span>is<span class="w"> </span><span class="m">44</span>.66%.
 The<span class="w"> </span><span class="m">5</span>-year<span class="w"> </span>risk<span class="w"> </span>of<span class="w"> </span>kidney<span class="w"> </span>failure<span class="w"> </span><span class="k">for</span><span class="w"> </span>this<span class="w"> </span>patient<span class="w"> </span>is<span class="w"> </span><span class="m">89</span>.89%.
-</pre></div>
-</div>
-</section>
-<section id="batch-risk-calculation-for-multiple-patients">
-<h1>Batch Risk Calculation for Multiple Patients<a class="headerlink" href="#batch-risk-calculation-for-multiple-patients" title="Link to this heading"></a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library provides the functionality to perform batch processing of
-patient data, allowing for the computation of kidney failure risk predictions
-across multiple patients in a single operation. This capability is especially
-valuable for researchers and clinicians needing to assess risks for large cohorts
-or patient groups.</p>
-<p><strong>Key Features</strong></p>
-<p>When using the <code class="docutils literal notranslate"><span class="pre">add_kfre_risk_col</span></code> function, the library will append new columns
-for each specified variable model (4-variable, 6-variable, 8-variable) and each
-time frame (2 years, 5 years) directly to the original DataFrame. This facilitates
-a seamless integration of risk predictions into existing patient datasets without
-the need for additional data manipulation steps.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library is designed to facilitate risk prediction using Tangri’s KFRE
-model based on a given set of patient data. It is crucial to ensure that all
-patient data within a batch calculation are consistent in terms of regional
-categorization—that is, either all North American or all non-North American. To
-this end, it is crucial to ensure that all patient data within a batch calculation
-are consistent in terms of regional categorization. Mixing patient data from
-different regions within a single batch is not supported, as the function is set
-to apply one regional coefficient set at a time. This approach ensures the accuracy
-and reliability of the risk predictions.</p>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">add_kfre_risk_col</span>
-</pre></div>
-</div>
-<dl class="py function">
-<dt class="sig sig-object py" id="add_kfre_risk_col">
-<span class="sig-name descname"><span class="pre">add_kfre_risk_col</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eGFR_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uACR_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dm_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">htn_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albumin_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phosphorous_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bicarbonate_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_north_american</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#add_kfre_risk_col" title="Link to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>DataFrame</em>) – The DataFrame containing the patient data. This DataFrame should include columns for patient-specific parameters that are relevant for calculating kidney failure risk.</p></li>
-<li><p><strong>age_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name in df that contains the patient’s age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).</p></li>
-<li><p><strong>sex_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name in df that contains the patient’s age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).</p></li>
-<li><p><strong>eGFR_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name for estimated Glomerular Filtration Rate (eGFR), which is a crucial measure of kidney function. This parameter is essential for all models.</p></li>
-<li><p><strong>uACR_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name for urinary Albumin-Creatinine Ratio (uACR), indicating kidney damage level. This parameter is included in all model calculations.</p></li>
-<li><p><strong>dm_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for indicating the presence of diabetes mellitus (<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">=</span> <span class="pre">yes,</span> <span class="pre">0</span> <span class="pre">=</span> <span class="pre">no</span></code>). This parameter is necessary for the 6-variable and 8-variable models.</p></li>
-<li><p><strong>htn_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for indicating the presence of diabetes mellitus (<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">=</span> <span class="pre">yes,</span> <span class="pre">0</span> <span class="pre">=</span> <span class="pre">no</span></code>). This parameter is necessary for the 6-variable and 8-variable models.</p></li>
-<li><p><strong>albumin_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for serum albumin levels, which are included in the 8-variable model. Serum albumin is a protein in the blood that can indicate health issues including kidney function.</p></li>
-<li><p><strong>phosphorous_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for serum phosphorus levels. This parameter is part of the 8-variable model and is important for assessing kidney health.</p></li>
-<li><p><strong>calcium_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for serum calcium levels. This parameter is included in the 8-variable model and is crucial for assessing overall metabolic functions and kidney health.</p></li>
-<li><p><strong>num_vars</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) – Specifies the number of variables to be used in the model (options: <code class="docutils literal notranslate"><span class="pre">4</span></code>, <code class="docutils literal notranslate"><span class="pre">6</span></code>, <code class="docutils literal notranslate"><span class="pre">8</span></code>). This determines which variables must be provided and which risk model is applied.</p></li>
-<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) – Time frames for which to calculate the risk, typically provided as a tuple or list (e.g., (<code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">5</span></code>)). This parameter specifies over how many years the kidney failure risk is projected.</p></li>
-<li><p><strong>is_north_american</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Specifies whether the calculations should use coefficients adjusted for North American populations. Different geographical regions may have different risk profiles due to genetic, environmental, and healthcare-related differences.</p></li>
-<li><p><strong>copy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – If set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the function operates on a copy of the DataFrame, thereby preserving the original data. If set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, it modifies the DataFrame in place.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>: The modified DataFrame with new columns added for each model and time frame specified. Columns are named following the pattern <code class="docutils literal notranslate"><span class="pre">pred_{model_var}var_{year}year</span></code>, where <code class="docutils literal notranslate"><span class="pre">{model_var}</span></code> is the number of variables (<code class="docutils literal notranslate"><span class="pre">4</span></code>,  <code class="docutils literal notranslate"><span class="pre">6</span></code>, or <code class="docutils literal notranslate"><span class="pre">8</span></code>) and <code class="docutils literal notranslate"><span class="pre">{year}</span></code> is the time frame (<code class="docutils literal notranslate"><span class="pre">2</span></code> or <code class="docutils literal notranslate"><span class="pre">5</span></code>).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<p>This function is designed to compute the risk of chronic kidney disease (CKD) over specified or all possible models and time frames, directly appending the results as new columns to the provided DataFrame. It organizes the results by model (4-variable, 6-variable, 8-variable) first, followed by the time frame (2 years, 5 years) for each model type.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">sex_col</span></code> must contain strings (case-insensitive) indicating either <cite>female</cite> or <cite>male</cite>.</p>
-</div>
-<div style="text-align: left;">
-
-<i>
-First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol) <br>
-</i>
-
-<br>
-
-</div><table class="docutils align-left">
-<thead>
-<tr class="row-odd"><th class="head"><p>Age</p></th>
-<th class="head"><p>SEX</p></th>
-<th class="head"><p>Diabetes (1=yes; 0=no)</p></th>
-<th class="head"><p>Hypertension (1=yes; 0=no)</p></th>
-<th class="head"><p>eGFR-EPI</p></th>
-<th class="head"><p>uACR</p></th>
-<th class="head"><p>2_year_outcome</p></th>
-<th class="head"><p>5_year_outcome</p></th>
-<th class="head"><p>kfre_4var_2year</p></th>
-<th class="head"><p>kfre_4var_5year</p></th>
-<th class="head"><p>kfre_6var_2year</p></th>
-<th class="head"><p>kfre_6var_5year</p></th>
-<th class="head"><p>kfre_8var_2year</p></th>
-<th class="head"><p>kfre_8var_5year</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>87.24</p></td>
-<td><p>Male</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>19.0</p></td>
-<td><p>5.744563</p></td>
-<td><p>0</p></td>
-<td><p>0</p></td>
-<td><p>0.018785</p></td>
-<td><p>0.070800</p></td>
-<td><p>0.017622</p></td>
-<td><p>0.065247</p></td>
-<td><p>0.011139</p></td>
-<td><p>0.049138</p></td>
-</tr>
-<tr class="row-odd"><td><p>56.88</p></td>
-<td><p>Female</p></td>
-<td><p>0</p></td>
-<td><p>1</p></td>
-<td><p>15.0</p></td>
-<td><p>140.661958</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>0.173785</p></td>
-<td><p>0.522508</p></td>
-<td><p>0.189202</p></td>
-<td><p>0.548860</p></td>
-<td><p>0.209930</p></td>
-<td><p>0.641537</p></td>
-</tr>
-<tr class="row-even"><td><p>66.53</p></td>
-<td><p>Female</p></td>
-<td><p>0</p></td>
-<td><p>1</p></td>
-<td><p>17.0</p></td>
-<td><p>35.224504</p></td>
-<td><p>0</p></td>
-<td><p>0</p></td>
-<td><p>0.226029</p></td>
-<td><p>0.064027</p></td>
-<td><p>0.069593</p></td>
-<td><p>0.239481</p></td>
-<td><p>0.061889</p></td>
-<td><p>0.249777</p></td>
-</tr>
-<tr class="row-odd"><td><p>69.92</p></td>
-<td><p>Male</p></td>
-<td><p>0</p></td>
-<td><p>0</p></td>
-<td><p>12.0</p></td>
-<td><p>74.299919</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>0.524577</p></td>
-<td><p>0.174712</p></td>
-<td><p>0.190458</p></td>
-<td><p>0.551506</p></td>
-<td><p>0.305670</p></td>
-<td><p>0.806220</p></td>
-</tr>
-<tr class="row-even"><td><p>81.14</p></td>
-<td><p>Female</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>15.0</p></td>
-<td><p>59.683881</p></td>
-<td><p>0</p></td>
-<td><p>0</p></td>
-<td><p>0.255029</p></td>
-<td><p>0.073213</p></td>
-<td><p>0.068968</p></td>
-<td><p>0.237542</p></td>
-<td><p>0.060353</p></td>
-<td><p>0.244235</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Example Usage</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">add_kfre_risk_col</span><span class="p">(</span>
-    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
-    <span class="n">age_col</span><span class="o">=</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span>
-    <span class="n">sex_col</span><span class="o">=</span><span class="s2">&quot;SEX&quot;</span><span class="p">,</span>
-    <span class="n">eGFR_col</span><span class="o">=</span><span class="s2">&quot;eGFR-EPI&quot;</span><span class="p">,</span>
-    <span class="n">uACR_col</span><span class="o">=</span><span class="s2">&quot;uACR&quot;</span><span class="p">,</span>
-    <span class="n">dm_col</span><span class="o">=</span><span class="s2">&quot;Diabetes (1=yes; 0=no)&quot;</span><span class="p">,</span>
-    <span class="n">htn_col</span><span class="o">=</span><span class="s2">&quot;Hypertension (1=yes; 0=no)&quot;</span><span class="p">,</span>
-    <span class="n">albumin_col</span><span class="o">=</span><span class="s2">&quot;Albumin_g_dl&quot;</span><span class="p">,</span>
-    <span class="n">phosphorous_col</span><span class="o">=</span><span class="s2">&quot;Phosphate_mg_dl&quot;</span><span class="p">,</span>
-    <span class="n">bicarbonate_col</span><span class="o">=</span><span class="s2">&quot;Bicarbonate (mmol/L)&quot;</span><span class="p">,</span>
-    <span class="n">calcium_col</span><span class="o">=</span><span class="s2">&quot;Calcium_mg_dl&quot;</span><span class="p">,</span>
-    <span class="n">num_vars</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-    <span class="n">years</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-    <span class="n">is_north_american</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">copy</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># Modify the original DataFrame directly</span>
-<span class="p">)</span>
-<span class="c1"># The resulting DataFrame &#39;df&#39; now includes new columns with risk</span>
-<span class="c1"># predictions for each model and time frame</span>
-<span class="n">df</span>
 </pre></div>
 </div>
 </section>
@@ -677,6 +488,195 @@ First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021
 </pre></div>
 </div>
 </section>
+</section>
+<section id="batch-risk-calculation-for-multiple-patients">
+<h1>Batch Risk Calculation for Multiple Patients<a class="headerlink" href="#batch-risk-calculation-for-multiple-patients" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library provides the functionality to perform batch processing of
+patient data, allowing for the computation of kidney failure risk predictions
+across multiple patients in a single operation. This capability is especially
+valuable for researchers and clinicians needing to assess risks for large cohorts
+or patient groups.</p>
+<p><strong>Key Features</strong></p>
+<p>When using the <code class="docutils literal notranslate"><span class="pre">add_kfre_risk_col</span></code> function, the library will append new columns
+for each specified variable model (4-variable, 6-variable, 8-variable) and each
+time frame (2 years, 5 years) directly to the original DataFrame. This facilitates
+a seamless integration of risk predictions into existing patient datasets without
+the need for additional data manipulation steps.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library is designed to facilitate risk prediction using Tangri’s KFRE
+model based on a given set of patient data. It is crucial to ensure that all
+patient data within a batch calculation are consistent in terms of regional
+categorization—that is, either all North American or all non-North American. To
+this end, it is crucial to ensure that all patient data within a batch calculation
+are consistent in terms of regional categorization. Mixing patient data from
+different regions within a single batch is not supported, as the function is set
+to apply one regional coefficient set at a time. This approach ensures the accuracy
+and reliability of the risk predictions.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">add_kfre_risk_col</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="add_kfre_risk_col">
+<span class="sig-name descname"><span class="pre">add_kfre_risk_col</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eGFR_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uACR_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dm_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">htn_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albumin_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phosphorous_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bicarbonate_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_north_american</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#add_kfre_risk_col" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – The DataFrame containing the patient data. This DataFrame should include columns for patient-specific parameters that are relevant for calculating kidney failure risk.</p></li>
+<li><p><strong>age_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name in df that contains the patient’s age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).</p></li>
+<li><p><strong>sex_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name in df that contains the patient’s age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).</p></li>
+<li><p><strong>eGFR_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name for estimated Glomerular Filtration Rate (eGFR), which is a crucial measure of kidney function. This parameter is essential for all models.</p></li>
+<li><p><strong>uACR_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name for urinary Albumin-Creatinine Ratio (uACR), indicating kidney damage level. This parameter is included in all model calculations.</p></li>
+<li><p><strong>dm_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for indicating the presence of diabetes mellitus (<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">=</span> <span class="pre">yes,</span> <span class="pre">0</span> <span class="pre">=</span> <span class="pre">no</span></code>). This parameter is necessary for the 6-variable and 8-variable models.</p></li>
+<li><p><strong>htn_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for indicating the presence of diabetes mellitus (<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">=</span> <span class="pre">yes,</span> <span class="pre">0</span> <span class="pre">=</span> <span class="pre">no</span></code>). This parameter is necessary for the 6-variable and 8-variable models.</p></li>
+<li><p><strong>albumin_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for serum albumin levels, which are included in the 8-variable model. Serum albumin is a protein in the blood that can indicate health issues including kidney function.</p></li>
+<li><p><strong>phosphorous_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for serum phosphorus levels. This parameter is part of the 8-variable model and is important for assessing kidney health.</p></li>
+<li><p><strong>calcium_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) The column name for serum calcium levels. This parameter is included in the 8-variable model and is crucial for assessing overall metabolic functions and kidney health.</p></li>
+<li><p><strong>num_vars</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) – Specifies the number of variables to be used in the model (options: <code class="docutils literal notranslate"><span class="pre">4</span></code>, <code class="docutils literal notranslate"><span class="pre">6</span></code>, <code class="docutils literal notranslate"><span class="pre">8</span></code>). This determines which variables must be provided and which risk model is applied.</p></li>
+<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) – Time frames for which to calculate the risk, typically provided as a tuple or list (e.g., (<code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">5</span></code>)). This parameter specifies over how many years the kidney failure risk is projected.</p></li>
+<li><p><strong>is_north_american</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Specifies whether the calculations should use coefficients adjusted for North American populations. Different geographical regions may have different risk profiles due to genetic, environmental, and healthcare-related differences.</p></li>
+<li><p><strong>copy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – If set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the function operates on a copy of the DataFrame, thereby preserving the original data. If set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, it modifies the DataFrame in place.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>: The modified DataFrame with new columns added for each model and time frame specified. Columns are named following the pattern <code class="docutils literal notranslate"><span class="pre">pred_{model_var}var_{year}year</span></code>, where <code class="docutils literal notranslate"><span class="pre">{model_var}</span></code> is the number of variables (<code class="docutils literal notranslate"><span class="pre">4</span></code>,  <code class="docutils literal notranslate"><span class="pre">6</span></code>, or <code class="docutils literal notranslate"><span class="pre">8</span></code>) and <code class="docutils literal notranslate"><span class="pre">{year}</span></code> is the time frame (<code class="docutils literal notranslate"><span class="pre">2</span></code> or <code class="docutils literal notranslate"><span class="pre">5</span></code>).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>This function is designed to compute the risk of chronic kidney disease (CKD) over specified or all possible models and time frames, directly appending the results as new columns to the provided DataFrame. It organizes the results by model (4-variable, 6-variable, 8-variable) first, followed by the time frame (2 years, 5 years) for each model type.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">sex_col</span></code> must contain strings (case-insensitive) indicating either <cite>female</cite> or <cite>male</cite>.</p>
+</div>
+<div style="text-align: left;">
+
+<i>
+First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol) <br>
+</i>
+
+<br>
+
+</div><table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p>Age</p></th>
+<th class="head"><p>SEX</p></th>
+<th class="head"><p>Diabetes (1=yes; 0=no)</p></th>
+<th class="head"><p>Hypertension (1=yes; 0=no)</p></th>
+<th class="head"><p>eGFR-EPI</p></th>
+<th class="head"><p>uACR</p></th>
+<th class="head"><p>2_year_outcome</p></th>
+<th class="head"><p>5_year_outcome</p></th>
+<th class="head"><p>kfre_4var_2year</p></th>
+<th class="head"><p>kfre_4var_5year</p></th>
+<th class="head"><p>kfre_6var_2year</p></th>
+<th class="head"><p>kfre_6var_5year</p></th>
+<th class="head"><p>kfre_8var_2year</p></th>
+<th class="head"><p>kfre_8var_5year</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>87.24</p></td>
+<td><p>Male</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>19.0</p></td>
+<td><p>5.744563</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0.018785</p></td>
+<td><p>0.070800</p></td>
+<td><p>0.017622</p></td>
+<td><p>0.065247</p></td>
+<td><p>0.011139</p></td>
+<td><p>0.049138</p></td>
+</tr>
+<tr class="row-odd"><td><p>56.88</p></td>
+<td><p>Female</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>15.0</p></td>
+<td><p>140.661958</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0.173785</p></td>
+<td><p>0.522508</p></td>
+<td><p>0.189202</p></td>
+<td><p>0.548860</p></td>
+<td><p>0.209930</p></td>
+<td><p>0.641537</p></td>
+</tr>
+<tr class="row-even"><td><p>66.53</p></td>
+<td><p>Female</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>17.0</p></td>
+<td><p>35.224504</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0.226029</p></td>
+<td><p>0.064027</p></td>
+<td><p>0.069593</p></td>
+<td><p>0.239481</p></td>
+<td><p>0.061889</p></td>
+<td><p>0.249777</p></td>
+</tr>
+<tr class="row-odd"><td><p>69.92</p></td>
+<td><p>Male</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>12.0</p></td>
+<td><p>74.299919</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0.524577</p></td>
+<td><p>0.174712</p></td>
+<td><p>0.190458</p></td>
+<td><p>0.551506</p></td>
+<td><p>0.305670</p></td>
+<td><p>0.806220</p></td>
+</tr>
+<tr class="row-even"><td><p>81.14</p></td>
+<td><p>Female</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>15.0</p></td>
+<td><p>59.683881</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0.255029</p></td>
+<td><p>0.073213</p></td>
+<td><p>0.068968</p></td>
+<td><p>0.237542</p></td>
+<td><p>0.060353</p></td>
+<td><p>0.244235</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">add_kfre_risk_col</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="n">age_col</span><span class="o">=</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span>
+    <span class="n">sex_col</span><span class="o">=</span><span class="s2">&quot;SEX&quot;</span><span class="p">,</span>
+    <span class="n">eGFR_col</span><span class="o">=</span><span class="s2">&quot;eGFR-EPI&quot;</span><span class="p">,</span>
+    <span class="n">uACR_col</span><span class="o">=</span><span class="s2">&quot;uACR&quot;</span><span class="p">,</span>
+    <span class="n">dm_col</span><span class="o">=</span><span class="s2">&quot;Diabetes (1=yes; 0=no)&quot;</span><span class="p">,</span>
+    <span class="n">htn_col</span><span class="o">=</span><span class="s2">&quot;Hypertension (1=yes; 0=no)&quot;</span><span class="p">,</span>
+    <span class="n">albumin_col</span><span class="o">=</span><span class="s2">&quot;Albumin_g_dl&quot;</span><span class="p">,</span>
+    <span class="n">phosphorous_col</span><span class="o">=</span><span class="s2">&quot;Phosphate_mg_dl&quot;</span><span class="p">,</span>
+    <span class="n">bicarbonate_col</span><span class="o">=</span><span class="s2">&quot;Bicarbonate (mmol/L)&quot;</span><span class="p">,</span>
+    <span class="n">calcium_col</span><span class="o">=</span><span class="s2">&quot;Calcium_mg_dl&quot;</span><span class="p">,</span>
+    <span class="n">num_vars</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">years</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+    <span class="n">is_north_american</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">copy</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># Modify the original DataFrame directly</span>
+<span class="p">)</span>
+<span class="c1"># The resulting DataFrame &#39;df&#39; now includes new columns with risk</span>
+<span class="c1"># predictions for each model and time frame</span>
+<span class="n">df</span>
+</pre></div>
+</div>
 </section>
 
 

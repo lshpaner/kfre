@@ -144,120 +144,6 @@ Ensure to:
     The 2-year risk of kidney failure for this patient is 44.66%.
     The 5-year risk of kidney failure for this patient is 89.89%.    
 
-
-Batch Risk Calculation for Multiple Patients
-============================================
-
-The ``kfre`` library provides the functionality to perform batch processing of 
-patient data, allowing for the computation of kidney failure risk predictions 
-across multiple patients in a single operation. This capability is especially 
-valuable for researchers and clinicians needing to assess risks for large cohorts 
-or patient groups.
-
-
-**Key Features**
-
-When using the ``add_kfre_risk_col`` function, the library will append new columns 
-for each specified variable model (4-variable, 6-variable, 8-variable) and each 
-time frame (2 years, 5 years) directly to the original DataFrame. This facilitates 
-a seamless integration of risk predictions into existing patient datasets without 
-the need for additional data manipulation steps.
-
-
-.. important::
-
-    The ``kfre`` library is designed to facilitate risk prediction using Tangri's KFRE 
-    model based on a given set of patient data. It is crucial to ensure that all 
-    patient data within a batch calculation are consistent in terms of regional 
-    categorization—that is, either all North American or all non-North American. To 
-    this end, it is crucial to ensure that all patient data within a batch calculation 
-    are consistent in terms of regional categorization. Mixing patient data from 
-    different regions within a single batch is not supported, as the function is set 
-    to apply one regional coefficient set at a time. This approach ensures the accuracy 
-    and reliability of the risk predictions.
-
-.. code-block:: python
-
-    from kfre import add_kfre_risk_col
-
-.. function:: add_kfre_risk_col(df, age_col, sex_col, eGFR_col, uACR_col, dm_col, htn_col, albumin_col, phosphorous_col, bicarbonate_col, calcium_col, num_vars, years, is_north_american, copy)
-    
-    :param DataFrame df: The DataFrame containing the patient data. This DataFrame should include columns for patient-specific parameters that are relevant for calculating kidney failure risk.
-    :param str age_col: The column name in df that contains the patient's age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).
-    :param str sex_col: The column name in df that contains the patient's age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).
-    :param str eGFR_col: The column name for estimated Glomerular Filtration Rate (eGFR), which is a crucial measure of kidney function. This parameter is essential for all models.
-    :param str uACR_col: The column name for urinary Albumin-Creatinine Ratio (uACR), indicating kidney damage level. This parameter is included in all model calculations.
-    :param str dm_col: (`optional`) The column name for indicating the presence of diabetes mellitus (``1 = yes, 0 = no``). This parameter is necessary for the 6-variable and 8-variable models.
-    :param str htn_col: (`optional`) The column name for indicating the presence of diabetes mellitus (``1 = yes, 0 = no``). This parameter is necessary for the 6-variable and 8-variable models.
-    :param str albumin_col: (`optional`) The column name for serum albumin levels, which are included in the 8-variable model. Serum albumin is a protein in the blood that can indicate health issues including kidney function.
-    :param str phosphorous_col: (`optional`) The column name for serum phosphorus levels. This parameter is part of the 8-variable model and is important for assessing kidney health.
-    :param str calcium_col: (`optional`) The column name for serum calcium levels. This parameter is included in the 8-variable model and is crucial for assessing overall metabolic functions and kidney health.
-    :param int or list num_vars: Specifies the number of variables to be used in the model (options: ``4``, ``6``, ``8``). This determines which variables must be provided and which risk model is applied.
-    :param tuple or list years: Time frames for which to calculate the risk, typically provided as a tuple or list (e.g., (``2``, ``5``)). This parameter specifies over how many years the kidney failure risk is projected.
-    :param bool is_north_american: Specifies whether the calculations should use coefficients adjusted for North American populations. Different geographical regions may have different risk profiles due to genetic, environmental, and healthcare-related differences.
-    :param bool copy:  If set to ``True``, the function operates on a copy of the DataFrame, thereby preserving the original data. If set to ``False``, it modifies the DataFrame in place.
-
-    :returns: ``pd.DataFrame``: The modified DataFrame with new columns added for each model and time frame specified. Columns are named following the pattern ``pred_{model_var}var_{year}year``, where ``{model_var}`` is the number of variables (``4``,  ``6``, or ``8``) and ``{year}`` is the time frame (``2`` or ``5``).
-
-This function is designed to compute the risk of chronic kidney disease (CKD) over specified or all possible models and time frames, directly appending the results as new columns to the provided DataFrame. It organizes the results by model (4-variable, 6-variable, 8-variable) first, followed by the time frame (2 years, 5 years) for each model type.
-
-.. important::
-
-    The ``sex_col`` must contain strings (case-insensitive) indicating either `female` or `male`.
-
-
-.. raw:: html
-
-    <div style="text-align: left;">
-    
-    <i>
-    First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol) <br> 
-    </i>
-    
-    <br>
-
-    </div>
-
-.. table::
-   :align: left
-
-   ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================  
-     Age     SEX   Diabetes (1=yes; 0=no)   Hypertension (1=yes; 0=no) eGFR-EPI        uACR   2_year_outcome   5_year_outcome   kfre_4var_2year  kfre_4var_5year  kfre_6var_2year  kfre_6var_5year  kfre_8var_2year  kfre_8var_5year
-   ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================ 
-    87.24    Male           1                     1                     19.0       5.744563              0                0             0.018785         0.070800         0.017622         0.065247         0.011139         0.049138
-    56.88   Female          0                     1                     15.0     140.661958              1                1             0.173785         0.522508         0.189202         0.548860         0.209930         0.641537
-    66.53   Female          0                     1                     17.0      35.224504              0                0             0.226029         0.064027         0.069593         0.239481         0.061889         0.249777
-    69.92    Male           0                     0                     12.0      74.299919              1                1             0.524577         0.174712         0.190458         0.551506         0.305670         0.806220
-    81.14   Female          1                     1                     15.0      59.683881              0                0             0.255029         0.073213         0.068968         0.237542         0.060353         0.244235
-   ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================ 
-
-
-**Example Usage**
-
-.. code-block:: python    
-    
-    df = add_kfre_risk_col(
-        df=df,
-        age_col="Age",
-        sex_col="SEX",
-        eGFR_col="eGFR-EPI",
-        uACR_col="uACR",
-        dm_col="Diabetes (1=yes; 0=no)",
-        htn_col="Hypertension (1=yes; 0=no)",
-        albumin_col="Albumin_g_dl",
-        phosphorous_col="Phosphate_mg_dl",
-        bicarbonate_col="Bicarbonate (mmol/L)",
-        calcium_col="Calcium_mg_dl",
-        num_vars=8,
-        years=(2, 5),
-        is_north_american=False,
-        copy=False  # Modify the original DataFrame directly
-    )
-    # The resulting DataFrame 'df' now includes new columns with risk 
-    # predictions for each model and time frame
-    df
-
-
 Conversion of Clinical Parameters
 =================================
 
@@ -466,3 +352,117 @@ The ``upcr_uacr`` function is typically used in clinical data processing where a
     743            NaN
     744            NaN
     Name: uACR, Length: 745, dtype: float64
+
+    
+
+Batch Risk Calculation for Multiple Patients
+============================================
+
+The ``kfre`` library provides the functionality to perform batch processing of 
+patient data, allowing for the computation of kidney failure risk predictions 
+across multiple patients in a single operation. This capability is especially 
+valuable for researchers and clinicians needing to assess risks for large cohorts 
+or patient groups.
+
+
+**Key Features**
+
+When using the ``add_kfre_risk_col`` function, the library will append new columns 
+for each specified variable model (4-variable, 6-variable, 8-variable) and each 
+time frame (2 years, 5 years) directly to the original DataFrame. This facilitates 
+a seamless integration of risk predictions into existing patient datasets without 
+the need for additional data manipulation steps.
+
+
+.. important::
+
+    The ``kfre`` library is designed to facilitate risk prediction using Tangri's KFRE 
+    model based on a given set of patient data. It is crucial to ensure that all 
+    patient data within a batch calculation are consistent in terms of regional 
+    categorization—that is, either all North American or all non-North American. To 
+    this end, it is crucial to ensure that all patient data within a batch calculation 
+    are consistent in terms of regional categorization. Mixing patient data from 
+    different regions within a single batch is not supported, as the function is set 
+    to apply one regional coefficient set at a time. This approach ensures the accuracy 
+    and reliability of the risk predictions.
+
+.. code-block:: python
+
+    from kfre import add_kfre_risk_col
+
+.. function:: add_kfre_risk_col(df, age_col, sex_col, eGFR_col, uACR_col, dm_col, htn_col, albumin_col, phosphorous_col, bicarbonate_col, calcium_col, num_vars, years, is_north_american, copy)
+    
+    :param DataFrame df: The DataFrame containing the patient data. This DataFrame should include columns for patient-specific parameters that are relevant for calculating kidney failure risk.
+    :param str age_col: The column name in df that contains the patient's age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).
+    :param str sex_col: The column name in df that contains the patient's age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).
+    :param str eGFR_col: The column name for estimated Glomerular Filtration Rate (eGFR), which is a crucial measure of kidney function. This parameter is essential for all models.
+    :param str uACR_col: The column name for urinary Albumin-Creatinine Ratio (uACR), indicating kidney damage level. This parameter is included in all model calculations.
+    :param str dm_col: (`optional`) The column name for indicating the presence of diabetes mellitus (``1 = yes, 0 = no``). This parameter is necessary for the 6-variable and 8-variable models.
+    :param str htn_col: (`optional`) The column name for indicating the presence of diabetes mellitus (``1 = yes, 0 = no``). This parameter is necessary for the 6-variable and 8-variable models.
+    :param str albumin_col: (`optional`) The column name for serum albumin levels, which are included in the 8-variable model. Serum albumin is a protein in the blood that can indicate health issues including kidney function.
+    :param str phosphorous_col: (`optional`) The column name for serum phosphorus levels. This parameter is part of the 8-variable model and is important for assessing kidney health.
+    :param str calcium_col: (`optional`) The column name for serum calcium levels. This parameter is included in the 8-variable model and is crucial for assessing overall metabolic functions and kidney health.
+    :param int or list num_vars: Specifies the number of variables to be used in the model (options: ``4``, ``6``, ``8``). This determines which variables must be provided and which risk model is applied.
+    :param tuple or list years: Time frames for which to calculate the risk, typically provided as a tuple or list (e.g., (``2``, ``5``)). This parameter specifies over how many years the kidney failure risk is projected.
+    :param bool is_north_american: Specifies whether the calculations should use coefficients adjusted for North American populations. Different geographical regions may have different risk profiles due to genetic, environmental, and healthcare-related differences.
+    :param bool copy:  If set to ``True``, the function operates on a copy of the DataFrame, thereby preserving the original data. If set to ``False``, it modifies the DataFrame in place.
+
+    :returns: ``pd.DataFrame``: The modified DataFrame with new columns added for each model and time frame specified. Columns are named following the pattern ``pred_{model_var}var_{year}year``, where ``{model_var}`` is the number of variables (``4``,  ``6``, or ``8``) and ``{year}`` is the time frame (``2`` or ``5``).
+
+This function is designed to compute the risk of chronic kidney disease (CKD) over specified or all possible models and time frames, directly appending the results as new columns to the provided DataFrame. It organizes the results by model (4-variable, 6-variable, 8-variable) first, followed by the time frame (2 years, 5 years) for each model type.
+
+.. important::
+
+    The ``sex_col`` must contain strings (case-insensitive) indicating either `female` or `male`.
+
+
+.. raw:: html
+
+    <div style="text-align: left;">
+    
+    <i>
+    First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol) <br> 
+    </i>
+    
+    <br>
+
+    </div>
+
+.. table::
+   :align: left
+
+   ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================  
+     Age     SEX   Diabetes (1=yes; 0=no)   Hypertension (1=yes; 0=no) eGFR-EPI        uACR   2_year_outcome   5_year_outcome   kfre_4var_2year  kfre_4var_5year  kfre_6var_2year  kfre_6var_5year  kfre_8var_2year  kfre_8var_5year
+   ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================ 
+    87.24    Male           1                     1                     19.0       5.744563              0                0             0.018785         0.070800         0.017622         0.065247         0.011139         0.049138
+    56.88   Female          0                     1                     15.0     140.661958              1                1             0.173785         0.522508         0.189202         0.548860         0.209930         0.641537
+    66.53   Female          0                     1                     17.0      35.224504              0                0             0.226029         0.064027         0.069593         0.239481         0.061889         0.249777
+    69.92    Male           0                     0                     12.0      74.299919              1                1             0.524577         0.174712         0.190458         0.551506         0.305670         0.806220
+    81.14   Female          1                     1                     15.0      59.683881              0                0             0.255029         0.073213         0.068968         0.237542         0.060353         0.244235
+   ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================ 
+
+
+**Example Usage**
+
+.. code-block:: python    
+    
+    df = add_kfre_risk_col(
+        df=df,
+        age_col="Age",
+        sex_col="SEX",
+        eGFR_col="eGFR-EPI",
+        uACR_col="uACR",
+        dm_col="Diabetes (1=yes; 0=no)",
+        htn_col="Hypertension (1=yes; 0=no)",
+        albumin_col="Albumin_g_dl",
+        phosphorous_col="Phosphate_mg_dl",
+        bicarbonate_col="Bicarbonate (mmol/L)",
+        calcium_col="Calcium_mg_dl",
+        num_vars=8,
+        years=(2, 5),
+        is_north_american=False,
+        copy=False  # Modify the original DataFrame directly
+    )
+    # The resulting DataFrame 'df' now includes new columns with risk 
+    # predictions for each model and time frame
+    df
