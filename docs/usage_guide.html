@@ -66,15 +66,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#conversion-of-clinical-parameters">Conversion of Clinical Parameters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#upcr-to-uacr">uPCR to uACR</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#upcr_uacr"><code class="docutils literal notranslate"><span class="pre">upcr_uacr()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#upcr-to-uacr">uPCR to uACR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#calcium">Calcium</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#phosphate">Phosphate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#albumin">Albumin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#conversion-function-upcr-calcium-albumin-phosphate">Conversion Function (uPCR, Calcium, Albumin, Phosphate)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#conversion-functions">Conversion Functions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#perform_conversions"><code class="docutils literal notranslate"><span class="pre">perform_conversions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upcr_uacr"><code class="docutils literal notranslate"><span class="pre">upcr_uacr()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -448,27 +446,6 @@ creatinine is 113.12 mg.</p>
 Since 1 mmol of creatinine is 113.12 mg:</p>
 <div class="math notranslate nohighlight">
 \[\frac{\text{1 mg protein}}{\text{0.11312 g creatinine}} \approx 8.84  {\text{ mg/g}}\]</div>
-<dl class="py function">
-<dt class="sig sig-object py" id="upcr_uacr">
-<span class="sig-name descname"><span class="pre">upcr_uacr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diabetes_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hypertension_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upcr_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">female_str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#upcr_uacr" title="Link to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>DataFrame</em>) – This parameter should be a pandas DataFrame containing the patient data. The DataFrame needs to include specific columns that will be referenced by the other parameters in the function for the conversion process.</p></li>
-<li><p><strong>sex_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column in the DataFrame that identifies the patient’s sex. This is used to apply gender-specific adjustments in the conversion formula, as biological sex can influence the levels of urinary protein and albumin.</p></li>
-<li><p><strong>diabetes_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column that indicates whether the patient has diabetes, typically marked as <code class="docutils literal notranslate"><span class="pre">1</span></code> for <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> for <code class="docutils literal notranslate"><span class="pre">no</span></code>. Diabetes status is used to adjust the conversion because diabetes can impact kidney function and alter protein and albumin excretion rates.</p></li>
-<li><p><strong>hypertension_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column that shows whether the patient has hypertension, also typically marked as <code class="docutils literal notranslate"><span class="pre">1</span></code> for <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> for <code class="docutils literal notranslate"><span class="pre">no</span></code>. Hypertension can affect kidney function, making it a necessary factor in the conversion calculations.</p></li>
-<li><p><strong>upcr_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column containing the urinary protein-creatinine ratio (uPCR) values that need to be converted to urinary albumin-creatinine ratio (uACR). This is the primary input for the conversion process.</p></li>
-<li><p><strong>female_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The string used in the dataset to identify female patients. This string is crucial for applying the correct conversion factors, as the function adjusts differently based on the patient being male or female, reflecting the biological differences in albumin excretion.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.Series</span></code>: The function returns a pandas Series containing the computed urinary albumin-creatinine ratio (uACR) for each patient in the DataFrame. This Series is indexed in the same way as the original DataFrame (<code class="docutils literal notranslate"><span class="pre">df.index</span></code>), ensuring that the uACR values align correctly with the corresponding patient data.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<p>The <code class="docutils literal notranslate"><span class="pre">upcr_uacr</span> <span class="pre">function</span></code> is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.</p>
 </section>
 <section id="calcium">
 <h2>Calcium<a class="headerlink" href="#calcium" title="Link to this heading"></a></h2>
@@ -503,8 +480,8 @@ shifting the decimal point:</p>
 values across different systems and studies, facilitating better comparison and
 understanding of patient data.</p>
 </section>
-<section id="conversion-function-upcr-calcium-albumin-phosphate">
-<h2>Conversion Function (uPCR, Calcium, Albumin, Phosphate)<a class="headerlink" href="#conversion-function-upcr-calcium-albumin-phosphate" title="Link to this heading"></a></h2>
+<section id="conversion-functions">
+<h2>Conversion Functions<a class="headerlink" href="#conversion-functions" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="perform_conversions">
 <span class="sig-name descname"><span class="pre">perform_conversions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upcr_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albumin_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_all</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#perform_conversions" title="Link to this definition"></a></dt>
@@ -525,9 +502,7 @@ understanding of patient data.</p>
 
 <p>These parameters provide the flexibility to tailor the unit conversion process to specific data needs, enabling precise and appropriate conversions crucial for accurate data analysis and interpretation in clinical or scientific research.</p>
 <p><strong>Example Usage</strong></p>
-<p>The following is a mock example to illustrate the usage of the
-<code class="docutils literal notranslate"><span class="pre">perform_conversions</span></code> function. This example shows how to convert values from mmol
-to mg for various clinical parameters within a DataFrame.</p>
+<p>The following is an example to illustrate the usage of the <code class="docutils literal notranslate"><span class="pre">perform_conversions</span></code> function. This example shows how to convert values from mmol to mg for various clinical parameters within a DataFrame.</p>
 <table class="docutils align-default" id="id2">
 <caption><span class="caption-text">First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
 <thead>
@@ -653,6 +628,54 @@ First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021
 </tr>
 </tbody>
 </table>
+<dl class="py function">
+<dt class="sig sig-object py" id="upcr_uacr">
+<span class="sig-name descname"><span class="pre">upcr_uacr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diabetes_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hypertension_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upcr_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">female_str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#upcr_uacr" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – This parameter should be a pandas DataFrame containing the patient data. The DataFrame needs to include specific columns that will be referenced by the other parameters in the function for the conversion process.</p></li>
+<li><p><strong>sex_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column in the DataFrame that identifies the patient’s sex. This is used to apply gender-specific adjustments in the conversion formula, as biological sex can influence the levels of urinary protein and albumin.</p></li>
+<li><p><strong>diabetes_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column that indicates whether the patient has diabetes, typically marked as <code class="docutils literal notranslate"><span class="pre">1</span></code> for <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> for <code class="docutils literal notranslate"><span class="pre">no</span></code>. Diabetes status is used to adjust the conversion because diabetes can impact kidney function and alter protein and albumin excretion rates.</p></li>
+<li><p><strong>hypertension_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column that shows whether the patient has hypertension, also typically marked as <code class="docutils literal notranslate"><span class="pre">1</span></code> for <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> for <code class="docutils literal notranslate"><span class="pre">no</span></code>. Hypertension can affect kidney function, making it a necessary factor in the conversion calculations.</p></li>
+<li><p><strong>upcr_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column containing the urinary protein-creatinine ratio (uPCR) values that need to be converted to urinary albumin-creatinine ratio (uACR). This is the primary input for the conversion process.</p></li>
+<li><p><strong>female_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The string used in the dataset to identify female patients. This string is crucial for applying the correct conversion factors, as the function adjusts differently based on the patient being male or female, reflecting the biological differences in albumin excretion.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.Series</span></code>: The function returns a pandas Series containing the computed urinary albumin-creatinine ratio (uACR) for each patient in the DataFrame. This Series is indexed in the same way as the original DataFrame (<code class="docutils literal notranslate"><span class="pre">df.index</span></code>), ensuring that the uACR values align correctly with the corresponding patient data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>The <code class="docutils literal notranslate"><span class="pre">upcr_uacr</span></code> function is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;uACR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">upcr_uacr</span><span class="p">(</span>
+<span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+<span class="n">sex_col</span><span class="o">=</span><span class="s2">&quot;SEX&quot;</span><span class="p">,</span>
+<span class="n">diabetes_col</span><span class="o">=</span><span class="s2">&quot;Diabetes (1=yes; 0=no)&quot;</span><span class="p">,</span>
+<span class="n">hypertension_col</span><span class="o">=</span><span class="s2">&quot;Hypertension (1=yes; 0=no)&quot;</span><span class="p">,</span>
+<span class="n">upcr_col</span><span class="o">=</span><span class="s2">&quot;uPCR_mg_g&quot;</span><span class="p">,</span>
+<span class="n">female_str</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;uACR&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span>       <span class="mf">102.438624</span>
+<span class="mi">1</span>      <span class="mf">1762.039423</span>
+<span class="mi">2</span>       <span class="mf">659.136129</span>
+<span class="mi">3</span>      <span class="mf">1145.245058</span>
+<span class="mi">4</span>       <span class="mf">980.939665</span>
+        <span class="o">...</span>
+<span class="mi">740</span>    <span class="mf">3462.801185</span>
+<span class="mi">741</span>    <span class="mf">5977.278911</span>
+<span class="mi">742</span>    <span class="mf">3787.896473</span>
+<span class="mi">743</span>            <span class="n">NaN</span>
+<span class="mi">744</span>            <span class="n">NaN</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">uACR</span><span class="p">,</span> <span class="n">Length</span><span class="p">:</span> <span class="mi">745</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
 </section>
 </section>
 
