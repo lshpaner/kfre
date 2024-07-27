@@ -1,4 +1,4 @@
-import sphinx_rtd_theme
+import sphinx_rtd_theme  # type: ignore
 
 # Configuration file for the Sphinx documentation builder.
 #
@@ -11,7 +11,7 @@ import sphinx_rtd_theme
 project = "KFRE"
 copyright = "2024, Leonid Shpaner"
 author = "Leonid Shpaner"
-release = "0.1.8"
+release = "0.1.9"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

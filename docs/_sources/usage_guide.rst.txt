@@ -542,19 +542,19 @@ This function is designed to compute the risk of chronic kidney disease (CKD) ov
 Performance Assessment
 =======================
 
-.. function:: plot_kfre_metrics(df, num_vars, fig_size=(12, 6), mode="both", image_path_png=None, image_path_svg=None, image_prefix=None, bbox_inches="tight", plot_type="both", save_plots=False, show_years=[2, 5], plot_combinations=False, show_grids=False, decimal_places=2)
+.. function:: plot_kfre_metrics(df, num_vars, fig_size=(12, 6), mode="both", image_path_png=None, image_path_svg=None, image_prefix=None, bbox_inches="tight", plot_type="all_plots", save_plots=False, show_years=[2, 5], plot_combinations=False, show_grids=False, decimal_places=2)
 
     :param DataFrame df: The input DataFrame containing the necessary columns for truth and predictions.
     :param int or list of int or tuple of int num_vars: Number of variables (e.g., ``4``) or a list/tuple of numbers of variables (e.g., ``[4, 6, 8]``) to generate predictions for.
     :param tuple fig_size: (`optional`) Size of the figure for the ROC plot, default is ``(12, 6)``.
-    :param str mode: (`optional`) Operation mode, can be ``'prep'``, ``'plot'``, or ``'both'``. Default is ``'both'``. ``'prep'`` only prepares the metrics, ``'plot'`` only plots the metrics (requires pre-prepped metrics), 'both' prepares and plots the metrics.
+    :param str mode: (`optional`) Operation mode, can be ``'prep'``, ``'plot'``, or ``'both'``. Default is ``'both'``. ``'prep'`` only prepares the metrics, ``'plot'`` only plots the metrics (requires pre-prepped metrics), ``'both'`` prepares and plots the metrics.
     :param str image_path_png: (`optional`) Path to save the PNG images. Default is ``None``.
     :param str image_path_svg: (`optional`) Path to save the SVG images. Default is ``None``.
     :param str image_prefix: (`optional`) Prefix to use for saved images. Default is ``None``.
     :param str bbox_inches: (`optional`) Bounding box in inches for the saved images. Default is ``'tight'``.
-    :param str plot_type: (`optional`) Type of plot to generate, can be ``'roc'``, ``'pr'``, or ``'both'``. Default is ``'both'``.
+    :param str plot_type: (`optional`) Type of plot to generate, can be ``'auc_roc'``, ``'precision_recall'``, or ``'all_plots'``. Default is ``'all_plots'``.
     :param bool save_plots: (`optional`) Whether to save plots. Default is ``False``.
-    :param int or list of int or tuple of int show_years: (``optional``) Year outcomes to show in the plots. Default is ``[2, 5]``.
+    :param int or list of int or tuple of int show_years: (`optional`) Year outcomes to show in the plots. Default is ``[2, 5]``.
     :param bool plot_combinations: (`optional`) Whether to plot all combinations of variables in a single plot. Default is ``False``.
     :param bool show_grids: (`optional`) Whether to show grid plots of all combinations. Default is ``False``.
     :param int decimal_places: (`optional`) Number of decimal places for AUC and AP scores in the plot legends. Default is ``2``.
@@ -568,6 +568,7 @@ Performance Assessment
               If ``bbox_inches`` is not a string or ``None``.
               If ``show_years`` contains invalid year values.
               If required KFRE probability columns are missing in the DataFrame.
+              If ``plot_type`` is not one of ``'auc_roc'``, ``'precision_recall'``, or ``'all_plots'``.
 
 This function generates the true labels and predicted probabilities for 2-year and 5-year outcomes, and optionally plots and saves ROC and Precision-Recall curves for specified variable models. It can also save the plots as PNG or SVG files.
 
@@ -588,12 +589,16 @@ This function generates the true labels and predicted probabilities for 2-year a
         mode="plot",                 # Can be 'prep', 'plot', or 'both'
         image_prefix="performance",  # Optional prefix for saved images
         bbox_inches="tight",         # Bounding box in inches for the saved images
-        plot_type="both",            # Can be 'roc', 'pr', or 'both'
+        plot_type="all_plots",       # Can be 'auc_roc', 'precision_recall', or 'all_plots'
         show_years=[2, 5],           # Year outcomes to show in the plots
         plot_combinations=True,      # Plot combinations of all variables in one plot
         show_grids=True,             # Place all plots on one grid; False does individual
         decimal_places=3,            # Number of decimal places in legend
     )
+
+
+AUC ROC & Precision-Recall Curves
+---------------------------------
 
 .. raw:: html
 

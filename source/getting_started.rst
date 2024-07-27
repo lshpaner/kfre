@@ -30,7 +30,7 @@
 Welcome to the KFRE Python Library Documentation!
 =============================================================
 .. important::
-   This documentation is for ``kfre`` stable version ``0.1.8``.
+   This documentation is for ``kfre`` stable version ``0.1.9``.
 
 
 ``kfre`` is a Python library designed to estimate the risk of chronic kidney disease 
