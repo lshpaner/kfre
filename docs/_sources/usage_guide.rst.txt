@@ -353,6 +353,10 @@ The ``upcr_uacr`` function is typically used in clinical data processing where a
     744            NaN
     Name: uACR, Length: 745, dtype: float64
 
+Classifying ESRD Outcome by 2 and 5 Year Outcomes
+=================================================
+
+
 Batch Risk Calculation for Multiple Patients
 ============================================
 
