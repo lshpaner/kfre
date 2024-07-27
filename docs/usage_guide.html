@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=1965cd86" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f3f6d1e5" />
 
   
   <!--[if lt IE 9]>
@@ -283,6 +283,114 @@ and reliability of the risk predictions.</p>
 </dd></dl>
 
 <p>This function is designed to compute the risk of chronic kidney disease (CKD) over specified or all possible models and time frames, directly appending the results as new columns to the provided DataFrame. It organizes the results by model (4-variable, 6-variable, 8-variable) first, followed by the time frame (2 years, 5 years) for each model type.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">sex_col</span></code> must contain strings (case-insensitive) indicating either <cite>female</cite> or <cite>male</cite>.</p>
+</div>
+<div style="text-align: left;">
+
+<i>
+First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol) <br>
+</i>
+
+<br>
+
+</div><table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p>Age</p></th>
+<th class="head"><p>SEX</p></th>
+<th class="head"><p>Diabetes (1=yes; 0=no)</p></th>
+<th class="head"><p>Hypertension (1=yes; 0=no)</p></th>
+<th class="head"><p>eGFR-EPI</p></th>
+<th class="head"><p>uACR</p></th>
+<th class="head"><p>2_year_outcome</p></th>
+<th class="head"><p>5_year_outcome</p></th>
+<th class="head"><p>kfre_4var_2year</p></th>
+<th class="head"><p>kfre_4var_5year</p></th>
+<th class="head"><p>kfre_6var_2year</p></th>
+<th class="head"><p>kfre_6var_5year</p></th>
+<th class="head"><p>kfre_8var_2year</p></th>
+<th class="head"><p>kfre_8var_5year</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>87.24</p></td>
+<td><p>Male</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>19.0</p></td>
+<td><p>5.744563</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0.018785</p></td>
+<td><p>0.070800</p></td>
+<td><p>0.017622</p></td>
+<td><p>0.065247</p></td>
+<td><p>0.011139</p></td>
+<td><p>0.049138</p></td>
+</tr>
+<tr class="row-odd"><td><p>56.88</p></td>
+<td><p>Female</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>15.0</p></td>
+<td><p>140.661958</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0.173785</p></td>
+<td><p>0.522508</p></td>
+<td><p>0.189202</p></td>
+<td><p>0.548860</p></td>
+<td><p>0.209930</p></td>
+<td><p>0.641537</p></td>
+</tr>
+<tr class="row-even"><td><p>66.53</p></td>
+<td><p>Female</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>17.0</p></td>
+<td><p>35.224504</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0.226029</p></td>
+<td><p>0.064027</p></td>
+<td><p>0.069593</p></td>
+<td><p>0.239481</p></td>
+<td><p>0.061889</p></td>
+<td><p>0.249777</p></td>
+</tr>
+<tr class="row-odd"><td><p>69.92</p></td>
+<td><p>Male</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>12.0</p></td>
+<td><p>74.299919</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0.524577</p></td>
+<td><p>0.174712</p></td>
+<td><p>0.190458</p></td>
+<td><p>0.551506</p></td>
+<td><p>0.305670</p></td>
+<td><p>0.806220</p></td>
+</tr>
+<tr class="row-even"><td><p>81.14</p></td>
+<td><p>Female</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>15.0</p></td>
+<td><p>59.683881</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0.255029</p></td>
+<td><p>0.073213</p></td>
+<td><p>0.068968</p></td>
+<td><p>0.237542</p></td>
+<td><p>0.060353</p></td>
+<td><p>0.244235</p></td>
+</tr>
+</tbody>
+</table>
 <p><strong>Example Usage</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">add_kfre_risk_col</span><span class="p">(</span>
     <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
@@ -306,114 +414,6 @@ and reliability of the risk predictions.</p>
 <span class="n">df</span>
 </pre></div>
 </div>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>Age</strong></p></th>
-<th class="head"><p><strong>Sex</strong></p></th>
-<th class="head"><p><strong>eGFR</strong></p></th>
-<th class="head"><p><strong>uACR</strong></p></th>
-<th class="head"><p><strong>Diabetes</strong></p></th>
-<th class="head"><p><strong>Hypertension</strong></p></th>
-<th class="head"><p><strong>Albumin</strong></p></th>
-<th class="head"><p><strong>Phosphorus</strong></p></th>
-<th class="head"><p><strong>Bicarbonate</strong></p></th>
-<th class="head"><p><strong>Calcium</strong></p></th>
-<th class="head"><p><strong>kfre_4var_2year</strong></p></th>
-<th class="head"><p><strong>kfre_4var_5year</strong></p></th>
-<th class="head"><p><strong>kfre_6var_2year</strong></p></th>
-<th class="head"><p><strong>kfre_6var_5year</strong></p></th>
-<th class="head"><p><strong>kfre_8var_2year</strong></p></th>
-<th class="head"><p><strong>kfre_8var_5year</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>65</p></td>
-<td><p>male</p></td>
-<td><p>19</p></td>
-<td><p>30</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>3.5</p></td>
-<td><p>3.5</p></td>
-<td><p>24</p></td>
-<td><p>9.5</p></td>
-<td><p>0.063123</p></td>
-<td><p>0.223128</p></td>
-<td><p>0.060014</p></td>
-<td><p>0.209336</p></td>
-<td><p>0.069774</p></td>
-<td><p>0.277728</p></td>
-</tr>
-<tr class="row-odd"><td><p>70</p></td>
-<td><p>female</p></td>
-<td><p>50</p></td>
-<td><p>35</p></td>
-<td><p>0</p></td>
-<td><p>1</p></td>
-<td><p>4</p></td>
-<td><p>4.1</p></td>
-<td><p>22</p></td>
-<td><p>9.7</p></td>
-<td><p>0.00155</p></td>
-<td><p>0.005987</p></td>
-<td><p>0.001717</p></td>
-<td><p>0.006501</p></td>
-<td><p>0.00303</p></td>
-<td><p>0.013559</p></td>
-</tr>
-<tr class="row-even"><td><p>60</p></td>
-<td><p>female</p></td>
-<td><p>45</p></td>
-<td><p>25</p></td>
-<td><p>0</p></td>
-<td><p>0</p></td>
-<td><p>3.8</p></td>
-<td><p>3.9</p></td>
-<td><p>25</p></td>
-<td><p>9.4</p></td>
-<td><p>0.002893</p></td>
-<td><p>0.011156</p></td>
-<td><p>0.002773</p></td>
-<td><p>0.010484</p></td>
-<td><p>0.004705</p></td>
-<td><p>0.020993</p></td>
-</tr>
-<tr class="row-odd"><td><p>75</p></td>
-<td><p>male</p></td>
-<td><p>22</p></td>
-<td><p>40</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>3.3</p></td>
-<td><p>4.5</p></td>
-<td><p>21</p></td>
-<td><p>8.8</p></td>
-<td><p>0.041757</p></td>
-<td><p>0.152247</p></td>
-<td><p>0.039731</p></td>
-<td><p>0.142611</p></td>
-<td><p>0.09375</p></td>
-<td><p>0.357774</p></td>
-</tr>
-<tr class="row-even"><td><p>80</p></td>
-<td><p>female</p></td>
-<td><p>30</p></td>
-<td><p>50</p></td>
-<td><p>1</p></td>
-<td><p>0</p></td>
-<td><p>3.7</p></td>
-<td><p>3.2</p></td>
-<td><p>23</p></td>
-<td><p>9.6</p></td>
-<td><p>0.013457</p></td>
-<td><p>0.051111</p></td>
-<td><p>0.011059</p></td>
-<td><p>0.041325</p></td>
-<td><p>0.016574</p></td>
-<td><p>0.072424</p></td>
-</tr>
-</tbody>
-</table>
 </section>
 <section id="conversion-of-clinical-parameters">
 <h1>Conversion of Clinical Parameters<a class="headerlink" href="#conversion-of-clinical-parameters" title="Link to this heading"></a></h1>
@@ -428,9 +428,6 @@ ratio (uPCR), calcium, phosphate, and albumin levels.</p>
 <li><p><strong>Batch Processing:</strong> It can process entire columns of data, making it suitable for datasets with multiple patients.</p></li>
 <li><p><strong>Custom Column Names:</strong> Users can specify which columns to convert, providing flexibility in handling datasets with varied naming conventions.</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">perform_conversions</span>
-</pre></div>
-</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="perform_conversions">
 <span class="sig-name descname"><span class="pre">perform_conversions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upcr_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albumin_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_all</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#perform_conversions" title="Link to this definition"></a></dt>
@@ -454,19 +451,48 @@ ratio (uPCR), calcium, phosphate, and albumin levels.</p>
 <p>The following is a mock example to illustrate the usage of the
 <code class="docutils literal notranslate"><span class="pre">perform_conversions</span></code> function. This example shows how to convert values from mmol
 to mg for various clinical parameters within a DataFrame.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample DataFrame</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="c1"># Example values that need conversion</span>
-        <span class="s2">&quot;uPCR (mmol)&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
-        <span class="s2">&quot;Calcium (mmol)&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">],</span>
-        <span class="s2">&quot;Phosphate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">],</span>
-        <span class="s2">&quot;Albumin&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-
-<span class="c1"># Perform conversions using the wrapper function, specifying all parameters</span>
-<span class="c1"># Perform conversions and specify new column names</span>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>uPCR</p></th>
+<th class="head"><p>Calcium (mmol/L)</p></th>
+<th class="head"><p>Albumin (g/l)</p></th>
+<th class="head"><p>Phosphate (mmol/L)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>33.0</p></td>
+<td><p>2.78</p></td>
+<td><p>37.0</p></td>
+<td><p>0.88</p></td>
+</tr>
+<tr class="row-odd"><td><p>395.0</p></td>
+<td><p>2.43</p></td>
+<td><p>30.0</p></td>
+<td><p>1.02</p></td>
+</tr>
+<tr class="row-even"><td><p>163.0</p></td>
+<td><p>2.33</p></td>
+<td><p>36.0</p></td>
+<td><p>1.24</p></td>
+</tr>
+<tr class="row-odd"><td><p>250.0</p></td>
+<td><p>2.29</p></td>
+<td><p>39.0</p></td>
+<td><p>1.80</p></td>
+</tr>
+<tr class="row-even"><td><p>217.0</p></td>
+<td><p>2.45</p></td>
+<td><p>43.0</p></td>
+<td><p>1.39</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">perform_conversions</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform conversions using the wrapper function, specifying all parameters</span>
+<span class="c1"># and specify new column names</span>
 <span class="n">converted_df</span> <span class="o">=</span> <span class="n">perform_conversions</span><span class="p">(</span>
     <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
     <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -488,7 +514,7 @@ Converted<span class="w"> </span><span class="s1">&#39;Albumin&#39;</span><span 
 </div>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p><strong>uPCR   (mmol)</strong></p></th>
+<tr class="row-odd"><th class="head"><p><strong>uPCR (mmol)</strong></p></th>
 <th class="head"><p><strong>Calcium (mmol)</strong></p></th>
 <th class="head"><p><strong>Phosphate</strong></p></th>
 <th class="head"><p><strong>Albumin</strong></p></th>

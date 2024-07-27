@@ -201,6 +201,36 @@ the need for additional data manipulation steps.
 
 This function is designed to compute the risk of chronic kidney disease (CKD) over specified or all possible models and time frames, directly appending the results as new columns to the provided DataFrame. It organizes the results by model (4-variable, 6-variable, 8-variable) first, followed by the time frame (2 years, 5 years) for each model type.
 
+.. important::
+
+    The ``sex_col`` must contain strings (case-insensitive) indicating either `female` or `male`.
+
+
+.. raw:: html
+
+    <div style="text-align: left;">
+    
+    <i>
+    First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol) <br> 
+    </i>
+    
+    <br>
+
+    </div>
+
+.. table::
+   :align: left
+
+   ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================  
+     Age     SEX   Diabetes (1=yes; 0=no)   Hypertension (1=yes; 0=no) eGFR-EPI        uACR   2_year_outcome   5_year_outcome   kfre_4var_2year  kfre_4var_5year  kfre_6var_2year  kfre_6var_5year  kfre_8var_2year  kfre_8var_5year
+   ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================ 
+    87.24    Male           1                     1                     19.0       5.744563              0                0             0.018785         0.070800         0.017622         0.065247         0.011139         0.049138
+    56.88   Female          0                     1                     15.0     140.661958              1                1             0.173785         0.522508         0.189202         0.548860         0.209930         0.641537
+    66.53   Female          0                     1                     17.0      35.224504              0                0             0.226029         0.064027         0.069593         0.239481         0.061889         0.249777
+    69.92    Male           0                     0                     12.0      74.299919              1                1             0.524577         0.174712         0.190458         0.551506         0.305670         0.806220
+    81.14   Female          1                     1                     15.0      59.683881              0                0             0.255029         0.073213         0.068968         0.237542         0.060353         0.244235
+   ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================ 
+
 
 **Example Usage**
 
@@ -228,20 +258,6 @@ This function is designed to compute the risk of chronic kidney disease (CKD) ov
     df
 
 
-+---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
-| **Age** | **Sex**   | **eGFR** | **uACR** | **Diabetes** | **Hypertension** | **Albumin** | **Phosphorus** | **Bicarbonate** | **Calcium** | **kfre_4var_2year** | **kfre_4var_5year** | **kfre_6var_2year** | **kfre_6var_5year** | **kfre_8var_2year** | **kfre_8var_5year** |
-+=========+===========+==========+==========+==============+==================+=============+================+=================+=============+=====================+=====================+=====================+=====================+=====================+=====================+
-|   65    |  male     |    19    |    30    |      1       |        1         |     3.5     |      3.5       |       24        |     9.5     |      0.063123       |      0.223128       |      0.060014       |      0.209336       |      0.069774       |      0.277728       |
-+---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
-|   70    | female    |    50    |    35    |      0       |        1         |      4      |      4.1       |       22        |     9.7     |       0.00155       |      0.005987       |      0.001717       |      0.006501       |       0.00303       |      0.013559       |
-+---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
-|   60    | female    |    45    |    25    |      0       |        0         |     3.8     |      3.9       |       25        |     9.4     |      0.002893       |      0.011156       |      0.002773       |      0.010484       |      0.004705       |      0.020993       |
-+---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
-|   75    |  male     |    22    |    40    |      1       |        1         |     3.3     |      4.5       |       21        |     8.8     |      0.041757       |      0.152247       |      0.039731       |      0.142611       |       0.09375       |      0.357774       |
-+---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
-|   80    | female    |    30    |    50    |      1       |        0         |     3.7     |      3.2       |       23        |     9.6     |      0.013457       |      0.051111       |      0.011059       |      0.041325       |      0.016574       |      0.072424       |
-+---------+-----------+----------+----------+--------------+------------------+-------------+----------------+-----------------+-------------+---------------------+---------------------+---------------------+---------------------+---------------------+---------------------+
-
 Conversion of Clinical Parameters
 =================================
 
@@ -256,10 +272,6 @@ ratio (uPCR), calcium, phosphate, and albumin levels.
 - **Flexible Conversion:** The function supports both standard and reverse conversions, allowing users to switch between units as needed.
 - **Batch Processing:** It can process entire columns of data, making it suitable for datasets with multiple patients.
 - **Custom Column Names:** Users can specify which columns to convert, providing flexibility in handling datasets with varied naming conventions.
-
-.. code-block:: python
-
-    from kfre import perform_conversions
 
 .. function:: perform_conversions(df,reverse,upcr_col,calcium_col,albumin_col,convert_all)
 
@@ -279,21 +291,29 @@ The following is a mock example to illustrate the usage of the
 ``perform_conversions`` function. This example shows how to convert values from mmol 
 to mg for various clinical parameters within a DataFrame.
 
+
+.. table:: First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)
+
+   ====== =================== ================ ==================
+   uPCR   Calcium (mmol/L)    Albumin (g/l)    Phosphate (mmol/L)
+   ====== =================== ================ ==================
+   33.0   2.78                37.0             0.88
+   395.0  2.43                30.0             1.02
+   163.0  2.33                36.0             1.24
+   250.0  2.29                39.0             1.80
+   217.0  2.45                43.0             1.39
+   ====== =================== ================ ==================
+
+
 .. code-block:: python
 
-    # Sample DataFrame
-    df = pd.DataFrame(
-        {
-            # Example values that need conversion
-            "uPCR (mmol)": [0.5, 0.7, 0.2], 
-            "Calcium (mmol)": [2.5, 2.0, 2.2],
-            "Phosphate": [1.2, 1.3, 1.1],
-            "Albumin": [0.45, 0.50, 0.47],
-        }
-    )
+    from kfre import perform_conversions
+
+.. code-block:: python
+    
 
     # Perform conversions using the wrapper function, specifying all parameters
-    # Perform conversions and specify new column names
+    # and specify new column names
     converted_df = perform_conversions(
         df=df,
         reverse=False,
@@ -315,7 +335,7 @@ to mg for various clinical parameters within a DataFrame.
 
 
 +-------------------+--------------------+---------------+-------------+---------------+-------------------+---------------------+------------------+
-| **uPCR   (mmol)** | **Calcium (mmol)** | **Phosphate** | **Albumin** | **uPCR_mg_g** | **Calcium_mg_dl** | **Phosphate_mg_dl** | **Albumin_g_dl** |
+| **uPCR (mmol)**   | **Calcium (mmol)** | **Phosphate** | **Albumin** | **uPCR_mg_g** | **Calcium_mg_dl** | **Phosphate_mg_dl** | **Albumin_g_dl** |
 +===================+====================+===============+=============+===============+===================+=====================+==================+
 |        0.5        |        2.5         |      1.2      |    0.45     |   4.420085    |        10         |        3.72         |      0.045       |
 +-------------------+--------------------+---------------+-------------+---------------+-------------------+---------------------+------------------+

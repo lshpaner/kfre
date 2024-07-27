@@ -2,3 +2,7 @@
 .no-click {
     pointer-events: none;
 }
+
+.docutils table caption {
+    text-align: left;
+}
