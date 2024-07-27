@@ -20,7 +20,7 @@ from sklearn.metrics import (
 ################################################################################
 
 
-def calc_esrd_outcome(
+def class_esrd_outcome(
     df,
     col,
     years,
