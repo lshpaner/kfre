@@ -463,6 +463,9 @@ def add_kfre_risk_col(
     return df_used
 
 
+################################################################################
+
+
 def perform_conversions(
     df,
     reverse=False,
@@ -529,8 +532,9 @@ def perform_conversions(
             )
             # Create the new column name
             new_col = f"{key}_{suffix}"
-            # Add the converted values as a new column to the dataframe
-            df[new_col] = converted_values
+            # Add the converted values as a new column to the dataframe using
+            # .loc to avoid SettingWithCopyWarning
+            df.loc[:, new_col] = converted_values
             print(
                 f"Converted '{orig_col}' to new column '{new_col}' with factor {factor}"
             )
