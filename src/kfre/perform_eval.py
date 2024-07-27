@@ -665,11 +665,28 @@ def eval_kfre_metrics(
     - Brier score measures the mean squared difference between predicted
       probabilities and the true binary outcomes.
     """
+
     # Ensure outcome_years is a list
     if isinstance(outcome_years, int):
         outcome_years = [outcome_years]
     elif isinstance(outcome_years, tuple):
         outcome_years = list(outcome_years)
+
+    # Validate n_var_list
+    valid_vars = [4, 6, 8]  # Define valid variable numbers
+    if any(n_var not in valid_vars for n_var in n_var_list):
+        raise ValueError(
+            "Invalid variable number in n_var_list. Valid options are either "
+            "4, 6, 8, or combination of any (or all) of these in a list or tuple."
+        )
+
+    # Validate outcome_years
+    valid_outcome_years = [2, 5]
+    if any(year not in valid_outcome_years for year in outcome_years):
+        raise ValueError(
+            "Invalid value for year in outcome_years. Valid options are 2, 5, "
+            "or both as a list or tuple."
+        )
 
     # Extract the true labels for the outcomes using regex
     y_true = []
