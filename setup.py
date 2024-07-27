@@ -6,7 +6,7 @@ setup(
     author="Leonid Shpaner",
     author_email="lshpaner@ucla.edu",
     description="A Python library for estimating kidney failure risk using the KFRE model developed by Tangri et al.",
-    long_description=open("min_readme.md").read(),
+    long_description=open("min_readme.md", "r", encoding="utf-8").read(),
     long_description_content_type="text/markdown",  # Type of the long description
     package_dir={"": "src"},  # Directory where your package files are located
     # Automatically find packages in the specified directory
