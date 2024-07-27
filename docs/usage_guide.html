@@ -73,7 +73,10 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#classifying-esrd-outcome-by-2-and-5-year-outcomes">Classifying ESRD Outcome by 2 and 5 Year Outcomes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#classifying-esrd-outcome-by-2-and-5-year-outcomes">Classifying ESRD Outcome by 2 and 5 Year Outcomes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#class_esrd_outcome"><code class="docutils literal notranslate"><span class="pre">class_esrd_outcome()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="#batch-risk-calculation-for-multiple-patients">Batch Risk Calculation for Multiple Patients</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#add_kfre_risk_col"><code class="docutils literal notranslate"><span class="pre">add_kfre_risk_col()</span></code></a></li>
 </ul>
@@ -492,6 +495,30 @@ First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021
 </section>
 <section id="classifying-esrd-outcome-by-2-and-5-year-outcomes">
 <h1>Classifying ESRD Outcome by 2 and 5 Year Outcomes<a class="headerlink" href="#classifying-esrd-outcome-by-2-and-5-year-outcomes" title="Link to this heading"></a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">class_esrd_outcome</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="class_esrd_outcome">
+<span class="sig-name descname"><span class="pre">class_esrd_outcome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_years_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#class_esrd_outcome" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – The DataFrame to perform calculations on. This DataFrame should include columns relevant for calculating ESRD outcomes.</p></li>
+<li><p><strong>col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The column name with ESRD (should be eGFR &lt; 15 flag).</p></li>
+<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – The number of years to use in the condition.</p></li>
+<li><p><strong>duration_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column containing the duration data.</p></li>
+<li><p><strong>prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) Custom prefix for the new column name. If None, no prefix is added.</p></li>
+<li><p><strong>create_years_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – (<cite>optional</cite>) Whether to create the ‘years’ column. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>: The modified DataFrame with the new column added.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>This function creates a new column in the DataFrame which is populated with a 1 or a 0 based on whether the ESRD condition (eGFR &lt; 15) is met within the specified number of years. If <cite>create_years_col</cite> is set to True, it calculates the ‘years’ column based on the <cite>duration_col</cite> provided. If False, it uses the <cite>duration_col</cite> directly. The new column is named using the specified prefix and number of years, or just the number of years if no prefix is provided.</p>
 </section>
 <section id="batch-risk-calculation-for-multiple-patients">
 <h1>Batch Risk Calculation for Multiple Patients<a class="headerlink" href="#batch-risk-calculation-for-multiple-patients" title="Link to this heading"></a></h1>
