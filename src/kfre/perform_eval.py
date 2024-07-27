@@ -570,7 +570,7 @@ def plot_kfre_metrics(
 def eval_kfre_metrics(
     df,
     n_var_list,
-    outcome_years=[2, 5],
+    outcome_years=2,
     decimal_places=6,
 ):
     """
@@ -589,8 +589,8 @@ def eval_kfre_metrics(
         predictions.
     n_var_list : list of int
         List of variable numbers to consider, e.g., [4, 6, 8].
-    outcome_years : list of int, optional
-        List of outcome years to consider, default is [2, 5].
+    outcome_years : list, tuple, or int, optional
+        List, tuple, or single year to consider for outcomes, default is [2].
     decimal_places : int, optional
         Number of decimal places for the calculated metrics. Default is 6.
 
@@ -609,6 +609,11 @@ def eval_kfre_metrics(
     - Brier score measures the mean squared difference between predicted
       probabilities and the true binary outcomes.
     """
+    # Ensure outcome_years is a list
+    if isinstance(outcome_years, int):
+        outcome_years = [outcome_years]
+    elif isinstance(outcome_years, tuple):
+        outcome_years = list(outcome_years)
 
     # Extract the true labels for the outcomes using regex
     y_true = []
