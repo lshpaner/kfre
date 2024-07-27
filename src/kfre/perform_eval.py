@@ -585,17 +585,26 @@ def plot_kfre_metrics(
                 plt.tight_layout()
                 if save_plots:
                     # Save the grid plot if save_plots is True.
-                    filename = f"{image_prefix}_grid" if image_prefix else "grid"
+                    filename = (
+                        f"grid_{plot_type}_combination"
+                        if plot_type == "all_plots" and show_grids and plot_combinations
+                        else (
+                            f"{image_prefix}_grid"
+                            if image_prefix
+                            else "performance_grid"
+                        )
+                    )
+
                     if image_path_png:
                         os.makedirs(image_path_png, exist_ok=True)
                         plt.savefig(
-                            os.path.join(image_path_png, f"{filename}_{plot_type}.png"),
+                            os.path.join(image_path_png, f"{filename}.png"),
                             bbox_inches=bbox_inches,
                         )
                     if image_path_svg:
                         os.makedirs(image_path_svg, exist_ok=True)
                         plt.savefig(
-                            os.path.join(image_path_svg, f"{filename}_{plot_type}.svg"),
+                            os.path.join(image_path_svg, f"{filename}.svg"),
                             bbox_inches=bbox_inches,
                         )
                 plt.show()
