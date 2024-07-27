@@ -12,12 +12,16 @@
 ## Prerequisites
 Before you install `kfre`, ensure you have the following:
 
-- **Python**: Python 3.6 or higher is required to run `kfre`.
+- **Python**: Python 3.74 or higher is required to run `kfre`.
 
 Additionally, kfre has the following package dependencies:
 
-- **NumPy**: Version 1.18.5 or higher
-- **Pandas**: Version 1.0.5 or higher
+- **numpy**: version 1.18.5 or higher
+- **pandas**: version 1.0.5 or higher
+- **matplotlib**: version 3.2.2 or higher
+- **seaborn**: version 0.10.1 or higher
+- **scikit-learn**: version 0.23.1 or higher
+- **tqdm**: version 4.48.0 or higher
 
 
 ## Installation
@@ -52,7 +56,7 @@ If you use `kfre` in your research or projects, please consider citing it.
       month        = may,
       year         = 2024,
       publisher    = {Zenodo},
-      version      = {0.1.8a},
+      version      = {0.1.9},
       doi          = {10.5281/zenodo.11100222},
       url          = {https://doi.org/10.5281/zenodo.11100222}
     }
