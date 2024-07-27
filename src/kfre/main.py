@@ -521,6 +521,9 @@ def perform_conversions(
             for key in conversion_factors
         }
 
+    # Create a deep copy of the DataFrame
+    df = df.copy()
+
     # Perform conversions
     for key, orig_col in columns_to_convert.items():
         if orig_col and orig_col in df.columns:
