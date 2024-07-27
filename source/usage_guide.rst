@@ -536,3 +536,116 @@ This function is designed to compute the risk of chronic kidney disease (CKD) ov
     69.92    Male           0                     0                     12.0      74.299919              1                1             0.524577         0.174712         0.190458         0.551506         0.305670         0.806220
     81.14   Female          1                     1                     15.0      59.683881              0                0             0.255029         0.073213         0.068968         0.237542         0.060353         0.244235
    ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================ 
+
+
+
+Performance Assessment
+=======================
+
+.. function:: plot_kfre_metrics(df, num_vars, fig_size=(12, 6), mode="both", image_path_png=None, image_path_svg=None, image_prefix=None, bbox_inches="tight", plot_type="both", save_plots=False, show_years=[2, 5], plot_combinations=False, show_grids=False, decimal_places=2)
+
+    :param DataFrame df: The input DataFrame containing the necessary columns for truth and predictions.
+    :param int or list of int or tuple of int num_vars: Number of variables (e.g., ``4``) or a list/tuple of numbers of variables (e.g., ``[4, 6, 8]``) to generate predictions for.
+    :param tuple fig_size: (`optional`) Size of the figure for the ROC plot, default is ``(12, 6)``.
+    :param str mode: (`optional`) Operation mode, can be ``'prep'``, ``'plot'``, or ``'both'``. Default is ``'both'``. ``'prep'`` only prepares the metrics, ``'plot'`` only plots the metrics (requires pre-prepped metrics), 'both' prepares and plots the metrics.
+    :param str image_path_png: (`optional`) Path to save the PNG images. Default is ``None``.
+    :param str image_path_svg: (`optional`) Path to save the SVG images. Default is ``None``.
+    :param str image_prefix: (`optional`) Prefix to use for saved images. Default is ``None``.
+    :param str bbox_inches: (`optional`) Bounding box in inches for the saved images. Default is ``'tight'``.
+    :param str plot_type: (`optional`) Type of plot to generate, can be ``'roc'``, ``'pr'``, or ``'both'``. Default is ``'both'``.
+    :param bool save_plots: (`optional`) Whether to save plots. Default is ``False``.
+    :param int or list of int or tuple of int show_years: (``optional``) Year outcomes to show in the plots. Default is ``[2, 5]``.
+    :param bool plot_combinations: (`optional`) Whether to plot all combinations of variables in a single plot. Default is ``False``.
+    :param bool show_grids: (`optional`) Whether to show grid plots of all combinations. Default is ``False``.
+    :param int decimal_places: (`optional`) Number of decimal places for AUC and AP scores in the plot legends. Default is ``2``.
+
+    :returns: ``tuple`` (optional): Only returned if mode is 'prep' or 'both':
+              - y_true (list of pd.Series): True labels for specified year outcomes.
+              - preds (dict of list of pd.Series): Predicted probabilities for each number of variables and each outcome.
+              - outcomes (list of str): List of outcome labels.
+
+    :raises: ``ValueError``: If ``save_plots`` is ``True`` without specifying ``image_path_png`` or ``image_path_svg``.
+              If ``bbox_inches`` is not a string or ``None``.
+              If ``show_years`` contains invalid year values.
+              If required KFRE probability columns are missing in the DataFrame.
+
+This function generates the true labels and predicted probabilities for 2-year and 5-year outcomes, and optionally plots and saves ROC and Precision-Recall curves for specified variable models. It can also save the plots as PNG or SVG files.
+
+
+**Example usage**
+
+.. code-block:: python
+
+    from kfre import plot_kfre_metrics
+
+
+.. code-block:: python
+
+    plot_kfre_metrics(
+        df=df,                       # DataFrame to produce plots for
+        num_vars=[4, 6, 8],          # 4,6,8 KFRE variables
+        fig_size=[6, 6],             # Custom figure size
+        mode="plot",                 # Can be 'prep', 'plot', or 'both'
+        image_prefix="performance",  # Optional prefix for saved images
+        bbox_inches="tight",         # Bounding box in inches for the saved images
+        plot_type="both",            # Can be 'roc', 'pr', or 'both'
+        show_years=[2, 5],           # Year outcomes to show in the plots
+        plot_combinations=True,      # Plot combinations of all variables in one plot
+        show_grids=True,             # Place all plots on one grid; False does individual
+        decimal_places=3,            # Number of decimal places in legend
+    )
+
+.. raw:: html
+
+   <div class="no-click">
+
+.. image:: ../assets/performance_grid.svg
+   :alt: AUC_ROC_and_Precision_Recall
+   :align: left
+   :width: 900px
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+   
+   <div style="height: 106px;"></div>
+
+\
+
+
+.. function:: eval_kfre_metrics(df, n_var_list, outcome_years=[2, 5], decimal_places=6)
+
+    :param DataFrame df: The input DataFrame containing the necessary columns for truth and predictions.
+    :param list of int n_var_list: List of variable numbers to consider, e.g., ``[4, 6, 8]``.
+    :param list of int outcome_years: (`optional`) List of outcome years to consider. Default is ``[2, 5]``.
+    :param int decimal_places: (`optional`) Number of decimal places for the calculated metrics. Default is ``6``.
+
+    :returns: ``pd.DataFrame``: A DataFrame containing the calculated metrics for each outcome.
+
+    :raises: ``ValueError``: If required outcome columns are missing in the DataFrame.
+
+    This function computes a set of performance metrics for multiple binary classification models given the true labels and the predicted probabilities for each outcome. The metrics calculated include precision (positive predictive value), average precision, sensitivity (recall), specificity, AUC ROC, and Brier score.
+
+    Notes:
+        - Precision is calculated with a threshold of `0.5` for the predicted probabilities.   
+        - Sensitivity is also known as recall.  
+        - Specificity is calculated as the recall for the negative class.  
+        - AUC ROC is calculated using the receiver operating characteristic curve.  
+        - Brier score measures the mean squared difference between predicted probabilities and the true binary outcomes.  
+
+**Example Usage**
+
+.. code-block:: python
+
+    from kfre import eval_kfre_metrics
+
+
+.. code-block:: python
+
+    metrics_df_n_var = eval_kfre_metrics(
+        df=df,                 # Metrics-ready DataFrame as the first argument
+        n_var_list=[4, 6, 8],  # Specify the list of variable numbers to consider
+        outcome_years=[2, 5],  # Specify the list of outcome years to consider
+    )

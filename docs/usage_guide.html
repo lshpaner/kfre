@@ -81,6 +81,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#add_kfre_risk_col"><code class="docutils literal notranslate"><span class="pre">add_kfre_risk_col()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#performance-assessment">Performance Assessment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plot_kfre_metrics"><code class="docutils literal notranslate"><span class="pre">plot_kfre_metrics()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#eval_kfre_metrics"><code class="docutils literal notranslate"><span class="pre">eval_kfre_metrics()</span></code></a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">About KFRE</span></p>
 <ul>
@@ -766,6 +771,111 @@ First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nep
 </tr>
 </tbody>
 </table>
+</section>
+<section id="performance-assessment">
+<h1>Performance Assessment<a class="headerlink" href="#performance-assessment" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="plot_kfre_metrics">
+<span class="sig-name descname"><span class="pre">plot_kfre_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(12,</span> <span class="pre">6)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_path_png</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_path_svg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_inches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tight'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_plots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_combinations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_grids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal_places</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plot_kfre_metrics" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – The input DataFrame containing the necessary columns for truth and predictions.</p></li>
+<li><p><strong>num_vars</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Number of variables (e.g., <code class="docutils literal notranslate"><span class="pre">4</span></code>) or a list/tuple of numbers of variables (e.g., <code class="docutils literal notranslate"><span class="pre">[4,</span> <span class="pre">6,</span> <span class="pre">8]</span></code>) to generate predictions for.</p></li>
+<li><p><strong>fig_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>) – (<cite>optional</cite>) Size of the figure for the ROC plot, default is <code class="docutils literal notranslate"><span class="pre">(12,</span> <span class="pre">6)</span></code>.</p></li>
+<li><p><strong>mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) Operation mode, can be <code class="docutils literal notranslate"><span class="pre">'prep'</span></code>, <code class="docutils literal notranslate"><span class="pre">'plot'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'both'</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">'both'</span></code>. <code class="docutils literal notranslate"><span class="pre">'prep'</span></code> only prepares the metrics, <code class="docutils literal notranslate"><span class="pre">'plot'</span></code> only plots the metrics (requires pre-prepped metrics), ‘both’ prepares and plots the metrics.</p></li>
+<li><p><strong>image_path_png</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) Path to save the PNG images. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>image_path_svg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) Path to save the SVG images. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>image_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) Prefix to use for saved images. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>bbox_inches</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) Bounding box in inches for the saved images. Default is <code class="docutils literal notranslate"><span class="pre">'tight'</span></code>.</p></li>
+<li><p><strong>plot_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – (<cite>optional</cite>) Type of plot to generate, can be <code class="docutils literal notranslate"><span class="pre">'roc'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pr'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'both'</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">'both'</span></code>.</p></li>
+<li><p><strong>save_plots</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – (<cite>optional</cite>) Whether to save plots. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>show_years</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – (<code class="docutils literal notranslate"><span class="pre">optional</span></code>) Year outcomes to show in the plots. Default is <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">5]</span></code>.</p></li>
+<li><p><strong>plot_combinations</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – (<cite>optional</cite>) Whether to plot all combinations of variables in a single plot. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>show_grids</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – (<cite>optional</cite>) Whether to show grid plots of all combinations. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>decimal_places</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – (<cite>optional</cite>) Number of decimal places for AUC and AP scores in the plot legends. Default is <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code> (optional): Only returned if mode is ‘prep’ or ‘both’:
+- y_true (list of pd.Series): True labels for specified year outcomes.
+- preds (dict of list of pd.Series): Predicted probabilities for each number of variables and each outcome.
+- outcomes (list of str): List of outcome labels.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code>: If <code class="docutils literal notranslate"><span class="pre">save_plots</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> without specifying <code class="docutils literal notranslate"><span class="pre">image_path_png</span></code> or <code class="docutils literal notranslate"><span class="pre">image_path_svg</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">bbox_inches</span></code> is not a string or <code class="docutils literal notranslate"><span class="pre">None</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">show_years</span></code> contains invalid year values.
+If required KFRE probability columns are missing in the DataFrame.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>This function generates the true labels and predicted probabilities for 2-year and 5-year outcomes, and optionally plots and saves ROC and Precision-Recall curves for specified variable models. It can also save the plots as PNG or SVG files.</p>
+<p><strong>Example usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">plot_kfre_metrics</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_kfre_metrics</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>                       <span class="c1"># DataFrame to produce plots for</span>
+    <span class="n">num_vars</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>          <span class="c1"># 4,6,8 KFRE variables</span>
+    <span class="n">fig_size</span><span class="o">=</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>             <span class="c1"># Custom figure size</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;plot&quot;</span><span class="p">,</span>                 <span class="c1"># Can be &#39;prep&#39;, &#39;plot&#39;, or &#39;both&#39;</span>
+    <span class="n">image_prefix</span><span class="o">=</span><span class="s2">&quot;performance&quot;</span><span class="p">,</span>  <span class="c1"># Optional prefix for saved images</span>
+    <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span>         <span class="c1"># Bounding box in inches for the saved images</span>
+    <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span>            <span class="c1"># Can be &#39;roc&#39;, &#39;pr&#39;, or &#39;both&#39;</span>
+    <span class="n">show_years</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>           <span class="c1"># Year outcomes to show in the plots</span>
+    <span class="n">plot_combinations</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>      <span class="c1"># Plot combinations of all variables in one plot</span>
+    <span class="n">show_grids</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>             <span class="c1"># Place all plots on one grid; False does individual</span>
+    <span class="n">decimal_places</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>            <span class="c1"># Number of decimal places in legend</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="no-click"><a class="reference internal image-reference" href="_images/performance_grid.svg"><img alt="AUC_ROC_and_Precision_Recall" class="align-left" src="_images/performance_grid.svg" width="900px" /></a>
+</div><div style="height: 106px;"></div><p></p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eval_kfre_metrics">
+<span class="sig-name descname"><span class="pre">eval_kfre_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_var_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outcome_years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal_places</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eval_kfre_metrics" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – The input DataFrame containing the necessary columns for truth and predictions.</p></li>
+<li><p><strong>n_var_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – List of variable numbers to consider, e.g., <code class="docutils literal notranslate"><span class="pre">[4,</span> <span class="pre">6,</span> <span class="pre">8]</span></code>.</p></li>
+<li><p><strong>outcome_years</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – (<cite>optional</cite>) List of outcome years to consider. Default is <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">5]</span></code>.</p></li>
+<li><p><strong>decimal_places</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – (<cite>optional</cite>) Number of decimal places for the calculated metrics. Default is <code class="docutils literal notranslate"><span class="pre">6</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>: A DataFrame containing the calculated metrics for each outcome.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code>: If required outcome columns are missing in the DataFrame.</p>
+</dd>
+</dl>
+<p>This function computes a set of performance metrics for multiple binary classification models given the true labels and the predicted probabilities for each outcome. The metrics calculated include precision (positive predictive value), average precision, sensitivity (recall), specificity, AUC ROC, and Brier score.</p>
+<dl class="simple">
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>Precision is calculated with a threshold of <cite>0.5</cite> for the predicted probabilities.</p></li>
+<li><p>Sensitivity is also known as recall.</p></li>
+<li><p>Specificity is calculated as the recall for the negative class.</p></li>
+<li><p>AUC ROC is calculated using the receiver operating characteristic curve.</p></li>
+<li><p>Brier score measures the mean squared difference between predicted probabilities and the true binary outcomes.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Example Usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">eval_kfre_metrics</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics_df_n_var</span> <span class="o">=</span> <span class="n">eval_kfre_metrics</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>                 <span class="c1"># Metrics-ready DataFrame as the first argument</span>
+    <span class="n">n_var_list</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>  <span class="c1"># Specify the list of variable numbers to consider</span>
+    <span class="n">outcome_years</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>  <span class="c1"># Specify the list of outcome years to consider</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </section>
 
 
