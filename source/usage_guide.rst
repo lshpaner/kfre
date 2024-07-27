@@ -273,78 +273,6 @@ ratio (uPCR), calcium, phosphate, and albumin levels.
 - **Batch Processing:** It can process entire columns of data, making it suitable for datasets with multiple patients.
 - **Custom Column Names:** Users can specify which columns to convert, providing flexibility in handling datasets with varied naming conventions.
 
-.. function:: perform_conversions(df,reverse,upcr_col,calcium_col,albumin_col,convert_all)
-
-    :param DataFrame df: The DataFrame containing the data that needs unit conversion. This DataFrame should include columns that contain measurements in either original units or units that need conversion according to specified clinical or scientific standards.
-    :param bool reverse: (`optional`) Determines the direction of the conversion. If set to ``True``, the function will convert units from a converted state back to the original state (e.g., from mmol/L back to mg/dL). If ``False``, the function performs the standard conversion from original to new units (e.g., from mg/dL to mmol/L). Default is ``False``.
-    :param bool convert_all: (`optional`) If set to ``True``, the function attempts to automatically identify and convert all recognized columns based on standard medical or chemical units present in the DataFrame. If ``False``, the function will only convert the columns explicitly specified by the other parameters (e.g., upcr_col, calcium_col). Default is ``False``.
-    :param str upcr_col: (`optional`) Specifies the column name for urine protein-creatinine ratio (uPCR) in the DataFrame, which often needs conversion between mg/g and mmol/L for clinical assessments. If provided, this column will be converted according to the specified ``reverse`` flag.
-    :param str calcium_col: (`optional`) Specifies the column name for calcium measurements in the DataFrame. This parameter allows the conversion between common units of calcium concentration, enhancing comparability across different data sets or aligning with specific analysis requirements.
-    :param str phosphate_col: (`optional`) Specifies the column name for phosphate measurements in the DataFrame. Similar to ``calcium_col``, this parameter enables unit conversion for phosphate levels, important for biochemical and clinical assessments.
-    :param str albumin_col: (`optional`) Specifies the column name for albumin measurements. Albumin, often measured in different units across various medical tests, can be converted using this parameter to standardize the data for analysis or reporting purposes.
-
-These parameters provide the flexibility to tailor the unit conversion process to specific data needs, enabling precise and appropriate conversions crucial for accurate data analysis and interpretation in clinical or scientific research.
-
-**Example Usage**
-
-The following is a mock example to illustrate the usage of the 
-``perform_conversions`` function. This example shows how to convert values from mmol 
-to mg for various clinical parameters within a DataFrame.
-
-
-.. table:: First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)
-
-   ====== =================== ================ ==================
-   uPCR   Calcium (mmol/L)    Albumin (g/l)    Phosphate (mmol/L)
-   ====== =================== ================ ==================
-   33.0   2.78                37.0             0.88
-   395.0  2.43                30.0             1.02
-   163.0  2.33                36.0             1.24
-   250.0  2.29                39.0             1.80
-   217.0  2.45                43.0             1.39
-   ====== =================== ================ ==================
-
-
-.. code-block:: python
-
-    from kfre import perform_conversions
-
-.. code-block:: python
-    
-
-    # Perform conversions using the wrapper function, specifying all parameters
-    # and specify new column names
-    converted_df = perform_conversions(
-        df=df,
-        reverse=False,
-        upcr_col="uPCR (mmol)",
-        calcium_col="Calcium",
-        albumin_col="Albumin",
-        convert_all=True,
-    )
-
-    # Print the DataFrame to see the changes
-    converted_df
-
-.. code:: bash
-
-    Converted 'uPCR (mmol)' to new column 'uPCR_mg_g' with factor 8.84016973125884
-    Converted 'Calcium (mmol)' to new column 'Calcium_mg_dl' with factor 4
-    Converted 'Phosphate' to new column 'Phosphate_mg_dl' with factor 3.1
-    Converted 'Albumin' to new column 'Albumin_g_dl' with factor 0.1
-
-
-+-------------------+--------------------+---------------+-------------+---------------+-------------------+---------------------+------------------+
-| **uPCR (mmol)**   | **Calcium (mmol)** | **Phosphate** | **Albumin** | **uPCR_mg_g** | **Calcium_mg_dl** | **Phosphate_mg_dl** | **Albumin_g_dl** |
-+===================+====================+===============+=============+===============+===================+=====================+==================+
-|        0.5        |        2.5         |      1.2      |    0.45     |   4.420085    |        10         |        3.72         |      0.045       |
-+-------------------+--------------------+---------------+-------------+---------------+-------------------+---------------------+------------------+
-|        0.7        |         2          |      1.3      |     0.5     |   6.188119    |         8         |        4.03         |       0.05       |
-+-------------------+--------------------+---------------+-------------+---------------+-------------------+---------------------+------------------+
-|        0.2        |        2.2         |      1.1      |    0.47     |   1.768034    |        8.8        |        3.41         |      0.047       |
-+-------------------+--------------------+---------------+-------------+---------------+-------------------+---------------------+------------------+
-
-
 uPCR to uACR
 -------------
 
@@ -423,4 +351,89 @@ shifting the decimal point:
 These conversions help ensure consistency in reporting and interpreting lab 
 values across different systems and studies, facilitating better comparison and 
 understanding of patient data.
+
+Conversion Function (uPCR, Calcium, Albumin, Phosphate)
+---------------------------------------------------------
+
+.. function:: perform_conversions(df,reverse,upcr_col,calcium_col,albumin_col,convert_all)
+
+    :param DataFrame df: The DataFrame containing the data that needs unit conversion. This DataFrame should include columns that contain measurements in either original units or units that need conversion according to specified clinical or scientific standards.
+    :param bool reverse: (`optional`) Determines the direction of the conversion. If set to ``True``, the function will convert units from a converted state back to the original state (e.g., from mmol/L back to mg/dL). If ``False``, the function performs the standard conversion from original to new units (e.g., from mg/dL to mmol/L). Default is ``False``.
+    :param bool convert_all: (`optional`) If set to ``True``, the function attempts to automatically identify and convert all recognized columns based on standard medical or chemical units present in the DataFrame. If ``False``, the function will only convert the columns explicitly specified by the other parameters (e.g., upcr_col, calcium_col). Default is ``False``.
+    :param str upcr_col: (`optional`) Specifies the column name for urine protein-creatinine ratio (uPCR) in the DataFrame, which often needs conversion between mg/g and mmol/L for clinical assessments. If provided, this column will be converted according to the specified ``reverse`` flag.
+    :param str calcium_col: (`optional`) Specifies the column name for calcium measurements in the DataFrame. This parameter allows the conversion between common units of calcium concentration, enhancing comparability across different data sets or aligning with specific analysis requirements.
+    :param str phosphate_col: (`optional`) Specifies the column name for phosphate measurements in the DataFrame. Similar to ``calcium_col``, this parameter enables unit conversion for phosphate levels, important for biochemical and clinical assessments.
+    :param str albumin_col: (`optional`) Specifies the column name for albumin measurements. Albumin, often measured in different units across various medical tests, can be converted using this parameter to standardize the data for analysis or reporting purposes.
+
+These parameters provide the flexibility to tailor the unit conversion process to specific data needs, enabling precise and appropriate conversions crucial for accurate data analysis and interpretation in clinical or scientific research.
+
+**Example Usage**
+
+The following is a mock example to illustrate the usage of the 
+``perform_conversions`` function. This example shows how to convert values from mmol 
+to mg for various clinical parameters within a DataFrame.
+
+
+.. table:: First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)
+
+   ====== =================== ================ ==================
+   uPCR   Calcium (mmol/L)    Albumin (g/l)    Phosphate (mmol/L)
+   ====== =================== ================ ==================
+   33.0   2.78                37.0             0.88
+   395.0  2.43                30.0             1.02
+   163.0  2.33                36.0             1.24
+   250.0  2.29                39.0             1.80
+   217.0  2.45                43.0             1.39
+   ====== =================== ================ ==================
+
+
+.. code-block:: python
+
+    from kfre import perform_conversions
+
+.. code-block:: python
+    
+
+    # Perform conversions using the wrapper function, specifying all parameters
+    # and specify new column names
+    converted_df = perform_conversions(
+        df=df,
+        reverse=False,
+        upcr_col="uPCR (mmol)",
+        calcium_col="Calcium",
+        albumin_col="Albumin",
+        convert_all=True,
+    )
+
+    # Print the DataFrame to see the changes
+    converted_df
+
+.. code:: bash
+
+    Converted 'uPCR' to new column 'uPCR_mg_g' with factor 8.84016973125884
+    Converted 'Calcium (mmol/L)' to new column 'Calcium_mg_dl' with factor 4
+    Converted 'Phosphate (mmol/L)' to new column 'Phosphate_mg_dl' with factor 3.1
+    Converted 'Albumin (g/l)' to new column 'Albumin_g_dl' with factor 0.1
+
+
+.. raw:: html
+
+    <div style="text-align: left; margin-bottom: 10px;">
+    <i>
+    First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021, BMC Nephrol)
+    </i>
+    </div>
+
+.. table:: 
+   :align: left
+
+   ====== =================== ================ ================== ============ ================ ================ ================
+   uPCR   Calcium (mmol/L)    Albumin (g/l)    Phosphate (mmol/L) uPCR_mg_g    Calcium_mg_dl    Phosphate_mg_dl  Albumin_g_dl
+   ====== =================== ================ ================== ============ ================ ================ ================
+   33.0   2.78                37.0             0.88               291.725601   11.12            2.728             3.7
+   395.0  2.43                30.0             1.02               3491.867044  9.72             3.162             3.0
+   163.0  2.33                36.0             1.24               1440.947666  9.32             3.844             3.6
+   250.0  2.29                39.0             1.80               2210.042433  9.16             5.580             3.9
+   217.0  2.45                43.0             1.39               1918.316832  9.80             4.309             4.3
+   ====== =================== ================ ================== ============ ================ ================ ================
 

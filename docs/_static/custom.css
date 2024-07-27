@@ -6,3 +6,10 @@
 .docutils table caption {
     text-align: left;
 }
+
+.highlight-last-four-cols td:nth-child(5),
+.highlight-last-four-cols td:nth-child(6),
+.highlight-last-four-cols td:nth-child(7),
+.highlight-last-four-cols td:nth-child(8) {
+    background-color: #ffcccb;
+}

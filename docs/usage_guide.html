@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f3f6d1e5" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=00ee5977" />
 
   
   <!--[if lt IE 9]>
@@ -66,7 +66,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#conversion-of-clinical-parameters">Conversion of Clinical Parameters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#perform_conversions"><code class="docutils literal notranslate"><span class="pre">perform_conversions()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#upcr-to-uacr">uPCR to uACR</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#upcr_uacr"><code class="docutils literal notranslate"><span class="pre">upcr_uacr()</span></code></a></li>
 </ul>
@@ -74,6 +73,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#calcium">Calcium</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#phosphate">Phosphate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#albumin">Albumin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conversion-function-upcr-calcium-albumin-phosphate">Conversion Function (uPCR, Calcium, Albumin, Phosphate)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#perform_conversions"><code class="docutils literal notranslate"><span class="pre">perform_conversions()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -428,6 +431,80 @@ ratio (uPCR), calcium, phosphate, and albumin levels.</p>
 <li><p><strong>Batch Processing:</strong> It can process entire columns of data, making it suitable for datasets with multiple patients.</p></li>
 <li><p><strong>Custom Column Names:</strong> Users can specify which columns to convert, providing flexibility in handling datasets with varied naming conventions.</p></li>
 </ul>
+<section id="upcr-to-uacr">
+<h2>uPCR to uACR<a class="headerlink" href="#upcr-to-uacr" title="Link to this heading"></a></h2>
+<p>The conversion of uPCR from mg/mmol to mg/g involves understanding that both
+mg/mmol and mg/g are ratios that can be related through their units.</p>
+<ul class="simple">
+<li><p>mg/mmol is a ratio of mass (in milligrams) to molar concentration (in millimoles), while</p></li>
+<li><p>mg/g is a ratio of mass (in milligrams) to mass (in grams).</p></li>
+</ul>
+<p>To convert mg/mmol to mg/g, we need to know the molar mass of creatinine,
+because uPCR is the ratio of the mass of protein to the mass of creatinine.
+The molar mass of creatinine is approximately 113.12 g/mol. Therefore, 1 mmol of
+creatinine is 113.12 mg.</p>
+<p>Here’s the conversion:</p>
+<p>1 mg/mmol means that you have 1 mg of protein for every 1 mmol of creatinine.
+Since 1 mmol of creatinine is 113.12 mg:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\text{1 mg protein}}{\text{0.11312 g creatinine}} \approx 8.84  {\text{ mg/g}}\]</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="upcr_uacr">
+<span class="sig-name descname"><span class="pre">upcr_uacr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diabetes_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hypertension_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upcr_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">female_str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#upcr_uacr" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – This parameter should be a pandas DataFrame containing the patient data. The DataFrame needs to include specific columns that will be referenced by the other parameters in the function for the conversion process.</p></li>
+<li><p><strong>sex_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column in the DataFrame that identifies the patient’s sex. This is used to apply gender-specific adjustments in the conversion formula, as biological sex can influence the levels of urinary protein and albumin.</p></li>
+<li><p><strong>diabetes_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column that indicates whether the patient has diabetes, typically marked as <code class="docutils literal notranslate"><span class="pre">1</span></code> for <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> for <code class="docutils literal notranslate"><span class="pre">no</span></code>. Diabetes status is used to adjust the conversion because diabetes can impact kidney function and alter protein and albumin excretion rates.</p></li>
+<li><p><strong>hypertension_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column that shows whether the patient has hypertension, also typically marked as <code class="docutils literal notranslate"><span class="pre">1</span></code> for <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> for <code class="docutils literal notranslate"><span class="pre">no</span></code>. Hypertension can affect kidney function, making it a necessary factor in the conversion calculations.</p></li>
+<li><p><strong>upcr_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column containing the urinary protein-creatinine ratio (uPCR) values that need to be converted to urinary albumin-creatinine ratio (uACR). This is the primary input for the conversion process.</p></li>
+<li><p><strong>female_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The string used in the dataset to identify female patients. This string is crucial for applying the correct conversion factors, as the function adjusts differently based on the patient being male or female, reflecting the biological differences in albumin excretion.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.Series</span></code>: The function returns a pandas Series containing the computed urinary albumin-creatinine ratio (uACR) for each patient in the DataFrame. This Series is indexed in the same way as the original DataFrame (<code class="docutils literal notranslate"><span class="pre">df.index</span></code>), ensuring that the uACR values align correctly with the corresponding patient data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>The <code class="docutils literal notranslate"><span class="pre">upcr_uacr</span> <span class="pre">function</span></code> is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.</p>
+</section>
+<section id="calcium">
+<h2>Calcium<a class="headerlink" href="#calcium" title="Link to this heading"></a></h2>
+<p>Calcium is often measured in millimoles per liter (mmol/L) and needs to be
+converted to milligrams per deciliter (mg/dL) for certain clinical applications
+or study comparisons.
+- Molecular weight of Calcium (Ca): Calcium’s atomic weight is approximately 40.08 g/mol.
+- Conversion factor: To convert mmol/L to mg/dL for calcium, you multiply by 4.
+This is derived as follows:</p>
+<div class="math notranslate nohighlight">
+\[\text{1 mmol/L} \times  \frac{\text{40.08 mg}}{{\text{1 mmol}}} \times \frac{\text {1L} } {\text{10 dL}} = 4.008 \text{ mg/dL}\]</div>
+</section>
+<section id="phosphate">
+<h2>Phosphate<a class="headerlink" href="#phosphate" title="Link to this heading"></a></h2>
+<p>Phosphate concentrations are similarly reported in mmol/L but often need to be expressed in mg/dL.</p>
+<ul class="simple">
+<li><p>Molecular weight of Phosphate (PO₄³⁻): The molar mass of phosphate as an ion (considering phosphorus and oxygen) is approximately 94.97 g/mol.</p></li>
+<li><p>Conversion factor: To convert mmol/L to mg/dL for phosphate:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{1 mmol/L} \times  \frac{\text{94.97 mg}}{{\text{1 mmol}}} \times \frac{\text {1L} } {\text{10 dL}} \approx 9.497 \text{ mg/dL}\]</div>
+</section>
+<section id="albumin">
+<h2>Albumin<a class="headerlink" href="#albumin" title="Link to this heading"></a></h2>
+<p>Albumin measurements are often made in grams per liter (g/L) and converted to
+grams per deciliter (g/dL) for standard reporting in many clinical contexts.</p>
+<p>Conversion factor: Converting g/L to g/dL is straightforward as it involves
+shifting the decimal point:</p>
+<div class="math notranslate nohighlight">
+\[1\text{ g/L} \div 10 = 0.1 \text { g/dL}\]</div>
+<p>These conversions help ensure consistency in reporting and interpreting lab
+values across different systems and studies, facilitating better comparison and
+understanding of patient data.</p>
+</section>
+<section id="conversion-function-upcr-calcium-albumin-phosphate">
+<h2>Conversion Function (uPCR, Calcium, Albumin, Phosphate)<a class="headerlink" href="#conversion-function-upcr-calcium-albumin-phosphate" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="perform_conversions">
 <span class="sig-name descname"><span class="pre">perform_conversions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upcr_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albumin_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_all</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#perform_conversions" title="Link to this definition"></a></dt>
@@ -506,125 +583,76 @@ to mg for various clinical parameters within a DataFrame.</p>
 <span class="n">converted_df</span>
 </pre></div>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Converted<span class="w"> </span><span class="s1">&#39;uPCR (mmol)&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;uPCR_mg_g&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">8</span>.84016973125884
-Converted<span class="w"> </span><span class="s1">&#39;Calcium (mmol)&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Calcium_mg_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">4</span>
-Converted<span class="w"> </span><span class="s1">&#39;Phosphate&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Phosphate_mg_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">3</span>.1
-Converted<span class="w"> </span><span class="s1">&#39;Albumin&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Albumin_g_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">0</span>.1
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Converted<span class="w"> </span><span class="s1">&#39;uPCR&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;uPCR_mg_g&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">8</span>.84016973125884
+Converted<span class="w"> </span><span class="s1">&#39;Calcium (mmol/L)&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Calcium_mg_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">4</span>
+Converted<span class="w"> </span><span class="s1">&#39;Phosphate (mmol/L)&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Phosphate_mg_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">3</span>.1
+Converted<span class="w"> </span><span class="s1">&#39;Albumin (g/l)&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Albumin_g_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">0</span>.1
 </pre></div>
 </div>
-<table class="docutils align-default">
+<div style="text-align: left; margin-bottom: 10px;">
+<i>
+First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021, BMC Nephrol)
+</i>
+</div><table class="docutils align-left">
 <thead>
-<tr class="row-odd"><th class="head"><p><strong>uPCR (mmol)</strong></p></th>
-<th class="head"><p><strong>Calcium (mmol)</strong></p></th>
-<th class="head"><p><strong>Phosphate</strong></p></th>
-<th class="head"><p><strong>Albumin</strong></p></th>
-<th class="head"><p><strong>uPCR_mg_g</strong></p></th>
-<th class="head"><p><strong>Calcium_mg_dl</strong></p></th>
-<th class="head"><p><strong>Phosphate_mg_dl</strong></p></th>
-<th class="head"><p><strong>Albumin_g_dl</strong></p></th>
+<tr class="row-odd"><th class="head"><p>uPCR</p></th>
+<th class="head"><p>Calcium (mmol/L)</p></th>
+<th class="head"><p>Albumin (g/l)</p></th>
+<th class="head"><p>Phosphate (mmol/L)</p></th>
+<th class="head"><p>uPCR_mg_g</p></th>
+<th class="head"><p>Calcium_mg_dl</p></th>
+<th class="head"><p>Phosphate_mg_dl</p></th>
+<th class="head"><p>Albumin_g_dl</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>0.5</p></td>
-<td><p>2.5</p></td>
-<td><p>1.2</p></td>
-<td><p>0.45</p></td>
-<td><p>4.420085</p></td>
-<td><p>10</p></td>
-<td><p>3.72</p></td>
-<td><p>0.045</p></td>
+<tr class="row-even"><td><p>33.0</p></td>
+<td><p>2.78</p></td>
+<td><p>37.0</p></td>
+<td><p>0.88</p></td>
+<td><p>291.725601</p></td>
+<td><p>11.12</p></td>
+<td><p>2.728</p></td>
+<td><p>3.7</p></td>
 </tr>
-<tr class="row-odd"><td><p>0.7</p></td>
-<td><p>2</p></td>
-<td><p>1.3</p></td>
-<td><p>0.5</p></td>
-<td><p>6.188119</p></td>
-<td><p>8</p></td>
-<td><p>4.03</p></td>
-<td><p>0.05</p></td>
+<tr class="row-odd"><td><p>395.0</p></td>
+<td><p>2.43</p></td>
+<td><p>30.0</p></td>
+<td><p>1.02</p></td>
+<td><p>3491.867044</p></td>
+<td><p>9.72</p></td>
+<td><p>3.162</p></td>
+<td><p>3.0</p></td>
 </tr>
-<tr class="row-even"><td><p>0.2</p></td>
-<td><p>2.2</p></td>
-<td><p>1.1</p></td>
-<td><p>0.47</p></td>
-<td><p>1.768034</p></td>
-<td><p>8.8</p></td>
-<td><p>3.41</p></td>
-<td><p>0.047</p></td>
+<tr class="row-even"><td><p>163.0</p></td>
+<td><p>2.33</p></td>
+<td><p>36.0</p></td>
+<td><p>1.24</p></td>
+<td><p>1440.947666</p></td>
+<td><p>9.32</p></td>
+<td><p>3.844</p></td>
+<td><p>3.6</p></td>
+</tr>
+<tr class="row-odd"><td><p>250.0</p></td>
+<td><p>2.29</p></td>
+<td><p>39.0</p></td>
+<td><p>1.80</p></td>
+<td><p>2210.042433</p></td>
+<td><p>9.16</p></td>
+<td><p>5.580</p></td>
+<td><p>3.9</p></td>
+</tr>
+<tr class="row-even"><td><p>217.0</p></td>
+<td><p>2.45</p></td>
+<td><p>43.0</p></td>
+<td><p>1.39</p></td>
+<td><p>1918.316832</p></td>
+<td><p>9.80</p></td>
+<td><p>4.309</p></td>
+<td><p>4.3</p></td>
 </tr>
 </tbody>
 </table>
-<section id="upcr-to-uacr">
-<h2>uPCR to uACR<a class="headerlink" href="#upcr-to-uacr" title="Link to this heading"></a></h2>
-<p>The conversion of uPCR from mg/mmol to mg/g involves understanding that both
-mg/mmol and mg/g are ratios that can be related through their units.</p>
-<ul class="simple">
-<li><p>mg/mmol is a ratio of mass (in milligrams) to molar concentration (in millimoles), while</p></li>
-<li><p>mg/g is a ratio of mass (in milligrams) to mass (in grams).</p></li>
-</ul>
-<p>To convert mg/mmol to mg/g, we need to know the molar mass of creatinine,
-because uPCR is the ratio of the mass of protein to the mass of creatinine.
-The molar mass of creatinine is approximately 113.12 g/mol. Therefore, 1 mmol of
-creatinine is 113.12 mg.</p>
-<p>Here’s the conversion:</p>
-<p>1 mg/mmol means that you have 1 mg of protein for every 1 mmol of creatinine.
-Since 1 mmol of creatinine is 113.12 mg:</p>
-<div class="math notranslate nohighlight">
-\[\frac{\text{1 mg protein}}{\text{0.11312 g creatinine}} \approx 8.84  {\text{ mg/g}}\]</div>
-<dl class="py function">
-<dt class="sig sig-object py" id="upcr_uacr">
-<span class="sig-name descname"><span class="pre">upcr_uacr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diabetes_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hypertension_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upcr_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">female_str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#upcr_uacr" title="Link to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>DataFrame</em>) – This parameter should be a pandas DataFrame containing the patient data. The DataFrame needs to include specific columns that will be referenced by the other parameters in the function for the conversion process.</p></li>
-<li><p><strong>sex_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column in the DataFrame that identifies the patient’s sex. This is used to apply gender-specific adjustments in the conversion formula, as biological sex can influence the levels of urinary protein and albumin.</p></li>
-<li><p><strong>diabetes_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column that indicates whether the patient has diabetes, typically marked as <code class="docutils literal notranslate"><span class="pre">1</span></code> for <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> for <code class="docutils literal notranslate"><span class="pre">no</span></code>. Diabetes status is used to adjust the conversion because diabetes can impact kidney function and alter protein and albumin excretion rates.</p></li>
-<li><p><strong>hypertension_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column that shows whether the patient has hypertension, also typically marked as <code class="docutils literal notranslate"><span class="pre">1</span></code> for <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> for <code class="docutils literal notranslate"><span class="pre">no</span></code>. Hypertension can affect kidney function, making it a necessary factor in the conversion calculations.</p></li>
-<li><p><strong>upcr_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The name of the column containing the urinary protein-creatinine ratio (uPCR) values that need to be converted to urinary albumin-creatinine ratio (uACR). This is the primary input for the conversion process.</p></li>
-<li><p><strong>female_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The string used in the dataset to identify female patients. This string is crucial for applying the correct conversion factors, as the function adjusts differently based on the patient being male or female, reflecting the biological differences in albumin excretion.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.Series</span></code>: The function returns a pandas Series containing the computed urinary albumin-creatinine ratio (uACR) for each patient in the DataFrame. This Series is indexed in the same way as the original DataFrame (<code class="docutils literal notranslate"><span class="pre">df.index</span></code>), ensuring that the uACR values align correctly with the corresponding patient data.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<p>The <code class="docutils literal notranslate"><span class="pre">upcr_uacr</span> <span class="pre">function</span></code> is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.</p>
-</section>
-<section id="calcium">
-<h2>Calcium<a class="headerlink" href="#calcium" title="Link to this heading"></a></h2>
-<p>Calcium is often measured in millimoles per liter (mmol/L) and needs to be
-converted to milligrams per deciliter (mg/dL) for certain clinical applications
-or study comparisons.
-- Molecular weight of Calcium (Ca): Calcium’s atomic weight is approximately 40.08 g/mol.
-- Conversion factor: To convert mmol/L to mg/dL for calcium, you multiply by 4.
-This is derived as follows:</p>
-<div class="math notranslate nohighlight">
-\[\text{1 mmol/L} \times  \frac{\text{40.08 mg}}{{\text{1 mmol}}} \times \frac{\text {1L} } {\text{10 dL}} = 4.008 \text{ mg/dL}\]</div>
-</section>
-<section id="phosphate">
-<h2>Phosphate<a class="headerlink" href="#phosphate" title="Link to this heading"></a></h2>
-<p>Phosphate concentrations are similarly reported in mmol/L but often need to be expressed in mg/dL.</p>
-<ul class="simple">
-<li><p>Molecular weight of Phosphate (PO₄³⁻): The molar mass of phosphate as an ion (considering phosphorus and oxygen) is approximately 94.97 g/mol.</p></li>
-<li><p>Conversion factor: To convert mmol/L to mg/dL for phosphate:</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[\text{1 mmol/L} \times  \frac{\text{94.97 mg}}{{\text{1 mmol}}} \times \frac{\text {1L} } {\text{10 dL}} \approx 9.497 \text{ mg/dL}\]</div>
-</section>
-<section id="albumin">
-<h2>Albumin<a class="headerlink" href="#albumin" title="Link to this heading"></a></h2>
-<p>Albumin measurements are often made in grams per liter (g/L) and converted to
-grams per deciliter (g/dL) for standard reporting in many clinical contexts.</p>
-<p>Conversion factor: Converting g/L to g/dL is straightforward as it involves
-shifting the decimal point:</p>
-<div class="math notranslate nohighlight">
-\[1\text{ g/L} \div 10 = 0.1 \text { g/dL}\]</div>
-<p>These conversions help ensure consistency in reporting and interpreting lab
-values across different systems and studies, facilitating better comparison and
-understanding of patient data.</p>
 </section>
 </section>
 
