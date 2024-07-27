@@ -356,6 +356,23 @@ The ``upcr_uacr`` function is typically used in clinical data processing where a
 Classifying ESRD Outcome by 2 and 5 Year Outcomes
 =================================================
 
+.. code-block:: python
+
+    from kfre import class_esrd_outcome
+
+.. function:: class_esrd_outcome(df, col, years, duration_col, prefix=None, create_years_col=True)
+
+    :param DataFrame df: The DataFrame to perform calculations on. This DataFrame should include columns relevant for calculating ESRD outcomes.
+    :param str col: The column name with ESRD (should be eGFR < 15 flag).
+    :param int years: The number of years to use in the condition.
+    :param str duration_col: The name of the column containing the duration data.
+    :param str prefix: (`optional`) Custom prefix for the new column name. If None, no prefix is added.
+    :param bool create_years_col: (`optional`) Whether to create the 'years' column. Default is True.
+
+    :returns: ``pd.DataFrame``: The modified DataFrame with the new column added.
+
+This function creates a new column in the DataFrame which is populated with a 1 or a 0 based on whether the ESRD condition (eGFR < 15) is met within the specified number of years. If `create_years_col` is set to True, it calculates the 'years' column based on the `duration_col` provided. If False, it uses the `duration_col` directly. The new column is named using the specified prefix and number of years, or just the number of years if no prefix is provided.
+
 
 Batch Risk Calculation for Multiple Patients
 ============================================
