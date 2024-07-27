@@ -22,7 +22,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],  # Classifiers for the package
-    python_requires=">=3.74",  # Minimum version of Python required
+    python_requires=">=3.7.4",  # Minimum version of Python required
     install_requires=[
         "numpy>=1.18.5",  # Minimum version of numpy required
         "pandas>=1.0.5",  # Minimum version of pandas required
