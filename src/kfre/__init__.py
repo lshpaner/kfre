@@ -63,7 +63,7 @@ __all__ = [
     "perform_conversions",
     "add_kfre_risk_col",
     "RiskPredictor",
-    "calc_esrd_outcome",
+    "class_esrd_outcome",
     "class_ckd_stages",
     "plot_kfre_metrics",
     "eval_kfre_metrics",
