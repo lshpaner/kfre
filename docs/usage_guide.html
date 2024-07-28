@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Usage Guide &mdash; KFRE 0.1.12 documentation</title>
+  <title>Single Patient Risk Calculation &mdash; KFRE 0.1.12 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -56,8 +56,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#single-patient-risk-calculation">Single Patient Risk Calculation</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Single Patient Risk Calculation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#kfre_person"><code class="docutils literal notranslate"><span class="pre">kfre_person()</span></code></a></li>
 </ul>
 </li>
@@ -115,7 +114,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Usage Guide</li>
+      <li class="breadcrumb-item active">Single Patient Risk Calculation</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -126,15 +125,12 @@
              
   <div class="no-click"><a class="reference internal image-reference" href="_images/kfre_logo.svg"><img alt="KFRE Library Logo" class="align-left" src="_images/kfre_logo.svg" width="200px" /></a>
 </div><div style="height: 106px;"></div><p></p>
-<section id="id1">
-<h1>Usage Guide<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
 <p>This section provides guidance on using the KFRE library.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library offers a flexible and user-friendly interface to estimate the
 risk of kidney failure for individual patients using the KFRE model developed by Tangri et al. With
 <code class="docutils literal notranslate"><span class="pre">kfre</span></code>, you can calculate the risk using the classic 4-variable model, the
 detailed 8-variable model, and, uniquely, a 6-variable model that is not commonly
 found in online calculators.</p>
-</section>
 <section id="single-patient-risk-calculation">
 <h1>Single Patient Risk Calculation<a class="headerlink" href="#single-patient-risk-calculation" title="Link to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">kfre_person</span></code> function allows for detailed, personalized risk assessments
@@ -328,7 +324,7 @@ understanding of patient data.</p>
 <p>These parameters provide the flexibility to tailor the unit conversion process to specific data needs, enabling precise and appropriate conversions crucial for accurate data analysis and interpretation in clinical or scientific research.</p>
 <p><strong>Example Usage</strong></p>
 <p>The following is an example to illustrate the usage of the <code class="docutils literal notranslate"><span class="pre">perform_conversions</span></code> function. This example shows how to convert values from mmol to mg for various clinical parameters within a DataFrame.</p>
-<p><cite>First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p><cite>First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id5" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>uPCR</p></th>
@@ -389,7 +385,7 @@ Converted<span class="w"> </span><span class="s1">&#39;Phosphate (mmol/L)&#39;</
 Converted<span class="w"> </span><span class="s1">&#39;Albumin (g/l)&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Albumin_g_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">0</span>.1
 </pre></div>
 </div>
-<p><cite>First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p><cite>First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id5" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <table class="docutils align-left">
 <thead>
 <tr class="row-odd"><th class="head"><p>uPCR</p></th>
@@ -472,12 +468,12 @@ Converted<span class="w"> </span><span class="s1">&#39;Albumin (g/l)&#39;</span>
 
 <p>The <code class="docutils literal notranslate"><span class="pre">upcr_uacr</span></code> function is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;uACR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">upcr_uacr</span><span class="p">(</span>
-<span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
-<span class="n">sex_col</span><span class="o">=</span><span class="s2">&quot;SEX&quot;</span><span class="p">,</span>
-<span class="n">diabetes_col</span><span class="o">=</span><span class="s2">&quot;Diabetes (1=yes; 0=no)&quot;</span><span class="p">,</span>
-<span class="n">hypertension_col</span><span class="o">=</span><span class="s2">&quot;Hypertension (1=yes; 0=no)&quot;</span><span class="p">,</span>
-<span class="n">upcr_col</span><span class="o">=</span><span class="s2">&quot;uPCR_mg_g&quot;</span><span class="p">,</span>
-<span class="n">female_str</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">,</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="n">sex_col</span><span class="o">=</span><span class="s2">&quot;SEX&quot;</span><span class="p">,</span>
+    <span class="n">diabetes_col</span><span class="o">=</span><span class="s2">&quot;Diabetes (1=yes; 0=no)&quot;</span><span class="p">,</span>
+    <span class="n">hypertension_col</span><span class="o">=</span><span class="s2">&quot;Hypertension (1=yes; 0=no)&quot;</span><span class="p">,</span>
+    <span class="n">upcr_col</span><span class="o">=</span><span class="s2">&quot;uPCR_mg_g&quot;</span><span class="p">,</span>
+    <span class="n">female_str</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -551,7 +547,7 @@ Converted<span class="w"> </span><span class="s1">&#39;Albumin (g/l)&#39;</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><cite>First 5 Rows of Outcome Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p><cite>First 5 Rows of Outcome Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id5" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <table class="docutils align-left">
 <thead>
 <tr class="row-odd"><th class="head"><p>Index</p></th>
@@ -666,7 +662,7 @@ and reliability of the risk predictions.</p>
 <span class="c1"># predictions for each model and time frame</span>
 </pre></div>
 </div>
-<p><cite>First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p><cite>First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id5" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <table class="docutils align-left">
 <thead>
 <tr class="row-odd"><th class="head"><p>Age</p></th>
@@ -768,8 +764,6 @@ and reliability of the risk predictions.</p>
 <h1>Performance Assessment<a class="headerlink" href="#performance-assessment" title="Link to this heading"></a></h1>
 <section id="auc-roc-precision-recall-curves">
 <h2>AUC ROC &amp; Precision-Recall Curves<a class="headerlink" href="#auc-roc-precision-recall-curves" title="Link to this heading"></a></h2>
-<div class="no-click"><a class="reference internal image-reference" href="_images/performance_grid.svg"><img alt="AUC_ROC_and_Precision_Recall" class="align-left" src="_images/performance_grid.svg" width="900px" /></a>
-</div><div style="height: 106px;"></div><p></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="plot_kfre_metrics">
 <span class="sig-name descname"><span class="pre">plot_kfre_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(12,</span> <span class="pre">6)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_path_png</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_path_svg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_inches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tight'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all_plots'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_plots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_combinations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_grids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal_places</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plot_kfre_metrics" title="Link to this definition"></a></dt>
@@ -828,6 +822,8 @@ If <code class="docutils literal notranslate"><span class="pre">plot_type</span>
 <span class="p">)</span>
 </pre></div>
 </div>
+<div class="no-click"><a class="reference internal image-reference" href="_images/performance_grid.svg"><img alt="AUC_ROC_and_Precision_Recall" class="align-left" src="_images/performance_grid.svg" width="900px" /></a>
+</div><div style="height: 106px;"></div><p></p>
 </section>
 <section id="performance-metrics">
 <h2>Performance Metrics<a class="headerlink" href="#performance-metrics" title="Link to this heading"></a></h2>
@@ -946,9 +942,9 @@ If <code class="docutils literal notranslate"><span class="pre">plot_type</span>
 </div>
 <hr class="docutils" />
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id6" role="doc-footnote">
+<aside class="footnote brackets" id="id5" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id4">3</a>,<a role="doc-backlink" href="#id5">4</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id3">3</a>,<a role="doc-backlink" href="#id4">4</a>)</span>
 <p>Ali, I., Donne, R. L., &amp; Kalra, P. A. (2021). A validation study of the kidney failure risk equation in advanced chronic kidney disease according to disease aetiology with evaluation of discrimination, calibration and clinical utility. <em>BMC Nephrology, 22(1),</em> 194. <a class="reference external" href="https://doi.org/10.1186/s12882-021-02402-1">https://doi.org/10.1186/s12882-021-02402-1</a></p>
 </aside>
 </aside>
