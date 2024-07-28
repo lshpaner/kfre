@@ -73,7 +73,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#classifying-esrd-outcome-by-2-and-5-year-outcomes">Classifying ESRD Outcome by 2 and 5 Year Outcomes</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="#classifying-esrd-outcomes">Classifying ESRD Outcomes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#class_esrd_outcome"><code class="docutils literal notranslate"><span class="pre">class_esrd_outcome()</span></code></a></li>
 </ul>
 </li>
@@ -82,12 +82,14 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#performance-assessment">Performance Assessment</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#plot_kfre_metrics"><code class="docutils literal notranslate"><span class="pre">plot_kfre_metrics()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#auc-roc-precision-recall-curves">AUC ROC &amp; Precision-Recall Curves</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#plot_kfre_metrics"><code class="docutils literal notranslate"><span class="pre">plot_kfre_metrics()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-metrics">Performance Metrics</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#eval_kfre_metrics"><code class="docutils literal notranslate"><span class="pre">eval_kfre_metrics()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#performance-metrics-explained">Performance Metrics Explained</a></li>
 </ul>
 </li>
 </ul>
@@ -327,8 +329,8 @@ understanding of patient data.</p>
 <p>These parameters provide the flexibility to tailor the unit conversion process to specific data needs, enabling precise and appropriate conversions crucial for accurate data analysis and interpretation in clinical or scientific research.</p>
 <p><strong>Example Usage</strong></p>
 <p>The following is an example to illustrate the usage of the <code class="docutils literal notranslate"><span class="pre">perform_conversions</span></code> function. This example shows how to convert values from mmol to mg for various clinical parameters within a DataFrame.</p>
-<table class="docutils align-default" id="id2">
-<caption><span class="caption-text">First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<p><cite>First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>uPCR</p></th>
 <th class="head"><p>Calcium (mmol/L)</p></th>
@@ -388,11 +390,8 @@ Converted<span class="w"> </span><span class="s1">&#39;Phosphate (mmol/L)&#39;</
 Converted<span class="w"> </span><span class="s1">&#39;Albumin (g/l)&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Albumin_g_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">0</span>.1
 </pre></div>
 </div>
-<div style="text-align: left; margin-bottom: 10px;">
-<i>
-First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021, BMC Nephrol)
-</i>
-</div><table class="docutils align-left">
+<p><cite>First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<table class="docutils align-left">
 <thead>
 <tr class="row-odd"><th class="head"><p>uPCR</p></th>
 <th class="head"><p>Calcium (mmol/L)</p></th>
@@ -502,8 +501,8 @@ First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021
 </div>
 </section>
 </section>
-<section id="classifying-esrd-outcome-by-2-and-5-year-outcomes">
-<h1>Classifying ESRD Outcome by 2 and 5 Year Outcomes<a class="headerlink" href="#classifying-esrd-outcome-by-2-and-5-year-outcomes" title="Link to this heading"></a></h1>
+<section id="classifying-esrd-outcomes">
+<h1>Classifying ESRD Outcomes<a class="headerlink" href="#classifying-esrd-outcomes" title="Link to this heading"></a></h1>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">class_esrd_outcome</span>
 </pre></div>
 </div>
@@ -553,11 +552,8 @@ First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021
 <span class="p">)</span>
 </pre></div>
 </div>
-<div style="text-align: left; margin-bottom: 10px;">
-<i>
-First 5 Rows of Outcome Data
-</i>
-</div><table class="docutils align-left">
+<p><cite>First 5 Rows of Outcome Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<table class="docutils align-left">
 <thead>
 <tr class="row-odd"><th class="head"><p>Index</p></th>
 <th class="head"><p>2_year_outcome</p></th>
@@ -671,15 +667,8 @@ and reliability of the risk predictions.</p>
 <span class="c1"># predictions for each model and time frame</span>
 </pre></div>
 </div>
-<div style="text-align: left;">
-
-<i>
-First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol) <br>
-</i>
-
-<br>
-
-</div><table class="docutils align-left">
+<p><cite>First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<table class="docutils align-left">
 <thead>
 <tr class="row-odd"><th class="head"><p>Age</p></th>
 <th class="head"><p>SEX</p></th>
@@ -778,6 +767,10 @@ First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nep
 </section>
 <section id="performance-assessment">
 <h1>Performance Assessment<a class="headerlink" href="#performance-assessment" title="Link to this heading"></a></h1>
+<section id="auc-roc-precision-recall-curves">
+<h2>AUC ROC &amp; Precision-Recall Curves<a class="headerlink" href="#auc-roc-precision-recall-curves" title="Link to this heading"></a></h2>
+<div class="no-click"><a class="reference internal image-reference" href="_images/performance_grid.svg"><img alt="AUC_ROC_and_Precision_Recall" class="align-left" src="_images/performance_grid.svg" width="900px" /></a>
+</div><div style="height: 106px;"></div><p></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="plot_kfre_metrics">
 <span class="sig-name descname"><span class="pre">plot_kfre_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(12,</span> <span class="pre">6)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_path_png</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_path_svg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_inches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tight'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all_plots'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_plots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_combinations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_grids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal_places</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plot_kfre_metrics" title="Link to this definition"></a></dt>
@@ -836,57 +829,9 @@ If <code class="docutils literal notranslate"><span class="pre">plot_type</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<section id="auc-roc-precision-recall-curves">
-<h2>AUC ROC &amp; Precision-Recall Curves<a class="headerlink" href="#auc-roc-precision-recall-curves" title="Link to this heading"></a></h2>
-<div class="no-click"><a class="reference internal image-reference" href="_images/performance_grid.svg"><img alt="AUC_ROC_and_Precision_Recall" class="align-left" src="_images/performance_grid.svg" width="900px" /></a>
-</div><div style="height: 106px;"></div><p></p>
-<dl class="py function">
-<dt class="sig sig-object py" id="eval_kfre_metrics">
-<span class="sig-name descname"><span class="pre">eval_kfre_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_var_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outcome_years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal_places</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eval_kfre_metrics" title="Link to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>DataFrame</em>) – The input DataFrame containing the necessary columns for truth and predictions. Rows with NaN values will be dropped.</p></li>
-<li><p><strong>n_var_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – List of variable numbers to consider, e.g., <code class="docutils literal notranslate"><span class="pre">[4,</span> <span class="pre">6,</span> <span class="pre">8]</span></code>.</p></li>
-<li><p><strong>outcome_years</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – (<cite>optional</cite>) List, tuple, or single year to consider for outcomes. Default is <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">5]</span></code>.</p></li>
-<li><p><strong>decimal_places</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – (<cite>optional</cite>) Number of decimal places for the calculated metrics. Default is <code class="docutils literal notranslate"><span class="pre">6</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>: A DataFrame containing the calculated metrics for each outcome.</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code>: If required outcome columns are missing in the DataFrame.
-<code class="docutils literal notranslate"><span class="pre">ValueError</span></code>: If an invalid variable number is provided in <code class="docutils literal notranslate"><span class="pre">n_var_list</span></code>.</p>
-</dd>
-</dl>
-<p>This function computes a set of performance metrics for multiple binary classification models given the true labels and the predicted probabilities for each outcome. The metrics calculated include precision (positive predictive value), average precision, sensitivity (recall), specificity, AUC ROC, and Brier score.</p>
-<dl class="simple">
-<dt>Notes:</dt><dd><ul class="simple">
-<li><p>Precision is calculated with a threshold of <cite>0.5</cite> for the predicted probabilities.</p></li>
-<li><p>Sensitivity is also known as recall.</p></li>
-<li><p>Specificity is calculated as the recall for the negative class.</p></li>
-<li><p>AUC ROC is calculated using the receiver operating characteristic curve.</p></li>
-<li><p>Brier score measures the mean squared difference between predicted probabilities and the true binary outcomes.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<p><strong>Example Usage</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">eval_kfre_metrics</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics_df_n_var</span> <span class="o">=</span> <span class="n">eval_kfre_metrics</span><span class="p">(</span>
-    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>                 <span class="c1"># Metrics-ready DataFrame as the first argument</span>
-    <span class="n">n_var_list</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>  <span class="c1"># Specify the list of variable numbers to consider</span>
-    <span class="n">outcome_years</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>  <span class="c1"># Specify the list of outcome years to consider</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 </section>
-<section id="performance-metrics-explained">
-<h2>Performance Metrics Explained<a class="headerlink" href="#performance-metrics-explained" title="Link to this heading"></a></h2>
+<section id="performance-metrics">
+<h2>Performance Metrics<a class="headerlink" href="#performance-metrics" title="Link to this heading"></a></h2>
 <p>This section explains the various performance metrics calculated by the <cite>eval_kfre_metrics</cite> function.</p>
 <p><strong>Precision (Positive Predictive Value)</strong></p>
 <p>Precision, also known as Positive Predictive Value (PPV), is the ratio of correctly predicted positive observations to the total predicted positives. It is calculated as:</p>
@@ -955,6 +900,59 @@ If <code class="docutils literal notranslate"><span class="pre">plot_type</span>
 </ul>
 </dd>
 </dl>
+<hr class="docutils" />
+<dl class="py function">
+<dt class="sig sig-object py" id="eval_kfre_metrics">
+<span class="sig-name descname"><span class="pre">eval_kfre_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_var_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outcome_years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal_places</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eval_kfre_metrics" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – The input DataFrame containing the necessary columns for truth and predictions. Rows with NaN values will be dropped.</p></li>
+<li><p><strong>n_var_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – List of variable numbers to consider, e.g., <code class="docutils literal notranslate"><span class="pre">[4,</span> <span class="pre">6,</span> <span class="pre">8]</span></code>.</p></li>
+<li><p><strong>outcome_years</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – (<cite>optional</cite>) List, tuple, or single year to consider for outcomes. Default is <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">5]</span></code>.</p></li>
+<li><p><strong>decimal_places</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – (<cite>optional</cite>) Number of decimal places for the calculated metrics. Default is <code class="docutils literal notranslate"><span class="pre">6</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>: A DataFrame containing the calculated metrics for each outcome.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code>: If required outcome columns are missing in the DataFrame.
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code>: If an invalid variable number is provided in <code class="docutils literal notranslate"><span class="pre">n_var_list</span></code>.</p>
+</dd>
+</dl>
+<p>This function computes a set of performance metrics for multiple binary classification models given the true labels and the predicted probabilities for each outcome. The metrics calculated include precision (positive predictive value), average precision, sensitivity (recall), specificity, AUC ROC, and Brier score.</p>
+<dl class="simple">
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>Precision is calculated with a threshold of <cite>0.5</cite> for the predicted probabilities.</p></li>
+<li><p>Sensitivity is also known as recall.</p></li>
+<li><p>Specificity is calculated as the recall for the negative class.</p></li>
+<li><p>AUC ROC is calculated using the receiver operating characteristic curve.</p></li>
+<li><p>Brier score measures the mean squared difference between predicted probabilities and the true binary outcomes.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Example Usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">eval_kfre_metrics</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics_df_n_var</span> <span class="o">=</span> <span class="n">eval_kfre_metrics</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>                 <span class="c1"># Metrics-ready DataFrame as the first argument</span>
+    <span class="n">n_var_list</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>  <span class="c1"># Specify the list of variable numbers to consider</span>
+    <span class="n">outcome_years</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>  <span class="c1"># Specify the list of outcome years to consider</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id4">3</a>,<a role="doc-backlink" href="#id5">4</a>)</span>
+<p>Ali, I., Donne, R. L., &amp; Kalra, P. A. (2021). A validation study of the kidney failure risk equation in advanced chronic kidney disease according to disease aetiology with evaluation of discrimination, calibration and clinical utility. <em>BMC Nephrology, 22(1),</em> 194. <a class="reference external" href="https://doi.org/10.1186/s12882-021-02402-1">https://doi.org/10.1186/s12882-021-02402-1</a></p>
+</aside>
+</aside>
 </section>
 </section>
 
