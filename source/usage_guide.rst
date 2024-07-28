@@ -22,6 +22,9 @@
 \
 
 
+Description
+===========
+
 This section provides guidance on using the KFRE library.
 
 The ``kfre`` library offers a flexible and user-friendly interface to estimate the 
