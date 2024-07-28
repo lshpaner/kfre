@@ -26,6 +26,51 @@
 Changelog
 =========
 
+0.1.12
+------
+
+**Patch Release**  
+
+This release is a comprehensive stable build encompassing changes from version ``0.1.8`` forward.
+
+- Package version fix in ``min_readme.md`` citation section  
+- Python version fix in ``min_readme.md``   
+- Python version fix from ``3.74`` to ``3.7.4``  
+- new functions for classifying outcomes and ckd stages  
+   - ``class_esrd_outcome``  
+   - ``class_ckd_stages``
+- new functions for performance assessment
+   - ``plot_kfre_metrics``   
+   - ``eval_kfre_metrics``  
+      - roc_auc curves  
+      - precision-recall curves  
+- performance metrics:
+   - Precision/PPV  
+   - Average Precision  
+   - Sensitivity  
+   - Specificity  
+   - AUC ROC  
+   - Brier Score  
+
+0.1.11
+------
+**Patch Release**
+
+- Package version fix in ``min_readme.md`` citation section  
+
+0.1.10
+------
+**Patch Release**
+
+- Python version fix in ``min_readme.md``  
+
+0.1.9
+-----
+- Python version fix from ``3.74`` to ``3.7.4``  
+- updated functions for classifying outcomes and ckd stages  
+   - ``class_esrd_outcome``  
+   - ``class_ckd_stages``
+
 0.1.8
 -----
 
@@ -48,17 +93,18 @@ Changelog
 0.1.7
 -----
 
-This release includes the following updates and improvements:
+This release includes the following updates and improvements:  
 
-- Acknowledgements for key influencers whose exceptional work on end-stage kidney disease has greatly inspired the creation of this library.  
+- Acknowledgements for key influencers whose exceptional work on end-stage kidney disease has greatly inspired the creation of this library.   
 
-- Implemented comprehensive exception handling within the ``kfre_person()`` function to ensure proper parameter validation:
-  - Combined all exceptions into a single exception.
-  - Concatenated exceptions using a newline character for better readability.
-  - Added checks to ensure ``age``, ``is_male``, ``eGFR``, and ``uACR`` parameters are supplied.
-  - Validated that the ``years`` parameter can only be 2 or 5.
-  - Ensured ``dm`` and ``htn`` parameters, if provided, are either ``0``, ``1``, ``True``, or ``False``.
-  - Added a check to ensure ``is_north_american`` is specified as either ``True`` or ``False``.
+- Implemented comprehensive exception handling within the ``kfre_person()`` function to ensure proper parameter validation:  
+
+  - Combined all exceptions into a single exception.  
+  - Concatenated exceptions using a newline character for better readability.  
+  - Added checks to ensure ``age``, ``is_male``, ``eGFR``, and ``uACR`` parameters are supplied.  
+  - Validated that the ``years`` parameter can only be ``2`` or ``5``.  
+  - Ensured ``dm`` and ``htn`` parameters, if provided, are either ``0``, ``1``, ``True``, or ``False``.  
+  - Added a check to ensure ``is_north_american`` is specified as either ``True`` or ``False``.  
 
 
 0.1.6

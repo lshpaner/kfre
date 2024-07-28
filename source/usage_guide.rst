@@ -244,7 +244,9 @@ These parameters provide the flexibility to tailor the unit conversion process t
 
 The following is an example to illustrate the usage of the ``perform_conversions`` function. This example shows how to convert values from mmol to mg for various clinical parameters within a DataFrame.
 
-.. table:: First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)
+`First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)` [1]_.
+
+.. table:: 
 
    ====== =================== ================ ==================
    uPCR   Calcium (mmol/L)    Albumin (g/l)    Phosphate (mmol/L)
@@ -286,13 +288,7 @@ The following is an example to illustrate the usage of the ``perform_conversions
     Converted 'Albumin (g/l)' to new column 'Albumin_g_dl' with factor 0.1
 
 
-.. raw:: html
-
-    <div style="text-align: left; margin-bottom: 10px;">
-    <i>
-    First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021, BMC Nephrol)
-    </i>
-    </div>
+`First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021, BMC Nephrol)` [1]_.
 
 .. table:: 
    :align: left
@@ -353,8 +349,8 @@ The ``upcr_uacr`` function is typically used in clinical data processing where a
     744            NaN
     Name: uACR, Length: 745, dtype: float64
 
-Classifying ESRD Outcome by 2 and 5 Year Outcomes
-=================================================
+Classifying ESRD Outcomes
+=========================
 
 .. code-block:: python
 
@@ -403,13 +399,7 @@ This function creates a new column in the DataFrame which is populated with a ``
     )
 
 
-.. raw:: html
-
-    <div style="text-align: left; margin-bottom: 10px;">
-    <i>
-    First 5 Rows of Outcome Data
-    </i>
-    </div>
+`First 5 Rows of Outcome Data (Adapted from Ali et al., 2021, BMC Nephrol)` [1]_.
 
 .. table:: 
    :align: left
@@ -512,19 +502,10 @@ This function is designed to compute the risk of chronic kidney disease (CKD) ov
     # The resulting DataFrame 'df' now includes new columns with risk 
     # predictions for each model and time frame
 
-.. raw:: html
 
-    <div style="text-align: left;">
-    
-    <i>
-    First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol) <br> 
-    </i>
-    
-    <br>
+`First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol)` [1]_.
 
-    </div>
-
-.. table::
+.. table:: 
    :align: left
 
    ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================  
@@ -538,9 +519,30 @@ This function is designed to compute the risk of chronic kidney disease (CKD) ov
    ======== ====== ======================== ========================== ========= ============ ================ ================ ================ ================ ================ ================ ================ ================ 
 
 
-
 Performance Assessment
 =======================
+
+AUC ROC & Precision-Recall Curves
+---------------------------------
+
+.. raw:: html
+
+   <div class="no-click">
+
+.. image:: ../assets/performance_grid.svg
+   :alt: AUC_ROC_and_Precision_Recall
+   :align: left
+   :width: 900px
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+   
+   <div style="height: 106px;"></div>
+
+\
 
 .. function:: plot_kfre_metrics(df, num_vars, fig_size=(12, 6), mode="both", image_path_png=None, image_path_svg=None, image_prefix=None, bbox_inches="tight", plot_type="all_plots", save_plots=False, show_years=[2, 5], plot_combinations=False, show_grids=False, decimal_places=2)
 
@@ -597,67 +599,8 @@ This function generates the true labels and predicted probabilities for 2-year a
     )
 
 
-AUC ROC & Precision-Recall Curves
----------------------------------
-
-.. raw:: html
-
-   <div class="no-click">
-
-.. image:: ../assets/performance_grid.svg
-   :alt: AUC_ROC_and_Precision_Recall
-   :align: left
-   :width: 900px
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-   
-   <div style="height: 106px;"></div>
-
-\
-
-
-.. function:: eval_kfre_metrics(df, n_var_list, outcome_years=[2, 5], decimal_places=6)
-
-    :param DataFrame df: The input DataFrame containing the necessary columns for truth and predictions. Rows with NaN values will be dropped.
-    :param list of int n_var_list: List of variable numbers to consider, e.g., ``[4, 6, 8]``.
-    :param list, tuple, or int outcome_years: (`optional`) List, tuple, or single year to consider for outcomes. Default is ``[2, 5]``.
-    :param int decimal_places: (`optional`) Number of decimal places for the calculated metrics. Default is ``6``.
-
-    :returns: ``pd.DataFrame``: A DataFrame containing the calculated metrics for each outcome.
-
-    :raises: ``ValueError``: If required outcome columns are missing in the DataFrame.  
-              ``ValueError``: If an invalid variable number is provided in ``n_var_list``.
-
-    This function computes a set of performance metrics for multiple binary classification models given the true labels and the predicted probabilities for each outcome. The metrics calculated include precision (positive predictive value), average precision, sensitivity (recall), specificity, AUC ROC, and Brier score.
-
-    Notes:
-        - Precision is calculated with a threshold of `0.5` for the predicted probabilities.   
-        - Sensitivity is also known as recall.  
-        - Specificity is calculated as the recall for the negative class.  
-        - AUC ROC is calculated using the receiver operating characteristic curve.  
-        - Brier score measures the mean squared difference between predicted probabilities and the true binary outcomes.  
-
-**Example Usage**
-
-.. code-block:: python
-
-    from kfre import eval_kfre_metrics
-
-
-.. code-block:: python
-
-    metrics_df_n_var = eval_kfre_metrics(
-        df=df,                 # Metrics-ready DataFrame as the first argument
-        n_var_list=[4, 6, 8],  # Specify the list of variable numbers to consider
-        outcome_years=[2, 5],  # Specify the list of outcome years to consider
-    )
-
-Performance Metrics Explained
------------------------------
+Performance Metrics
+--------------------
 
 This section explains the various performance metrics calculated by the `eval_kfre_metrics` function.
 
@@ -733,4 +676,47 @@ Where:
     - :math:`N` is the number of total observations.  
     - :math:`f_i` is the predicted probability for the :math:`i`-th observation.  
     - :math:`o_i` is the actual outcome for the :math:`i`-th observation (`0` or `1`).
+    
 
+----
+
+.. function:: eval_kfre_metrics(df, n_var_list, outcome_years=[2, 5], decimal_places=6)
+
+    :param DataFrame df: The input DataFrame containing the necessary columns for truth and predictions. Rows with NaN values will be dropped.
+    :param list of int n_var_list: List of variable numbers to consider, e.g., ``[4, 6, 8]``.
+    :param list, tuple, or int outcome_years: (`optional`) List, tuple, or single year to consider for outcomes. Default is ``[2, 5]``.
+    :param int decimal_places: (`optional`) Number of decimal places for the calculated metrics. Default is ``6``.
+
+    :returns: ``pd.DataFrame``: A DataFrame containing the calculated metrics for each outcome.
+
+    :raises: ``ValueError``: If required outcome columns are missing in the DataFrame.  
+              ``ValueError``: If an invalid variable number is provided in ``n_var_list``.
+
+    This function computes a set of performance metrics for multiple binary classification models given the true labels and the predicted probabilities for each outcome. The metrics calculated include precision (positive predictive value), average precision, sensitivity (recall), specificity, AUC ROC, and Brier score.
+
+    Notes:
+        - Precision is calculated with a threshold of `0.5` for the predicted probabilities.   
+        - Sensitivity is also known as recall.  
+        - Specificity is calculated as the recall for the negative class.  
+        - AUC ROC is calculated using the receiver operating characteristic curve.  
+        - Brier score measures the mean squared difference between predicted probabilities and the true binary outcomes.  
+
+**Example Usage**
+
+.. code-block:: python
+
+    from kfre import eval_kfre_metrics
+
+
+.. code-block:: python
+
+    metrics_df_n_var = eval_kfre_metrics(
+        df=df,                 # Metrics-ready DataFrame as the first argument
+        n_var_list=[4, 6, 8],  # Specify the list of variable numbers to consider
+        outcome_years=[2, 5],  # Specify the list of outcome years to consider
+    )
+
+
+----
+
+.. [1] Ali, I., Donne, R. L., & Kalra, P. A. (2021). A validation study of the kidney failure risk equation in advanced chronic kidney disease according to disease aetiology with evaluation of discrimination, calibration and clinical utility. *BMC Nephrology, 22(1),* 194. https://doi.org/10.1186/s12882-021-02402-1 
