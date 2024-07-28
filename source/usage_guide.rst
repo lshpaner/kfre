@@ -22,8 +22,6 @@
 \
 
 
-Usage Guide
-===========
 This section provides guidance on using the KFRE library.
 
 The ``kfre`` library offers a flexible and user-friendly interface to estimate the 
@@ -318,14 +316,13 @@ The ``upcr_uacr`` function is typically used in clinical data processing where a
 .. code-block:: python
 
     df["uACR"] = upcr_uacr(
-    df=df,
-    sex_col="SEX",
-    diabetes_col="Diabetes (1=yes; 0=no)",
-    hypertension_col="Hypertension (1=yes; 0=no)",
-    upcr_col="uPCR_mg_g",
-    female_str="Female",
+        df=df,
+        sex_col="SEX",
+        diabetes_col="Diabetes (1=yes; 0=no)",
+        hypertension_col="Hypertension (1=yes; 0=no)",
+        upcr_col="uPCR_mg_g",
+        female_str="Female",
     )
-
 
 
 .. code-block:: python
@@ -523,25 +520,6 @@ Performance Assessment
 AUC ROC & Precision-Recall Curves
 ---------------------------------
 
-.. raw:: html
-
-   <div class="no-click">
-
-.. image:: ../assets/performance_grid.svg
-   :alt: AUC_ROC_and_Precision_Recall
-   :align: left
-   :width: 900px
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-   
-   <div style="height: 106px;"></div>
-
-\
-
 .. function:: plot_kfre_metrics(df, num_vars, fig_size=(12, 6), mode="both", image_path_png=None, image_path_svg=None, image_prefix=None, bbox_inches="tight", plot_type="all_plots", save_plots=False, show_years=[2, 5], plot_combinations=False, show_grids=False, decimal_places=2)
 
     :param DataFrame df: The input DataFrame containing the necessary columns for truth and predictions.
@@ -595,6 +573,27 @@ This function generates the true labels and predicted probabilities for 2-year a
         show_grids=True,             # Place all plots on one grid; False does individual
         decimal_places=3,            # Number of decimal places in legend
     )
+
+
+.. raw:: html
+
+   <div class="no-click">
+
+.. image:: ../assets/performance_grid.svg
+   :alt: AUC_ROC_and_Precision_Recall
+   :align: left
+   :width: 900px
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+   
+   <div style="height: 106px;"></div>
+
+\
+
 
 
 Performance Metrics
