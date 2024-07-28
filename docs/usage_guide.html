@@ -87,6 +87,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#eval_kfre_metrics"><code class="docutils literal notranslate"><span class="pre">eval_kfre_metrics()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-metrics-explained">Performance Metrics Explained</a></li>
 </ul>
 </li>
 </ul>
@@ -845,9 +846,9 @@ If <code class="docutils literal notranslate"><span class="pre">plot_type</span>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>DataFrame</em>) – The input DataFrame containing the necessary columns for truth and predictions.</p></li>
+<li><p><strong>df</strong> (<em>DataFrame</em>) – The input DataFrame containing the necessary columns for truth and predictions. Rows with NaN values will be dropped.</p></li>
 <li><p><strong>n_var_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – List of variable numbers to consider, e.g., <code class="docutils literal notranslate"><span class="pre">[4,</span> <span class="pre">6,</span> <span class="pre">8]</span></code>.</p></li>
-<li><p><strong>outcome_years</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – (<cite>optional</cite>) List of outcome years to consider. Default is <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">5]</span></code>.</p></li>
+<li><p><strong>outcome_years</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – (<cite>optional</cite>) List, tuple, or single year to consider for outcomes. Default is <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">5]</span></code>.</p></li>
 <li><p><strong>decimal_places</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – (<cite>optional</cite>) Number of decimal places for the calculated metrics. Default is <code class="docutils literal notranslate"><span class="pre">6</span></code>.</p></li>
 </ul>
 </dd>
@@ -855,7 +856,8 @@ If <code class="docutils literal notranslate"><span class="pre">plot_type</span>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>: A DataFrame containing the calculated metrics for each outcome.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code>: If required outcome columns are missing in the DataFrame.</p>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code>: If required outcome columns are missing in the DataFrame.
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code>: If an invalid variable number is provided in <code class="docutils literal notranslate"><span class="pre">n_var_list</span></code>.</p>
 </dd>
 </dl>
 <p>This function computes a set of performance metrics for multiple binary classification models given the true labels and the predicted probabilities for each outcome. The metrics calculated include precision (positive predictive value), average precision, sensitivity (recall), specificity, AUC ROC, and Brier score.</p>
@@ -882,6 +884,77 @@ If <code class="docutils literal notranslate"><span class="pre">plot_type</span>
 <span class="p">)</span>
 </pre></div>
 </div>
+</section>
+<section id="performance-metrics-explained">
+<h2>Performance Metrics Explained<a class="headerlink" href="#performance-metrics-explained" title="Link to this heading"></a></h2>
+<p>This section explains the various performance metrics calculated by the <cite>eval_kfre_metrics</cite> function.</p>
+<p><strong>Precision (Positive Predictive Value)</strong></p>
+<p>Precision, also known as Positive Predictive Value (PPV), is the ratio of correctly predicted positive observations to the total predicted positives. It is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Precision} = \frac{TP}{TP + FP}\]</div>
+<dl class="simple">
+<dt>Where:</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(TP\)</span> is the number of true positives.</p></li>
+<li><p><span class="math notranslate nohighlight">\(FP\)</span> is the number of false positives.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Average Precision</strong></p>
+<p>Average precision summarizes a precision-recall curve as the weighted mean of precisions achieved at each threshold, with the increase in recall from the previous threshold used as the weight. It is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Average Precision} = \sum_n (R_n - R_{n-1}) P_n\]</div>
+<dl class="simple">
+<dt>Where:</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(R_n\)</span> and <span class="math notranslate nohighlight">\(R_{n-1}\)</span> are the recall values at thresholds <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(n-1\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P_n\)</span> is the precision at threshold <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Sensitivity (Recall)</strong></p>
+<p>Sensitivity, also known as Recall, is the ratio of correctly predicted positive observations to all observations in the actual class. It is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Sensitivity} = \frac{TP}{TP + FN}\]</div>
+<dl class="simple">
+<dt>Where:</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(TP\)</span> is the number of true positives.</p></li>
+<li><p><span class="math notranslate nohighlight">\(FN\)</span> is the number of false negatives.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Specificity</strong></p>
+<p>Specificity measures the proportion of actual negatives that are correctly identified as such. It is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Specificity} = \frac{TN}{TN + FP}\]</div>
+<dl class="simple">
+<dt>Where:</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(TN\)</span> is the number of true negatives.</p></li>
+<li><p><span class="math notranslate nohighlight">\(FP\)</span> is the number of false positives.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>AUC ROC (Area Under the Receiver Operating Characteristic Curve)</strong></p>
+<p>AUC ROC is a performance measurement for classification problems at various threshold settings. ROC is a probability curve and AUC represents the degree or measure of separability. It is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{AUC} = \int_{0}^{1} TPR \, d(FPR)\]</div>
+<dl class="simple">
+<dt>Where:</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(TPR\)</span> is the true positive rate (sensitivity).</p></li>
+<li><p><span class="math notranslate nohighlight">\(FPR\)</span> is the false positive rate (1 - specificity).</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Brier Score</strong></p>
+<p>Brier score measures the mean squared difference between the predicted probabilities and the actual binary outcomes. It is calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\text{Brier Score} = \frac{1}{N} \sum_{i=1}^{N} (f_i - o_i)^2\]</div>
+<dl class="simple">
+<dt>Where:</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(N\)</span> is the number of total observations.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f_i\)</span> is the predicted probability for the <span class="math notranslate nohighlight">\(i\)</span>-th observation.</p></li>
+<li><p><span class="math notranslate nohighlight">\(o_i\)</span> is the actual outcome for the <span class="math notranslate nohighlight">\(i\)</span>-th observation (<cite>0</cite> or <cite>1</cite>).</p></li>
+</ul>
+</dd>
+</dl>
 </section>
 </section>
 

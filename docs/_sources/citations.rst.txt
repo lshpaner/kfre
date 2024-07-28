@@ -37,7 +37,7 @@ Shpaner, L. (2024). kfre: A Python Library for Reproducing Kidney Failure Risk E
       month        = may,
       year         = 2024,
       publisher    = {Zenodo},
-      version      = {0.1.8},
+      version      = {0.1.12},
       doi          = {10.5281/zenodo.11100222},
       url          = {https://doi.org/10.5281/zenodo.11100222}
     }
