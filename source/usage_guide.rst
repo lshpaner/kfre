@@ -26,14 +26,24 @@ Usage Guide
 ===========
 This section provides guidance on using the KFRE library.
 
-Single Patient Risk Calculation
-===============================
-
 The ``kfre`` library offers a flexible and user-friendly interface to estimate the 
-risk of kidney failure for individual patients using Tangri's KFRE model. With 
+risk of kidney failure for individual patients using the KFRE model developed by Tangri et al. With 
 ``kfre``, you can calculate the risk using the classic 4-variable model, the 
 detailed 8-variable model, and, uniquely, a 6-variable model that is not commonly 
 found in online calculators.
+
+Single Patient Risk Calculation
+===============================
+
+The ``kfre_person`` function allows for detailed, personalized risk assessments 
+based on a range of clinical parameters. Depending on the completeness of the 
+data provided, the function can apply a basic 4-variable model or more 
+comprehensive models incorporating additional risk factors like diabetes, 
+hypertension, and various biochemical markers.
+
+The function is designed for ease of use in clinical settings or research, 
+providing immediate risk estimations that are crucial for patient management or 
+further analysis.
 
 .. code-block:: python
 
@@ -57,19 +67,7 @@ found in online calculators.
 
     :returns:  ``float``: The risk of developing CKD within the specified timeframe, as a decimal. Multiply by 100 to convert to a percentage.
 
-**Description**
-
-The ``kfre_person`` function allows for detailed, personalized risk assessments 
-based on a range of clinical parameters. Depending on the completeness of the 
-data provided, the function can apply a basic 4-variable model or more 
-comprehensive models incorporating additional risk factors like diabetes, 
-hypertension, and various biochemical markers.
-
-The function is designed for ease of use in clinical settings or research, 
-providing immediate risk estimations that are crucial for patient management or 
-further analysis.
-
-   
+  
 **Example Usage** 
 
 .. code-block:: python
