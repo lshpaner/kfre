@@ -29,7 +29,7 @@
 
 Welcome to the KFRE Python Library Documentation!
 =============================================================
-.. important::
+.. note::
    This documentation is for ``kfre`` stable version ``0.1.12``.
 
 
