@@ -129,14 +129,22 @@
 <section id="id1">
 <h1>Usage Guide<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
 <p>This section provides guidance on using the KFRE library.</p>
-</section>
-<section id="single-patient-risk-calculation">
-<h1>Single Patient Risk Calculation<a class="headerlink" href="#single-patient-risk-calculation" title="Link to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library offers a flexible and user-friendly interface to estimate the
-risk of kidney failure for individual patients using Tangri’s KFRE model. With
+risk of kidney failure for individual patients using the KFRE model developed by Tangri et al. With
 <code class="docutils literal notranslate"><span class="pre">kfre</span></code>, you can calculate the risk using the classic 4-variable model, the
 detailed 8-variable model, and, uniquely, a 6-variable model that is not commonly
 found in online calculators.</p>
+</section>
+<section id="single-patient-risk-calculation">
+<h1>Single Patient Risk Calculation<a class="headerlink" href="#single-patient-risk-calculation" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">kfre_person</span></code> function allows for detailed, personalized risk assessments
+based on a range of clinical parameters. Depending on the completeness of the
+data provided, the function can apply a basic 4-variable model or more
+comprehensive models incorporating additional risk factors like diabetes,
+hypertension, and various biochemical markers.</p>
+<p>The function is designed for ease of use in clinical settings or research,
+providing immediate risk estimations that are crucial for patient management or
+further analysis.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">kfre_person</span>
 </pre></div>
 </div>
@@ -166,15 +174,6 @@ found in online calculators.</p>
 </dl>
 </dd></dl>
 
-<p><strong>Description</strong></p>
-<p>The <code class="docutils literal notranslate"><span class="pre">kfre_person</span></code> function allows for detailed, personalized risk assessments
-based on a range of clinical parameters. Depending on the completeness of the
-data provided, the function can apply a basic 4-variable model or more
-comprehensive models incorporating additional risk factors like diabetes,
-hypertension, and various biochemical markers.</p>
-<p>The function is designed for ease of use in clinical settings or research,
-providing immediate risk estimations that are crucial for patient management or
-further analysis.</p>
 <p><strong>Example Usage</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">risk_percentage</span> <span class="o">=</span> <span class="n">kfre_person</span><span class="p">(</span>
     <span class="n">age</span><span class="o">=</span><span class="mf">57.28</span><span class="p">,</span>
