@@ -622,14 +622,15 @@ AUC ROC & Precision-Recall Curves
 
 .. function:: eval_kfre_metrics(df, n_var_list, outcome_years=[2, 5], decimal_places=6)
 
-    :param DataFrame df: The input DataFrame containing the necessary columns for truth and predictions.
+    :param DataFrame df: The input DataFrame containing the necessary columns for truth and predictions. Rows with NaN values will be dropped.
     :param list of int n_var_list: List of variable numbers to consider, e.g., ``[4, 6, 8]``.
-    :param list of int outcome_years: (`optional`) List of outcome years to consider. Default is ``[2, 5]``.
+    :param list, tuple, or int outcome_years: (`optional`) List, tuple, or single year to consider for outcomes. Default is ``[2, 5]``.
     :param int decimal_places: (`optional`) Number of decimal places for the calculated metrics. Default is ``6``.
 
     :returns: ``pd.DataFrame``: A DataFrame containing the calculated metrics for each outcome.
 
-    :raises: ``ValueError``: If required outcome columns are missing in the DataFrame.
+    :raises: ``ValueError``: If required outcome columns are missing in the DataFrame.  
+              ``ValueError``: If an invalid variable number is provided in ``n_var_list``.
 
     This function computes a set of performance metrics for multiple binary classification models given the true labels and the predicted probabilities for each outcome. The metrics calculated include precision (positive predictive value), average precision, sensitivity (recall), specificity, AUC ROC, and Brier score.
 
@@ -654,3 +655,82 @@ AUC ROC & Precision-Recall Curves
         n_var_list=[4, 6, 8],  # Specify the list of variable numbers to consider
         outcome_years=[2, 5],  # Specify the list of outcome years to consider
     )
+
+Performance Metrics Explained
+-----------------------------
+
+This section explains the various performance metrics calculated by the `eval_kfre_metrics` function.
+
+**Precision (Positive Predictive Value)**
+
+Precision, also known as Positive Predictive Value (PPV), is the ratio of correctly predicted positive observations to the total predicted positives. It is calculated as:
+
+.. math::
+
+    \text{Precision} = \frac{TP}{TP + FP}
+
+Where:
+    - :math:`TP` is the number of true positives.  
+    - :math:`FP` is the number of false positives.
+
+**Average Precision**
+
+Average precision summarizes a precision-recall curve as the weighted mean of precisions achieved at each threshold, with the increase in recall from the previous threshold used as the weight. It is calculated as:
+
+.. math::
+
+    \text{Average Precision} = \sum_n (R_n - R_{n-1}) P_n
+
+Where:
+    - :math:`R_n` and :math:`R_{n-1}` are the recall values at thresholds :math:`n` and :math:`n-1`.
+    - :math:`P_n` is the precision at threshold :math:`n`.
+
+**Sensitivity (Recall)**
+
+Sensitivity, also known as Recall, is the ratio of correctly predicted positive observations to all observations in the actual class. It is calculated as:
+
+.. math::
+
+    \text{Sensitivity} = \frac{TP}{TP + FN}
+
+Where:
+    - :math:`TP` is the number of true positives.
+    - :math:`FN` is the number of false negatives.
+
+**Specificity**
+
+Specificity measures the proportion of actual negatives that are correctly identified as such. It is calculated as:
+
+.. math::
+
+    \text{Specificity} = \frac{TN}{TN + FP}
+
+Where:
+    - :math:`TN` is the number of true negatives.
+    - :math:`FP` is the number of false positives.
+
+**AUC ROC (Area Under the Receiver Operating Characteristic Curve)**
+
+AUC ROC is a performance measurement for classification problems at various threshold settings. ROC is a probability curve and AUC represents the degree or measure of separability. It is calculated as:
+
+.. math::
+
+    \text{AUC} = \int_{0}^{1} TPR \, d(FPR)
+
+Where:
+    - :math:`TPR` is the true positive rate (sensitivity).
+    - :math:`FPR` is the false positive rate (1 - specificity).
+
+**Brier Score**
+
+Brier score measures the mean squared difference between the predicted probabilities and the actual binary outcomes. It is calculated as:
+
+.. math::
+
+    \text{Brier Score} = \frac{1}{N} \sum_{i=1}^{N} (f_i - o_i)^2
+
+Where:
+    - :math:`N` is the number of total observations.  
+    - :math:`f_i` is the predicted probability for the :math:`i`-th observation.  
+    - :math:`o_i` is the actual outcome for the :math:`i`-th observation (`0` or `1`).
+
