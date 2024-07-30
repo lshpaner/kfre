@@ -24,8 +24,8 @@
 
 \
 
-Documentation Table of Contents
-================================
+Table of Contents
+====================
 
 .. toctree::
    :maxdepth: 3

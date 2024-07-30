@@ -24,7 +24,7 @@
 
 \
 
-KFRE Documentation
+Table of Contents
 ====================
 
 .. toctree::
