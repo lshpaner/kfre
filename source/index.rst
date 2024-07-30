@@ -24,8 +24,8 @@
 
 \
 
-KFRE Documentation
-====================
+Documentation Table of Contents
+================================
 
 .. toctree::
    :maxdepth: 3
