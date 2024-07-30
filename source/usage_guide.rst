@@ -677,7 +677,6 @@ Where:
     - :math:`f_i` is the predicted probability for the :math:`i`-th observation.  
     - :math:`o_i` is the actual outcome for the :math:`i`-th observation (`0` or `1`).
     
-
 ----
 
 .. function:: eval_kfre_metrics(df, n_var_list, outcome_years=[2, 5], decimal_places=6)
