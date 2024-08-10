@@ -243,7 +243,7 @@ These parameters provide the flexibility to tailor the unit conversion process t
 
 The following is an example to illustrate the usage of the ``perform_conversions`` function. This example shows how to convert values from mmol to mg for various clinical parameters within a DataFrame.
 
-`First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)` [1]_.
+`First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)` [#]_.
 
 .. table:: 
 
@@ -316,6 +316,10 @@ The following is an example to illustrate the usage of the ``perform_conversions
  
 The ``upcr_uacr`` function is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.
 
+.. code-block:: python
+
+    from kfre import upcr_uacr
+    
 .. code-block:: python
 
     df["uACR"] = upcr_uacr(
@@ -545,11 +549,15 @@ AUC ROC & Precision-Recall Curves
               - preds (dict of list of pd.Series): Predicted probabilities for each number of variables and each outcome.
               - outcomes (list of str): List of outcome labels.
 
-    :raises: ``ValueError``: If ``save_plots`` is ``True`` without specifying ``image_path_png`` or ``image_path_svg``.
-              If ``bbox_inches`` is not a string or ``None``.
-              If ``show_years`` contains invalid year values.
-              If required KFRE probability columns are missing in the DataFrame.
-              If ``plot_type`` is not one of ``'auc_roc'``, ``'precision_recall'``, or ``'all_plots'``.
+    :raises ValueError:  
+       - If ``save_plots`` is ``True`` without specifying ``image_path_png`` or ``image_path_svg``.
+       - If ``bbox_inches`` is not a string or ``None``.
+       - If ``show_years`` contains invalid year values.
+       - If required KFRE probability columns are missing in the DataFrame.
+       - If ``plot_type`` is not one of ``'auc_roc'``, ``'precision_recall'``, or ``'all_plots'``.
+
+
+
 
 This function generates the true labels and predicted probabilities for 2-year and 5-year outcomes, and optionally plots and saves ROC and Precision-Recall curves for specified variable models. It can also save the plots as PNG or SVG files.
 
@@ -602,7 +610,7 @@ This function generates the true labels and predicted probabilities for 2-year a
 Performance Metrics
 --------------------
 
-This section explains the various performance metrics calculated by the `eval_kfre_metrics` function.
+This section explains the various performance metrics calculated by the ``eval_kfre_metrics`` function.
 
 **Precision (Positive Predictive Value)**
 
@@ -688,8 +696,9 @@ Where:
 
     :returns: ``pd.DataFrame``: A DataFrame containing the calculated metrics for each outcome.
 
-    :raises: ``ValueError``: If required outcome columns are missing in the DataFrame.  
-              ``ValueError``: If an invalid variable number is provided in ``n_var_list``.
+    :raises ValueError: 
+        - If required outcome columns are missing in the DataFrame.  
+        - If an invalid variable number is provided in ``n_var_list``.
 
     This function computes a set of performance metrics for multiple binary classification models given the true labels and the predicted probabilities for each outcome. The metrics calculated include precision (positive predictive value), average precision, sensitivity (recall), specificity, AUC ROC, and Brier score.
 
@@ -718,4 +727,4 @@ Where:
 
 ----
 
-.. [1] Ali, I., Donne, R. L., & Kalra, P. A. (2021). A validation study of the kidney failure risk equation in advanced chronic kidney disease according to disease aetiology with evaluation of discrimination, calibration and clinical utility. *BMC Nephrology, 22(1),* 194. https://doi.org/10.1186/s12882-021-02402-1 
+.. [#] Ali, I., Donne, R. L., & Kalra, P. A. (2021). A validation study of the kidney failure risk equation in advanced chronic kidney disease according to disease aetiology with evaluation of discrimination, calibration and clinical utility. *BMC Nephrology, 22(1),* 194. https://doi.org/10.1186/s12882-021-02402-1 
