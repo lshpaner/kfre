@@ -666,7 +666,7 @@ AUC ROC is a performance measurement for classification problems at various thre
 
 .. math::
 
-    \text{AUC} = \int_{0}^{1} TPR \, d(FPR)
+    \text{AUC} = \int_{0}^{1} \text{TPR}(\text{FPR}) \, d(\text{FPR})
 
 Where:
     - :math:`TPR` is the true positive rate (sensitivity).
