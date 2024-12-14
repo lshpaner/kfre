@@ -144,9 +144,6 @@ hypertension, and various biochemical markers.</p>
 <p>The function is designed for ease of use in clinical settings or research,
 providing immediate risk estimations that are crucial for patient management or
 further analysis.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">kfre_person</span>
-</pre></div>
-</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="kfre_person">
 <span class="sig-name descname"><span class="pre">kfre_person</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">age</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_male</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eGFR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uACR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_north_american</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">htn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albumin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phosphorous</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bicarbonate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kfre_person" title="Link to this definition"></a></dt>
@@ -174,6 +171,9 @@ further analysis.</p>
 </dd></dl>
 
 <p><strong>Example Usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">kfre_person</span>
+</pre></div>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">risk_percentage</span> <span class="o">=</span> <span class="n">kfre_person</span><span class="p">(</span>
     <span class="n">age</span><span class="o">=</span><span class="mf">57.28</span><span class="p">,</span>
     <span class="n">is_male</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -504,9 +504,6 @@ Converted<span class="w"> </span><span class="s1">&#39;Albumin (g/l)&#39;</span>
 </section>
 <section id="classifying-esrd-outcomes">
 <h1>Classifying ESRD Outcomes<a class="headerlink" href="#classifying-esrd-outcomes" title="Link to this heading"></a></h1>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">class_esrd_outcome</span>
-</pre></div>
-</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="class_esrd_outcome">
 <span class="sig-name descname"><span class="pre">class_esrd_outcome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_years_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#class_esrd_outcome" title="Link to this definition"></a></dt>
@@ -610,9 +607,6 @@ different regions within a single batch is not supported, as the function is set
 to apply one regional coefficient set at a time. This approach ensures the accuracy
 and reliability of the risk predictions.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">add_kfre_risk_col</span>
-</pre></div>
-</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="add_kfre_risk_col">
 <span class="sig-name descname"><span class="pre">add_kfre_risk_col</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eGFR_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uACR_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dm_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">htn_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albumin_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phosphorous_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bicarbonate_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_north_american</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#add_kfre_risk_col" title="Link to this definition"></a></dt>
@@ -647,6 +641,9 @@ and reliability of the risk predictions.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">sex_col</span></code> must contain strings (case-insensitive) indicating either <cite>female</cite> or <cite>male</cite>.</p>
 </div>
 <p><strong>Example Usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">add_kfre_risk_col</span>
+</pre></div>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">add_kfre_risk_col</span><span class="p">(</span>
     <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
     <span class="n">age_col</span><span class="o">=</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span>

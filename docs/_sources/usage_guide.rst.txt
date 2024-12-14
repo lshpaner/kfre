@@ -46,11 +46,6 @@ The function is designed for ease of use in clinical settings or research,
 providing immediate risk estimations that are crucial for patient management or 
 further analysis.
 
-.. code-block:: python
-
-    from kfre import kfre_person
-
-
 .. function:: kfre_person(age, is_male, eGFR, uACR, is_north_american, years, dm, htn, albumin, phosphorous, bicarbonate, calcium)
 
     :param age: Age of the patient.
@@ -70,6 +65,11 @@ further analysis.
 
   
 **Example Usage** 
+
+.. code-block:: python
+
+    from kfre import kfre_person
+
 
 .. code-block:: python
 
@@ -354,10 +354,6 @@ The ``upcr_uacr`` function is typically used in clinical data processing where a
 Classifying ESRD Outcomes
 =========================
 
-.. code-block:: python
-
-    from kfre import class_esrd_outcome
-
 .. function:: class_esrd_outcome(df, col, years, duration_col, prefix=None, create_years_col=True)
 
     :param DataFrame df: The DataFrame to perform calculations on. This DataFrame should include columns relevant for calculating ESRD outcomes.
@@ -450,9 +446,6 @@ the need for additional data manipulation steps.
     to apply one regional coefficient set at a time. This approach ensures the accuracy 
     and reliability of the risk predictions.
 
-.. code-block:: python
-
-    from kfre import add_kfre_risk_col
 
 .. function:: add_kfre_risk_col(df, age_col, sex_col, eGFR_col, uACR_col, dm_col, htn_col, albumin_col, phosphorous_col, bicarbonate_col, calcium_col, num_vars, years, is_north_american, copy)
     
@@ -481,6 +474,10 @@ This function is designed to compute the risk of chronic kidney disease (CKD) ov
 
 
 **Example Usage**
+
+.. code-block:: python
+
+    from kfre import add_kfre_risk_col
 
 .. code-block:: python    
     
