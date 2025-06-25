@@ -1,0 +1,176 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Equations &mdash; KFRE 0.1.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=36c9caaa" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=297ad043"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=a0ccc04e"></script>
+      <script src="_static/custom.js?v=fecc5f50"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Citing KFRE" href="citations.html" />
+    <link rel="prev" title="Acknowledgements" href="acknowledgements.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            KFRE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Welcome to the KFRE Python Library Documentation!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html#single-patient-risk-calculation">Single Patient Risk Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html#conversion-of-clinical-parameters">Conversion of Clinical Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html#classifying-esrd-outcomes">Classifying ESRD Outcomes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html#batch-risk-calculation-for-multiple-patients">Batch Risk Calculation for Multiple Patients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html#performance-assessment">Performance Assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About KFRE</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citations.html">Citing KFRE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">KFRE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Equations</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="no-click"><a class="reference internal image-reference" href="_images/kfre_logo.svg"><img alt="KFRE Library Logo" class="align-left" src="_images/kfre_logo.svg" style="width: 200px;" />
+</a>
+</div><div style="height: 106px;"></div><p></p>
+<section id="id1">
+<h1>Equations<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p><strong>2-year (4-variable)</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}1 - 0.9750^{\exp\left(\begin{array}{l}
+-0.2201 \cdot (\text{age}/10 - 7.036) + 0.2467 \cdot (\text{male} - 0.5642) \\
+- 0.5567 \cdot (\text{eGFR}/5 - 7.222) + 0.4510 \cdot (\log \text{ACR} - 5.137)
+\end{array}\right)}\end{split}\]</div>
+<p><strong>2-year (6-variable)</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}1 - 0.9750^{\exp\left(\begin{array}{l}
+-0.2218 \cdot (\text{age}/10 - 7.036) + 0.2553 \cdot (\text{male} - 0.5642) \\
+- 0.5541 \cdot (\text{eGFR}/5 - 7.222) + 0.4562 \cdot (\log \text{ACR} - 5.137) \\
+- 0.1475 \cdot (\text{DM} - 0.5106) + 0.1426 \cdot (\text{HTN} - 0.8501)
+\end{array}\right)}\end{split}\]</div>
+<p><strong>2-year (8-variable)</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}1 - 0.9780^{\exp\left(\begin{array}{l}
+-0.1992 \cdot (\text{age}/10 - 7.036) + 0.1602 \cdot (\text{male} - 0.5642) \\
+- 0.4919 \cdot (\text{eGFR}/5 - 7.222) + 0.3364 \cdot (\log \text{ACR} - 5.137) \\
+- 0.3441 \cdot (\text{albumin} - 3.997) + 0.2604 \cdot (\text{phosphorous} - 3.916) \\
+- 0.07354 \cdot (\text{bicarbonate} - 25.57) - 0.2228 \cdot (\text{calcium} - 9.355)
+\end{array}\right)}\end{split}\]</div>
+<p><strong>5-year (4-variable)</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}1 - 0.9240^{\exp\left(\begin{array}{l}
+-0.2201 \cdot (\text{age}/10 - 7.036) + 0.2467 \cdot (\text{male} - 0.5642) \\
+- 0.5567 \cdot (\text{eGFR}/5 - 7.222) + 0.4510 \cdot (\log \text{ACR} - 5.137)
+\end{array}\right)}\end{split}\]</div>
+<p><strong>5-year (6-variable)</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}1 - 0.9240^{\exp\left(\begin{array}{l}
+-0.2218 \cdot (\text{age}/10 - 7.036) + 0.2553 \cdot (\text{male} - 0.5642) \\
+- 0.5541 \cdot (\text{eGFR}/5 - 7.222) + 0.4562 \cdot (\log \text{ACR} - 5.137) \\
+- 0.1475 \cdot (\text{DM} - 0.5106) + 0.1426 \cdot (\text{HTN} - 0.8501)
+\end{array}\right)}\end{split}\]</div>
+<p><strong>5-year (8-variable)</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}1 - 0.9301^{\exp\left(\begin{array}{l}
+-0.1992 \cdot (\text{age}/10 - 7.036) + 0.1602 \cdot (\text{male} - 0.5642) \\
+- 0.4919 \cdot (\text{eGFR}/5 - 7.222) + 0.3364 \cdot (\log \text{ACR} - 5.137) \\
+- 0.3441 \cdot (\text{albumin} - 3.997) + 0.2604 \cdot (\text{phosphorous} - 3.916) \\
+- 0.07354 \cdot (\text{bicarbonate} - 25.57) - 0.2228 \cdot (\text{calcium} - 9.355)
+\end{array}\right)}\end{split}\]</div>
+<div style="height: 50px;"></div></section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="acknowledgements.html" class="btn btn-neutral float-left" title="Acknowledgements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="citations.html" class="btn btn-neutral float-right" title="Citing KFRE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Leonid Shpaner.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
