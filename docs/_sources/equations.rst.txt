@@ -1,4 +1,4 @@
-.. _equation:   
+.. _equations:   
 
 .. _target-link:
 
