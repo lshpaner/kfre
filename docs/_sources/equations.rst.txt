@@ -94,5 +94,3 @@ Equations
 .. raw:: html
    
    <div style="height: 50px;"></div>
-
-\
