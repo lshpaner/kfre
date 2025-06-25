@@ -32,18 +32,3 @@ The ``kfre`` library is based on the risk prediction models developed in the stu
 
 Special thanks to Panayiotis Petousis, PhD, Obidiugwu Duru, MD, MS, Kenn B. Daratha, PhD, Keith C. Norris, MD, PhD, Katherine R. Tuttle MD, FASN, FACP, FNKF, Susanne B. Nicholas, MD, MPH, PhD, and Alex Bui, PhD. Their exceptional work on end-stage kidney disease has greatly inspired the creation of this library.
 
-.. toctree::
-   :hidden:
-   :maxdepth: 2
-   :caption: Getting Started
-
-   getting_started
-
-
-.. toctree::
-   :hidden:
-   :maxdepth: 2
-   :caption: Usage Guide
-
-   usage_guide
-

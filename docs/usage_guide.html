@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Description &mdash; KFRE 0.1.12 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=36c9caaa" />
@@ -171,7 +171,7 @@ further analysis.</p>
 </dd></dl>
 
 <p><strong>Example Usage</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">kfre_person</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kfre</span><span class="w"> </span><span class="kn">import</span> <span class="n">kfre_person</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">risk_percentage</span> <span class="o">=</span> <span class="n">kfre_person</span><span class="p">(</span>
@@ -364,7 +364,7 @@ understanding of patient data.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">perform_conversions</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kfre</span><span class="w"> </span><span class="kn">import</span> <span class="n">perform_conversions</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform conversions using the wrapper function, specifying all parameters</span>
@@ -470,7 +470,7 @@ Converted<span class="w"> </span><span class="s1">&#39;Albumin (g/l)&#39;</span>
 </dd></dl>
 
 <p>The <code class="docutils literal notranslate"><span class="pre">upcr_uacr</span></code> function is typically used in clinical data processing where accurate assessment of kidney function is critical. By converting uPCR to uACR, clinicians can get a more precise evaluation of albuminuria, which is important for diagnosing and monitoring kidney diseases. This function allows for a standardized approach to handling variations in patient characteristics that might affect urinary albumin levels.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">upcr_uacr</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kfre</span><span class="w"> </span><span class="kn">import</span> <span class="n">upcr_uacr</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;uACR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">upcr_uacr</span><span class="p">(</span>
@@ -526,7 +526,7 @@ Converted<span class="w"> </span><span class="s1">&#39;Albumin (g/l)&#39;</span>
 
 <p>This function creates a new column in the DataFrame which is populated with a <code class="docutils literal notranslate"><span class="pre">1</span></code> or a <code class="docutils literal notranslate"><span class="pre">0</span></code> based on whether the ESRD condition (eGFR &lt; 15) is met within the specified number of years. If <code class="docutils literal notranslate"><span class="pre">create_years_col</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, it calculates the ‘years’ column based on the <code class="docutils literal notranslate"><span class="pre">duration_col</span></code> provided. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, it uses the <code class="docutils literal notranslate"><span class="pre">duration_col</span></code> directly. The new column is named using the specified prefix and number of years, or just the number of years if no prefix is provided.</p>
 <p><strong>Example Usage</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">class_esrd_outcome</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kfre</span><span class="w"> </span><span class="kn">import</span> <span class="n">class_esrd_outcome</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2-year outcome</span>
@@ -641,7 +641,7 @@ and reliability of the risk predictions.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">sex_col</span></code> must contain strings (case-insensitive) indicating either <cite>female</cite> or <cite>male</cite>.</p>
 </div>
 <p><strong>Example Usage</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">add_kfre_risk_col</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kfre</span><span class="w"> </span><span class="kn">import</span> <span class="n">add_kfre_risk_col</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">add_kfre_risk_col</span><span class="p">(</span>
@@ -810,7 +810,7 @@ and reliability of the risk predictions.</p>
 
 <p>This function generates the true labels and predicted probabilities for 2-year and 5-year outcomes, and optionally plots and saves ROC and Precision-Recall curves for specified variable models. It can also save the plots as PNG or SVG files.</p>
 <p><strong>Example usage</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">plot_kfre_metrics</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kfre</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_kfre_metrics</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_kfre_metrics</span><span class="p">(</span>
@@ -940,7 +940,7 @@ and reliability of the risk predictions.</p>
 </dd></dl>
 
 <p><strong>Example Usage</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kfre</span> <span class="kn">import</span> <span class="n">eval_kfre_metrics</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kfre</span><span class="w"> </span><span class="kn">import</span> <span class="n">eval_kfre_metrics</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metrics_df_n_var</span> <span class="o">=</span> <span class="n">eval_kfre_metrics</span><span class="p">(</span>
