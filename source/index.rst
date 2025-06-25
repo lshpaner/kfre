@@ -45,25 +45,10 @@ Table of Contents
    :caption: About KFRE
 
    acknowledgements
+   kfre
    citations
    changelog
    references
 
    
-
-.. **Table of Contents**
-.. ---------------------
-.. 1. :ref:`Prerequisites <prerequisites>`
-.. 2. :ref:`Installation <installation>`
-.. 3. :ref:`Usage Guide <usage_guide>`
-..     - :ref:`uPCR to uACR <upcr_to_uacr>`
-..     - :ref:`Single Patient Risk Calculation <single_patient_risk_calculation>`
-..     - :ref:`Batch Risk Calculation <batch_risk_calculation>`
-..     - :ref:`Conversion of Clinical Parameters <conversion_clinical_parameters>`
-.. 4. :ref:`Contributor/Maintainer <contributor_maintainer>`
-.. 5. :ref:`License <license>`
-.. 6. :ref:`Support <support>`
-.. 7. :ref:`References <references>`
-
-
 
