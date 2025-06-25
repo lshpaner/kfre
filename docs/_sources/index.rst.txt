@@ -45,7 +45,7 @@ Table of Contents
    :caption: About KFRE
 
    acknowledgements
-   equation
+   equations
    citations
    changelog
    references
