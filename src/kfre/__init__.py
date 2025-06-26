@@ -1,3 +1,26 @@
+"""
+
+888    d8P  8888888888 8888888b.  8888888888
+888   d8P   888        888   Y88b 888
+888  d8P    888        888    888 888
+888d88K     8888888    888   d88P 8888888
+8888888b    888        8888888P"  888
+888  Y88b   888        888 T88b   888
+888   Y88b  888        888  T88b  888
+888    Y88b 888        888   T88b 8888888888
+
+Kidney Failure Risk Equation (KFRE) Python Library
+===================================================
+
+This library provides tools to compute CKD risk based on clinical parameters,
+using the Kidney Failure Risk Equation (KFRE). It includes functions for individual
+risk prediction, data conversion, and evaluation of KFRE metrics.
+
+
+"""
+
+__author__ = "Leonid Shpaner"
+__email__ = "lshpaner@ucla.edu"
 __version__ = "0.1.12"
 
 
