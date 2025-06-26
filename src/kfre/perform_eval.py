@@ -150,7 +150,7 @@ def plot_kfre_metrics(
     save_plots=False,
     show_years=[2, 5],
     plot_combinations=False,
-    show_grids=False,
+    show_subplots=False,
     decimal_places=2,
 ):
     """
@@ -203,8 +203,8 @@ def plot_kfre_metrics(
         Whether to plot all combinations of variables in a single plot.
         Default is False.
 
-    show_grids : bool, optional
-        Whether to show grid plots of all combinations. Default is False.
+    show_subplots : bool, optional
+        Whether to show subplos of all combinations. Default is False.
 
     decimal_places : int, optional
         Number of decimal places for AUC and AP scores in the plot legends.
@@ -355,8 +355,8 @@ def plot_kfre_metrics(
                 plt.ylabel("Sensitivity")
                 plt.title(f"AUC ROC: {format_list_or_tuple(num_vars)} Variable KFRE")
                 plt.legend(loc="best")
-                if save_plots and not show_grids:
-                    # Save the plot if save_plots is True and show_grids is False.
+                if save_plots and not show_subplots:
+                    # Save the plot if save_plots is True and show_subplots is False.
                     filename = (
                         f"{image_prefix}_auc_roc_curve_combined"
                         if image_prefix
@@ -375,7 +375,7 @@ def plot_kfre_metrics(
                             bbox_inches=bbox_inches,
                         )
                 roc_figs.append(fig)
-                if not show_grids:
+                if not show_subplots:
                     plt.show()
                 else:
                     plt.close(fig)
@@ -406,8 +406,8 @@ def plot_kfre_metrics(
                     f"Precision-Recall: {format_list_or_tuple(num_vars)} Variable KFRE"
                 )
                 plt.legend(loc="best")
-                if save_plots and not show_grids:
-                    # Save plot if save_plots is True & show_grids is False.
+                if save_plots and not show_subplots:
+                    # Save plot if save_plots is True & show_subplots is False.
                     filename = (
                         f"{image_prefix}_pr_curve_combined"
                         if image_prefix
@@ -426,7 +426,7 @@ def plot_kfre_metrics(
                             bbox_inches=bbox_inches,
                         )
                 pr_figs.append(fig)
-                if not show_grids:
+                if not show_subplots:
                     plt.show()
                 else:
                     plt.close(fig)
@@ -460,8 +460,8 @@ def plot_kfre_metrics(
                     plt.ylabel("Sensitivity")
                     plt.title(f"AUC ROC: {n} Variable KFRE")
                     plt.legend(loc="best")
-                    if save_plots and not show_grids:
-                        # Save plot if save_plots is True & show_grids is False.
+                    if save_plots and not show_subplots:
+                        # Save plot if save_plots is True & show_subplots is False.
                         filename = (
                             f"{image_prefix}_{n}var_auc_roc"
                             if image_prefix
@@ -480,7 +480,7 @@ def plot_kfre_metrics(
                                 bbox_inches=bbox_inches,
                             )
                     roc_figs.append(fig)
-                    if not show_grids:
+                    if not show_subplots:
                         plt.show()
                     else:
                         plt.close(fig)
@@ -509,8 +509,8 @@ def plot_kfre_metrics(
                     plt.ylabel("Precision")
                     plt.title(f"Precision-Recall: {n} Variable KFRE")
                     plt.legend(loc="best")
-                    if save_plots and not show_grids:
-                        # Save plot if save_plots is True & show_grids is False.
+                    if save_plots and not show_subplots:
+                        # Save plot if save_plots is True & show_subplots is False.
                         filename = (
                             f"{image_prefix}_{n}var_precision_recall"
                             if image_prefix
@@ -529,38 +529,40 @@ def plot_kfre_metrics(
                                 bbox_inches=bbox_inches,
                             )
                     pr_figs.append(fig)
-                    if not show_grids:
+                    if not show_subplots:
                         plt.show()
                     else:
                         plt.close(fig)
 
-        # Create and save grid plots if show_grids is True.
-        if show_grids:
-            grid_figs = []
+        # Create and save subplots if show_subplots is True.
+        if show_subplots:
+            subplot_figs = []
             if plot_type in ["auc_roc", "all_plots"]:
-                grid_figs += roc_figs
+                subplot_figs += roc_figs
             if plot_type in ["precision_recall", "all_plots"]:
-                grid_figs += pr_figs
+                subplot_figs += pr_figs
 
-            if grid_figs:
-                grid_cols = min(len(grid_figs), 3)  # No. of columns in the grid
-                grid_rows = (
-                    len(grid_figs) + grid_cols - 1
-                ) // grid_cols  # Number of rows in the grid
+            if subplot_figs:
+                subplot_cols = min(
+                    len(subplot_figs), 3
+                )  # No. of columns in the subplot
+                subplot_rows = (
+                    len(subplot_figs) + subplot_cols - 1
+                ) // subplot_cols  # Number of rows in the subplot
                 fig, axs = plt.subplots(
-                    grid_rows,
-                    grid_cols,
-                    figsize=(fig_size[0] * grid_cols, fig_size[1] * grid_rows),
+                    subplot_rows,
+                    subplot_cols,
+                    figsize=(fig_size[0] * subplot_cols, fig_size[1] * subplot_rows),
                 )
 
                 # Ensure axs is a 2D array even if there's only one subplot
-                if grid_rows == 1 and grid_cols == 1:
+                if subplot_rows == 1 and subplot_cols == 1:
                     axs = np.array([axs])
-                elif grid_rows == 1 or grid_cols == 1:
-                    axs = np.expand_dims(axs, axis=0 if grid_rows == 1 else 1)
+                elif subplot_rows == 1 or subplot_cols == 1:
+                    axs = np.expand_dims(axs, axis=0 if subplot_rows == 1 else 1)
 
                 axs = axs.flatten()
-                for ax, fig_ in zip(axs, grid_figs):
+                for ax, fig_ in zip(axs, subplot_figs):
                     fig_.axes[0].get_figure().sca(fig_.axes[0])
                     for line in fig_.axes[0].get_lines():
                         xdata = line.get_xdata()
@@ -580,18 +582,20 @@ def plot_kfre_metrics(
                     ax.set_title(fig_.axes[0].get_title())
                     ax.set_xlabel(fig_.axes[0].get_xlabel())
                     ax.set_ylabel(fig_.axes[0].get_ylabel())
-                for ax in axs[len(grid_figs) :]:
+                for ax in axs[len(subplot_figs) :]:
                     fig.delaxes(ax)
                 plt.tight_layout()
                 if save_plots:
-                    # Save the grid plot if save_plots is True.
+                    # Save the subplot if save_plots is True.
                     filename = (
-                        f"grid_{plot_type}_combination"
-                        if plot_type == "all_plots" and show_grids and plot_combinations
+                        f"subplot_{plot_type}_combination"
+                        if plot_type == "all_plots"
+                        and show_subplots
+                        and plot_combinations
                         else (
-                            f"{image_prefix}_grid"
+                            f"{image_prefix}_subplot"
                             if image_prefix
-                            else "performance_grid"
+                            else "performance_subplot"
                         )
                     )
 
