@@ -1,5 +1,3 @@
-# tests/test_classification_functions.py
-
 import pandas as pd
 from kfre import class_esrd_outcome, class_ckd_stages
 
