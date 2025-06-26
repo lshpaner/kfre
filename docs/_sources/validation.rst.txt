@@ -1566,3 +1566,12 @@ CKD-Related Distributions
     CKD Stage 4                 797   429   1226      65.01   34.99
     CKD Stage 5                 314   602    916      34.28   65.72
     Total                     14875  1744  16619      89.51   10.49
+
+
+Reference
+------------------
+
+1. Kang, M. W. (2024). [KFRE validation dataset, Asian cohort]. Unpublished dataset provided by personal communication, June 26, 2024. Department of Internal Medicine, Seoul National University College of Medicine, Seoul, Korea.
+
+2. Kang, M. W., Tangri, N., Kim, Y. C., An, J. N., Lee, J., Li, L., Oh, Y. K., Kim, D. K., Joo, K. W., Kim, Y. S., Lim, C. S., & Lee, J. P. (2020). An independent validation of the kidney failure risk equation in an Asian population. *Scientific Reports, 10,* 12920. https://doi.org/10.1038/s41598-020-69715-3
+
