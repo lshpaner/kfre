@@ -1,0 +1,1475 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>An Independent Validation of the Kidney Failure Risk Equation (KFRE) on a Seoul University Hospital Population &mdash; KFRE 0.1.12 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=36c9caaa" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=297ad043"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=a0ccc04e"></script>
+      <script src="_static/custom.js?v=fecc5f50"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Acknowledgements" href="acknowledgements.html" />
+    <link rel="prev" title="Description" href="usage_guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            KFRE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Welcome to the KFRE Python Library Documentation!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html#single-patient-risk-calculation">Single Patient Risk Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html#conversion-of-clinical-parameters">Conversion of Clinical Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html#classifying-esrd-outcomes">Classifying ESRD Outcomes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html#batch-risk-calculation-for-multiple-patients">Batch Risk Calculation for Multiple Patients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html#performance-assessment">Performance Assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About KFRE</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">An Independent Validation of the Kidney Failure Risk Equation (KFRE) on a Seoul University Hospital Population</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#background">Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preprocessing">Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#results">Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#appendix">Appendix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#descriptive-statistics">Descriptive Statistics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#age-related-distributions">Age-Related Distributions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ckd-related-distributions">CKD-Related Distributions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testimonials.html">Testimonials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citations.html">Citing KFRE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">KFRE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">An Independent Validation of the Kidney Failure Risk Equation (KFRE) on a Seoul University Hospital Population</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="no-click"><a class="reference internal image-reference" href="_images/kfre_logo.svg"><img alt="KFRE Library Logo" class="align-left" src="_images/kfre_logo.svg" style="width: 200px;" />
+</a>
+</div><div style="height: 106px;"></div><p></p>
+<section id="an-independent-validation-of-the-kidney-failure-risk-equation-kfre-on-a-seoul-university-hospital-population">
+<h1>An Independent Validation of the Kidney Failure Risk Equation (KFRE) on a Seoul University Hospital Population<a class="headerlink" href="#an-independent-validation-of-the-kidney-failure-risk-equation-kfre-on-a-seoul-university-hospital-population" title="Link to this heading"></a></h1>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading"></a></h2>
+<p><strong>KFRE Overview:</strong></p>
+<ul class="simple">
+<li><p>Developed by Tangri et al. to predict the risk of progression to kidney failure in CKD patients (stages 3 to 5).</p></li>
+<li><p>Key predictors identified: age, sex, eGFR, and urine albumin-to-creatinine ratio (ACR).</p></li>
+</ul>
+<p><strong>Model Details:</strong></p>
+<ul class="simple">
+<li><p>KFRE estimates the risk of kidney failure at 2 and 5 years using statistical modeling.</p></li>
+<li><p>The equation has been validated across various populations and is widely used for clinical decision-making and patient counseling.</p></li>
+</ul>
+</section>
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading"></a></h2>
+<p><strong>Python Library Implementation</strong></p>
+<ul class="simple">
+<li><p>Created to replicate the original KFRE equations.</p></li>
+<li><dl class="simple">
+<dt>The library supports calculations for the 2-year and 5-year risk using:</dt><dd><ul>
+<li><p>4-variable equation: age, sex, eGFR, uACR.</p></li>
+<li><p>6-variable equation: Adds diabetes mellitus and hypertension.</p></li>
+<li><p>8-variable equation: Includes all from the 4-variable model plus serum albumin, serum phosphorous, serum bicarbonate, and calcium.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Application</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The kfre library enables healthcare professionals and researchers to integrate KFRE calculations into their analyses and decision-making processes.</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Further Information</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A detailed usage guide is available at the official documentation: kfre Documentation.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="preprocessing">
+<h2>Preprocessing<a class="headerlink" href="#preprocessing" title="Link to this heading"></a></h2>
+<p>Create Randomized Patient IDs for Indexing - crucial for several reasons:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p>Privacy and Anonymity: Random patient IDs help protect patient privacy and maintain anonymity. This is particularly important in healthcare research to ensure compliance with data protection regulations such as HIPAA.</p></li>
+<li><p>Data Integrity: Randomized IDs prevent potential biases that could arise from using identifiable information. This ensures that the analysis is based solely on clinical data without any influence from patient identity.</p></li>
+<li><p>Simplified Data Management: Random IDs facilitate easier data management and tracking, especially when dealing</p></li>
+<li><p>Scalability: Randomized IDs allow for easier scaling of datasets, as new patients can be added without concern for ID conflicts.</p></li>
+</ol>
+</div></blockquote>
+<p>By using random patient IDs, we can enhance the robustness, security, and scalability of our data management processes.</p>
+<div style="height: 5px;"></div><p></p>
+<style>
+  .overlay-svg {
+    position: relative;
+    z-index: 10;
+  }
+  .overlay-svg img {
+    position: absolute !important;
+    top: -20px;
+    left: 30px;
+    width: 500px;
+    z-index: 999;
+    pointer-events: none;
+  }
+</style><div class="no-click overlay-svg"><a class="reference internal image-reference" href="_images/red_box_arrow.svg"><img alt="Box and Arrow" class="align-left" src="_images/red_box_arrow.svg" style="width: 500px;" />
+</a>
+</div><div style="height: 72px;"></div><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Patient Table (Manual Column Widths)</title>
+<style>
+    table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    }
+    th, td {
+    border: 1px solid #000;
+    padding: 6px 12px;
+    text-align: center;
+    overflow-wrap: break-word;
+    }
+    thead tr {
+    background-color: #d9d9d9;
+    }
+    thead tr:nth-child(2) th:first-child {
+    font-weight: bold;
+    text-align: left;
+    }
+    thead tr:nth-child(2) th {
+    font-weight: normal;
+    }
+    tbody td:first-child {
+    background-color: #ddebf7;
+    font-weight: bold;
+    text-align: left;
+    }
+    /* Optional: define your own widths */
+    th:nth-child(1), td:nth-child(1) { width: 109px; }  /* Patient_ID */
+    th:nth-child(2), td:nth-child(2) { width: 55px; }   /* Age */
+    th:nth-child(3), td:nth-child(3) { width: 55px; }   /* SEX */
+    th:nth-child(4), td:nth-child(4) { width: 65px; }   /* HTN */
+    th:nth-child(5), td:nth-child(5) { width: 65px; }   /* DM */
+    th:nth-child(6), td:nth-child(6) { width: 95px; }   /* GFR */
+    th:nth-child(7), td:nth-child(7) { width: 68px; }   /* uACR */
+    th:nth-child(8), td:nth-child(8) { width: 100px; }   /* ACR */
+    th:nth-child(9), td:nth-child(9) { width: 60px; }   /* Ca */
+    th:nth-child(10), td:nth-child(10) { width: 50px; } /* P */
+    th:nth-child(11), td:nth-child(11) { width: 50px; } /* Alb */
+</style>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th></th>
+        <th>Age</th><th>SEX</th><th>HTN</th><th>DM</th><th>GFR</th>
+        <th>uACR</th><th>ACR</th><th>Ca</th><th>P</th>
+    </tr>
+    <tr>
+        <th>Patient_ID</th>
+        <th></th><th></th><th></th><th></th><th></th>
+        <th></th><th></th><th></th><th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr><td>867721094</td><td>61</td><td>1</td><td>1</td><td>0</td><td>9.148234</td><td>10</td><td>10</td><td>6</td><td>4</td></tr>
+    <tr><td>533512602</td><td>30</td><td>0</td><td>1</td><td>1</td><td>153.9749</td><td>29</td><td>29</td><td>9.4</td><td>4.5</td></tr>
+    <tr><td>988350865</td><td>55</td><td>1</td><td>0</td><td>0</td><td>66.81041</td><td> </td><td>25.77426</td><td>9.2</td><td>1.6</td></tr>
+    <tr><td>428707535</td><td>35</td><td>1</td><td>0</td><td>0</td><td>89.34706</td><td> </td><td>28.4513</td><td>10.5</td><td>2.9</td></tr>
+    <tr><td>813646552</td><td>66</td><td>1</td><td>1</td><td>0</td><td>7.316171</td><td>0</td><td>0</td><td>7.7</td><td>6.5</td></tr>
+    </tbody>
+</table>
+</body>
+</html><div style="height: 20px;"></div><p></p>
+<p>Tangri et al. used years to determine outcome for 2-years, and 5-years, respectively, so we will have to convert days to years.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">class_esrd_outcome()</span></code> function below creates a new column called years that converts <code class="docutils literal notranslate"><span class="pre">ESRD_dur</span></code>.</p>
+<p>Now we use the years column to classify the ESRD column into two new columns inside df called <code class="docutils literal notranslate"><span class="pre">2_year_outcome</span></code> and <code class="docutils literal notranslate"><span class="pre">5_year_outcome</span></code> given the constrains above.</p>
+<center>
+<table style="border-collapse: collapse; table-layout: fixed; width: 100%; max-width: 500px; margin-top: 1em;">
+<thead>
+    <tr>
+    <th style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white; width: 50%;">
+        ESRD_in_2_year_outcome
+    </th>
+    <th style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white; width: 50%;">
+        ESRD_in_5_year_outcome
+    </th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+    <td style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white;">0</td>
+    <td style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white;">0</td>
+    </tr>
+    <tr>
+    <td style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white;">0</td>
+    <td style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white;">0</td>
+    </tr>
+    <tr>
+    <td style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white;">0</td>
+    <td style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white;">0</td>
+    </tr>
+    <tr>
+    <td style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white;">0</td>
+    <td style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white;">0</td>
+    </tr>
+    <tr>
+    <td style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white;">1</td>
+    <td style="border: 1px solid #000; padding: 8px; text-align: center; background-color: white;">1</td>
+    </tr>
+</tbody>
+</center>
+</table><div style="height: 20px;"></div><p></p>
+<center>
+
+<style type="text/css">
+.tg-wrap {
+overflow-x: auto;
+display: block;
+max-width: 100%;
+}
+.tg {
+border-collapse: collapse;
+border-spacing: 0;
+margin: 0 auto;
+table-layout: fixed;
+min-width: 1200px; /* adjust as needed */
+}
+.tg th, .tg td {
+border: 1px solid black;
+font-family: Arial, sans-serif;
+font-size: 14px;
+padding: 10px 5px;
+overflow: hidden;
+text-align: center;
+vertical-align: bottom;
+word-break: normal;
+}
+
+.tg th {
+font-weight: normal;
+}
+.tg .tg-bobw {
+font-weight: bold;
+}
+.tg .tg-trpp {
+background-color: #CFE2F3;
+}
+.tg .tg-udl0 {
+background-color: #EEE;
+font-weight: bold;
+}
+.tg .tg-9xca {
+background-color: #FFEED9;
+font-weight: bold;
+}
+.tg .tg-8rk5 {
+background-color: #FFEED9;
+}
+.tg .tg-8d8j {
+/* standard data cell */
+}
+.tg col.patient_id     { width: 100px; }
+.tg col.age            { width: 50px; }
+.tg col.htn, .tg col.dm { width: 40px; }
+.tg col.gfr, .tg col.acr { width: 80px; }
+.tg col.ca, .tg col.p, .tg col.alb, .tg col.tco2, .tg col.esrd { width: 50px; }
+.tg col.esrd_dur       { width: 60px; }
+.tg col.sex            { width: 60px; }
+.tg col.kfre           { width: 80px; }
+
+.tg  {
+border-collapse: collapse;
+border-spacing: 0;
+margin: 0 auto;
+table-layout: fixed;
+width: 100%;
+}
+.tg td, .tg th {
+border: 1px solid black;
+font-family: Arial, sans-serif;
+font-size: 14px;
+padding: 10px 5px;
+word-break: break-word;
+text-align: center;
+vertical-align: bottom;
+line-height: 0.1; /* Standard Excel-like row height */
+}
+.tg td:first-child,
+.tg th:first-child {
+text-align: left;
+}
+.tg .tg-8rk5 { background-color: #FFEED9; }
+.tg .tg-trpp { background-color: #CFE2F3; }
+.tg .tg-udl0 { background-color: #EEE; font-weight: bold; }
+.tg .tg-9xca { background-color: #FFEED9; font-weight: bold; }
+.tg .tg-bobw { font-weight: bold; }
+@media screen and (max-width: 767px) {
+.tg-wrap {
+    overflow-x: auto;
+    display: block;
+    max-width: 100%;
+}
+}
+</style>
+
+
+<div class="tg-wrap"><table class="tg"><thead>
+<colgroup>
+<col style="width: 95px"> <!-- Patient_ID -->
+<col style="width: 50px">  <!-- Age -->
+<col style="width: 50px">  <!-- HTN -->
+<col style="width: 50px">  <!-- DM -->
+<col style="width: 50px">  <!-- GFR -->
+<col style="width: 50px">  <!-- ACR -->
+<col style="width: 50px">  <!-- Ca -->
+<col style="width: 50px">  <!-- P -->
+<col style="width: 50px">  <!-- Alb -->
+<col style="width: 50px">  <!-- TCO2 -->
+<col style="width: 50px">  <!-- ESRD -->
+<col style="width: 90px">  <!-- ESRD_dur -->
+<col style="width: 60px">  <!-- Sex -->
+<col style="width: 120px"> <!-- kfre_4var_2year -->
+<col style="width: 120px"> <!-- kfre_4var_5year -->
+<col style="width: 120px"> <!-- kfre_6var_2year -->
+<col style="width: 120px"> <!-- kfre_6var_5year -->
+<col style="width: 120px"> <!-- kfre_8var_2year -->
+<col style="width: 120px">  <!-- kfre -->
+</colgroup>
+<thead>
+
+<tr>
+    <th class="tg-bobw">Patient_ID</th>
+    <th class="tg-udl0">Age</th>
+    <th class="tg-udl0">HTN</th>
+    <th class="tg-udl0">DM</th>
+    <th class="tg-udl0">GFR</th>
+    <th class="tg-udl0">ACR</th>
+    <th class="tg-udl0">Ca</th>
+    <th class="tg-udl0">P</th>
+    <th class="tg-udl0">Alb</th>
+    <th class="tg-udl0">TCO2</th>
+    <th class="tg-udl0">ESRD</th>
+    <th class="tg-udl0">ESRD_dur</th>
+    <th class="tg-udl0">Sex</th>
+    <th class="tg-9xca">kfre_4var_2year</th>
+    <th class="tg-9xca">kfre_4var_5year</th>
+    <th class="tg-9xca">kfre_6var_2year</th>
+    <th class="tg-9xca">kfre_6var_5year</th>
+    <th class="tg-9xca">kfre_8var_2year</th>
+    <th class="tg-9xca">kfre_8var_5year</th>
+</tr></thead>
+<tbody>
+<tr>
+    <td class="tg-trpp">829432911</td>
+    <td class="tg-8d8j">61</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.15</td>
+    <td class="tg-8d8j">10</td>
+    <td class="tg-8d8j">6</td>
+    <td class="tg-8d8j">4</td>
+    <td class="tg-8d8j">2.6</td>
+    <td class="tg-8d8j">16</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">2086</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.1218</td>
+    <td class="tg-8rk5">0.3953</td>
+    <td class="tg-8rk5">0.1319</td>
+    <td class="tg-8rk5">0.4155</td>
+    <td class="tg-8rk5">0.5811</td>
+    <td class="tg-8rk5">0.9800</td>
+</tr>
+<tr>
+    <td class="tg-trpp">451074312</td>
+    <td class="tg-8d8j">66</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">7.32</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">7.7</td>
+    <td class="tg-8d8j">6.5</td>
+    <td class="tg-8d8j">3.5</td>
+    <td class="tg-8d8j">14</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">3</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0004</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0004</td>
+    <td class="tg-8rk5">0.0046</td>
+    <td class="tg-8rk5">0.0207</td>
+</tr>
+<tr>
+    <td class="tg-trpp">472425367</td>
+    <td class="tg-8d8j">70</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">10.12</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">7.5</td>
+    <td class="tg-8d8j">3.8</td>
+    <td class="tg-8d8j">3.2</td>
+    <td class="tg-8d8j">17</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">93</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0003</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0003</td>
+    <td class="tg-8rk5">0.0015</td>
+    <td class="tg-8rk5">0.0067</td>
+</tr>
+<tr>
+    <td class="tg-trpp">300680837</td>
+    <td class="tg-8d8j">49</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">7.63</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">8.5</td>
+    <td class="tg-8d8j">5.4</td>
+    <td class="tg-8d8j">4.3</td>
+    <td class="tg-8d8j">23</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">138</td>
+    <td class="tg-8d8j">Female</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0004</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0004</td>
+    <td class="tg-8rk5">0.0013</td>
+    <td class="tg-8rk5">0.0059</td>
+</tr>
+<tr>
+    <td class="tg-trpp">105959696</td>
+    <td class="tg-8d8j">54</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">11.34</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">8</td>
+    <td class="tg-8d8j">5.1</td>
+    <td class="tg-8d8j">2.9</td>
+    <td class="tg-8d8j">20</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">311</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0003</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0003</td>
+    <td class="tg-8rk5">0.0020</td>
+    <td class="tg-8rk5">0.0091</td>
+</tr>
+<tr>
+    <td class="tg-trpp">205521453</td>
+    <td class="tg-8d8j">56</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">34.9</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">8.6</td>
+    <td class="tg-8d8j">3</td>
+    <td class="tg-8d8j">3.2</td>
+    <td class="tg-8d8j">13</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">461</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0007</td>
+</tr>
+<tr>
+    <td class="tg-trpp">964175840</td>
+    <td class="tg-8d8j">62</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">43.62</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.2</td>
+    <td class="tg-8d8j">3.8</td>
+    <td class="tg-8d8j">4.3</td>
+    <td class="tg-8d8j">26</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1312</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+</tr>
+<tr>
+    <td class="tg-trpp">366215045</td>
+    <td class="tg-8d8j">73</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">19.63</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">7.7</td>
+    <td class="tg-8d8j">2.9</td>
+    <td class="tg-8d8j">2.4</td>
+    <td class="tg-8d8j">14</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1566</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0007</td>
+    <td class="tg-8rk5">0.0031</td>
+</tr>
+<tr>
+    <td class="tg-trpp">703995795</td>
+    <td class="tg-8d8j">28</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">47.68</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.8</td>
+    <td class="tg-8d8j">3.7</td>
+    <td class="tg-8d8j">4.8</td>
+    <td class="tg-8d8j">28</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1587</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+</tr>
+<tr>
+    <td class="tg-trpp">193572795</td>
+    <td class="tg-8d8j">25</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">7.2</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">8.4</td>
+    <td class="tg-8d8j">5.3</td>
+    <td class="tg-8d8j">4.2</td>
+    <td class="tg-8d8j">19</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1705</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0002</td>
+    <td class="tg-8rk5">0.0010</td>
+    <td class="tg-8rk5">0.0002</td>
+    <td class="tg-8rk5">0.0009</td>
+    <td class="tg-8rk5">0.0036</td>
+    <td class="tg-8rk5">0.0162</td>
+</tr>
+<tr>
+    <td class="tg-trpp">140269431</td>
+    <td class="tg-8d8j">64</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">53.15</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.3</td>
+    <td class="tg-8d8j">4.3</td>
+    <td class="tg-8d8j">3.7</td>
+    <td class="tg-8d8j">25</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1958</td>
+    <td class="tg-8d8j">Female</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+</tr>
+<tr>
+    <td class="tg-trpp">167087450</td>
+    <td class="tg-8d8j">69</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">58.17</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.7</td>
+    <td class="tg-8d8j">3.4</td>
+    <td class="tg-8d8j">4.7</td>
+    <td class="tg-8d8j">25</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">2856</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+</tr>
+<tr>
+    <td class="tg-trpp">548454181</td>
+    <td class="tg-8d8j">23</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">28.81</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">7</td>
+    <td class="tg-8d8j">6.8</td>
+    <td class="tg-8d8j">1.7</td>
+    <td class="tg-8d8j">20</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">3224</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0020</td>
+    <td class="tg-8rk5">0.0089</td>
+</tr>
+<tr>
+    <td class="tg-trpp">780327933</td>
+    <td class="tg-8d8j">67</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">29.83</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">7.9</td>
+    <td class="tg-8d8j">2.2</td>
+    <td class="tg-8d8j">2.8</td>
+    <td class="tg-8d8j">14</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">28</td>
+    <td class="tg-8d8j">Female</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0002</td>
+    <td class="tg-8rk5">0.0008</td>
+</tr>
+<tr>
+    <td class="tg-trpp">586810087</td>
+    <td class="tg-8d8j">67</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">47.63</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.4</td>
+    <td class="tg-8d8j">3.7</td>
+    <td class="tg-8d8j">4</td>
+    <td class="tg-8d8j">30</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">114</td>
+    <td class="tg-8d8j">Female</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+</tr>
+<tr>
+    <td class="tg-trpp">128191268</td>
+    <td class="tg-8d8j">71</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">47.07</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.3</td>
+    <td class="tg-8d8j">4.1</td>
+    <td class="tg-8d8j">4.8</td>
+    <td class="tg-8d8j">22</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">210</td>
+    <td class="tg-8d8j">Female</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+</tr>
+<tr>
+    <td class="tg-trpp">354037890</td>
+    <td class="tg-8d8j">77</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">44.77</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">8.4</td>
+    <td class="tg-8d8j">1.6</td>
+    <td class="tg-8d8j">2.4</td>
+    <td class="tg-8d8j">18</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">322</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+</tr>
+<tr>
+    <td class="tg-trpp">325811054</td>
+    <td class="tg-8d8j">67</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">58.52</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">10.1</td>
+    <td class="tg-8d8j">2.9</td>
+    <td class="tg-8d8j">4.2</td>
+    <td class="tg-8d8j">26</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">418</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+</tr>
+<tr>
+    <td class="tg-trpp">290397253</td>
+    <td class="tg-8d8j">71</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">42.44</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.1</td>
+    <td class="tg-8d8j">3.1</td>
+    <td class="tg-8d8j">4.2</td>
+    <td class="tg-8d8j">31</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">439</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+</tr>
+<tr>
+    <td class="tg-trpp">340488662</td>
+    <td class="tg-8d8j">71</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">49.03</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.7</td>
+    <td class="tg-8d8j">2.9</td>
+    <td class="tg-8d8j">4.5</td>
+    <td class="tg-8d8j">29</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">756</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+</tr>
+<tr>
+    <td class="tg-trpp">852670690</td>
+    <td class="tg-8d8j">71</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">57.84</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">8.9</td>
+    <td class="tg-8d8j">1.6</td>
+    <td class="tg-8d8j">4.2</td>
+    <td class="tg-8d8j">28</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">1215</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+</tr>
+<tr>
+    <td class="tg-trpp">532777291</td>
+    <td class="tg-8d8j">83</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">41.12</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">8.4</td>
+    <td class="tg-8d8j">2.7</td>
+    <td class="tg-8d8j">3.7</td>
+    <td class="tg-8d8j">22</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">1267</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+</tr>
+<tr>
+    <td class="tg-trpp">770017136</td>
+    <td class="tg-8d8j">73</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">48.76</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.5</td>
+    <td class="tg-8d8j">4.9</td>
+    <td class="tg-8d8j">3.8</td>
+    <td class="tg-8d8j">21</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">1323</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+</tr>
+<tr>
+    <td class="tg-trpp">845855347</td>
+    <td class="tg-8d8j">28</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">31.17</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">10.3</td>
+    <td class="tg-8d8j">4.7</td>
+    <td class="tg-8d8j">2.5</td>
+    <td class="tg-8d8j">27</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">1370</td>
+    <td class="tg-8d8j">Female</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0002</td>
+    <td class="tg-8rk5">0.0007</td>
+</tr>
+<tr>
+    <td class="tg-trpp">259011659</td>
+    <td class="tg-8d8j">63</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">59.52</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.6</td>
+    <td class="tg-8d8j">4.2</td>
+    <td class="tg-8d8j">4.4</td>
+    <td class="tg-8d8j">26</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">1620</td>
+    <td class="tg-8d8j">Female</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+</tr>
+<tr>
+    <td class="tg-trpp">451920450</td>
+    <td class="tg-8d8j">71</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">27.19</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">8.9</td>
+    <td class="tg-8d8j">3.5</td>
+    <td class="tg-8d8j">3.9</td>
+    <td class="tg-8d8j">23</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">1680</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0004</td>
+</tr>
+<tr>
+    <td class="tg-trpp">971884645</td>
+    <td class="tg-8d8j">65</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">22.52</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.1</td>
+    <td class="tg-8d8j">4.1</td>
+    <td class="tg-8d8j">4</td>
+    <td class="tg-8d8j">25</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">1911</td>
+    <td class="tg-8d8j">Male</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0001</td>
+    <td class="tg-8rk5">0.0002</td>
+    <td class="tg-8rk5">0.0007</td>
+</tr>
+<tr>
+    <td class="tg-trpp">340172975</td>
+    <td class="tg-8d8j">66</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">1</td>
+    <td class="tg-8d8j">58.96</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">9.2</td>
+    <td class="tg-8d8j">3.1</td>
+    <td class="tg-8d8j">3.7</td>
+    <td class="tg-8d8j">14</td>
+    <td class="tg-8d8j">0</td>
+    <td class="tg-8d8j">2013</td>
+    <td class="tg-8d8j">Female</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+    <td class="tg-8rk5">0.0000</td>
+</tr>
+</tbody></table></div>
+</center><div style="height: 20px;"></div><p></p>
+</section>
+<section id="results">
+<h2>Results<a class="headerlink" href="#results" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>We define truth for 2-year and 5-year outcomes</p></li>
+<li><p>Filter down the dataset to CKD stages 3-5 (Tangri et al.)</p></li>
+<li><p>Extract the true labels for the 2-year and 5-year outcomes from the DataFrame df.</p></li>
+<li><p>Assign the true labels for the 2-year outcome to <code class="docutils literal notranslate"><span class="pre">y_true_2_yr</span></code> and for the 5-year outcome to <code class="docutils literal notranslate"><span class="pre">y_true_5_yr</span></code>.</p></li>
+<li><p>Combine these true labels into a list y_true.</p></li>
+</ul>
+<p><strong>Define Predictions for 4-Variable and 6-Variable KFREs for 2-Years and 5-Years</strong></p>
+<ul class="simple">
+<li><p>Extract the predicted probabilities for the 4-variable KFRE model for both the 2-year and 5-year outcomes.</p></li>
+<li><p>Assign these predictions to <code class="docutils literal notranslate"><span class="pre">y_pred_4var_2_yr</span></code> and <code class="docutils literal notranslate"><span class="pre">y_pred_4var_5_yr</span></code>, respectively.</p></li>
+<li><p>Similarly, extract and assign the predicted probabilities for the 6-variable KFRE model for both the 2-year and 5-year outcomes to <code class="docutils literal notranslate"><span class="pre">y_pred_6var_2_yr</span></code> and <code class="docutils literal notranslate"><span class="pre">y_pred_6var_5_yr</span></code>.</p></li>
+<li><p>Combine the 4-variable model predictions into a list <code class="docutils literal notranslate"><span class="pre">preds_4var</span></code>.</p></li>
+</ul>
+<span style="background-color: yellow;">These steps set up the necessary true labels and predictions for subsequent performance evaluation and analysis of the 4-variable and 6-variable KFRE models for both 2-year and 5-year outcomes.</span><div style="height: 20px;"></div><p></p>
+<div class="no-click"><a class="reference internal image-reference" href="_images/performance_4_var_grid.svg"><img alt="Performance Grid" class="align-left" src="_images/performance_4_var_grid.svg" style="width: 950px;" />
+</a>
+<a class="reference internal image-reference" href="_images/performance_6_var_grid.svg"><img alt="Performance Grid" class="align-left" src="_images/performance_6_var_grid.svg" style="width: 950px;" />
+</a>
+<a class="reference internal image-reference" href="_images/performance_8_var_grid.svg"><img alt="Performance Grid" class="align-left" src="_images/performance_8_var_grid.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><p>Table below displays KFRE metrics across models.</p>
+</div><style>
+.kf2-wrap {
+overflow-x: auto;
+display: block;
+max-width: 1000px;  /* ← semicolon added */
+}
+.kf2-table th:first-child {
+text-align: left;
+}
+
+.kf2-table {
+border-collapse: collapse;
+border-spacing: 0;
+width: 1000px;
+table-layout: fixed;
+margin: 0;
+line-height: 0.2;
+}
+
+.kf2-table td, .kf2-table th {
+border: 1px solid black;
+font-family: Arial, sans-serif;
+font-size: 14px;
+padding: 10px 5px;
+word-break: break-word;
+background-color: white;
+color: black;
+}
+
+.kf2-table th {
+font-weight: bold;
+text-align: center;
+}
+
+.kf2-metric-label {
+text-align: left;
+font-weight: bold;
+background-color: white !important;
+}
+</style>
+
+<div class="kf2-wrap">
+<table class="kf2-table">
+<colgroup>
+    <!-- Metrics -->
+    <col style="width: 160px"> <!-- Patient_ID -->
+    <col style="width: 135px"> <!-- 2y 4v -->
+    <col style="width: 135px"> <!-- 5y 4v -->
+    <col style="width: 135px"> <!-- 2y 6v -->
+    <col style="width: 135px"> <!-- 5y 6v -->
+    <col style="width: 135px"> <!-- 2y 8v -->
+    <col style="width: 135px"> <!-- 5y 8v -->
+</colgroup>
+<thead>
+    <tr>
+    <th>Metrics</th>
+    <th>2_year_4_var_kfre</th>
+    <th>5_year_4_var_kfre</th>
+    <th>2_year_6_var_kfre</th>
+    <th>5_year_6_var_kfre</th>
+    <th>2_year_8_var_kfre</th>
+    <th>5_year_8_var_kfre</th>
+    </tr>
+</thead>
+<tbody>
+    <tr><td class="kf2-metric-label">Precision/PPV</td><td>0.614641</td><td>0.590909</td><td>0.616874</td><td>0.593812</td><td>0.589202</td><td>0.558601</td></tr>
+    <tr><td class="kf2-metric-label">Average Precision</td><td>0.559144</td><td>0.602071</td><td>0.559212</td><td>0.603624</td><td>0.548023</td><td>0.587199</td></tr>
+    <tr><td class="kf2-metric-label">Sensitivity</td><td>0.445892</td><td>0.641297</td><td>0.446894</td><td>0.635659</td><td>0.503006</td><td>0.675123</td></tr>
+    <tr><td class="kf2-metric-label">Specificity</td><td>0.949919</td><td>0.877670</td><td>0.950278</td><td>0.880194</td><td>0.937175</td><td>0.853010</td></tr>
+    <tr><td class="kf2-metric-label">AUC ROC</td><td>0.875196</td><td>0.844687</td><td>0.875311</td><td>0.845210</td><td>0.877136</td><td>0.843695</td></tr>
+    <tr><td class="kf2-metric-label">Brier Score</td><td>0.091249</td><td>0.137478</td><td>0.091271</td><td>0.136473</td><td>0.096593</td><td>0.148403</td></tr>
+</tbody>
+</table>
+</div><div style="height: 50px;"></div></section>
+<section id="appendix">
+<h2>Appendix<a class="headerlink" href="#appendix" title="Link to this heading"></a></h2>
+<section id="descriptive-statistics">
+<h3>Descriptive Statistics<a class="headerlink" href="#descriptive-statistics" title="Link to this heading"></a></h3>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-eh08{background-color:#EEE;font-weight:bold;text-align:left;vertical-align:middle}
+.tg .tg-k9vs{background-color:#EEE;font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-9rve{background-color:#EEE;font-weight:bold;text-align:center;vertical-align:middle}
+.tg .tg-nrix{text-align:center;vertical-align:middle}
+@media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;margin: auto 0px;}}</style>
+<div class="tg-wrap"><table class="tg">
+<colgroup>
+<!-- Row label column -->
+<col style="width: 40px">
+<!-- Data columns -->
+<col style="width: 50px"> <!-- Age -->
+<col style="width: 50px"> <!-- GFR -->
+<col style="width: 50px"> <!-- ACR -->
+<col style="width: 50px"> <!-- Ca -->
+<col style="width: 50px"> <!-- P -->
+<col style="width: 50px"> <!-- Alb -->
+<col style="width: 50px"> <!-- TCO2 -->
+<col style="width: 50px"> <!-- ESRD_dur -->
+</colgroup>
+<thead>
+<tr>
+    <th class="tg-k9vs"> </th>
+    <th class="tg-9rve">Age</th>
+    <th class="tg-9rve">GFR</th>
+    <th class="tg-9rve">ACR</th>
+    <th class="tg-9rve">Ca</th>
+    <th class="tg-9rve">P</th>
+    <th class="tg-9rve">Alb</th>
+    <th class="tg-9rve">TCO2</th>
+    <th class="tg-9rve">ESRD_dur</th>
+</tr></thead>
+<tbody>
+<tr>
+    <td class="tg-eh08">count</td>
+    <td class="tg-nrix">16619</td>
+    <td class="tg-nrix">16619</td>
+    <td class="tg-nrix">16619</td>
+    <td class="tg-nrix">16619</td>
+    <td class="tg-nrix">16619</td>
+    <td class="tg-nrix">16619</td>
+    <td class="tg-nrix">16619</td>
+    <td class="tg-nrix">16619</td>
+</tr>
+<tr>
+    <td class="tg-eh08">mean</td>
+    <td class="tg-nrix">54.43</td>
+    <td class="tg-nrix">66.7</td>
+    <td class="tg-nrix">727.43</td>
+    <td class="tg-nrix">9.14</td>
+    <td class="tg-nrix">3.62</td>
+    <td class="tg-nrix">4.04</td>
+    <td class="tg-nrix">26.13</td>
+    <td class="tg-nrix">1385.88</td>
+</tr>
+<tr>
+    <td class="tg-eh08">std</td>
+    <td class="tg-nrix">17.24</td>
+    <td class="tg-nrix">31.13</td>
+    <td class="tg-nrix">1760.78</td>
+    <td class="tg-nrix">0.67</td>
+    <td class="tg-nrix">0.84</td>
+    <td class="tg-nrix">0.61</td>
+    <td class="tg-nrix">3.99</td>
+    <td class="tg-nrix">1444.12</td>
+</tr>
+<tr>
+    <td class="tg-eh08">min</td>
+    <td class="tg-nrix">18</td>
+    <td class="tg-nrix">2.237831</td>
+    <td class="tg-nrix">0</td>
+    <td class="tg-nrix">3.5</td>
+    <td class="tg-nrix">0</td>
+    <td class="tg-nrix">0.3</td>
+    <td class="tg-nrix">3</td>
+    <td class="tg-nrix">1</td>
+</tr>
+<tr>
+    <td class="tg-eh08">25%</td>
+    <td class="tg-nrix">43</td>
+    <td class="tg-nrix">46.94</td>
+    <td class="tg-nrix">25.28</td>
+    <td class="tg-nrix">8.8</td>
+    <td class="tg-nrix">3.1</td>
+    <td class="tg-nrix">3.8</td>
+    <td class="tg-nrix">24</td>
+    <td class="tg-nrix">241</td>
+</tr>
+<tr>
+    <td class="tg-eh08">50%</td>
+    <td class="tg-nrix">57</td>
+    <td class="tg-nrix">67.84</td>
+    <td class="tg-nrix">120.86</td>
+    <td class="tg-nrix">9.2</td>
+    <td class="tg-nrix">3.5</td>
+    <td class="tg-nrix">4.2</td>
+    <td class="tg-nrix">27</td>
+    <td class="tg-nrix">868</td>
+</tr>
+<tr>
+    <td class="tg-eh08">75%</td>
+    <td class="tg-nrix">68</td>
+    <td class="tg-nrix">85.13</td>
+    <td class="tg-nrix">642</td>
+    <td class="tg-nrix">9.6</td>
+    <td class="tg-nrix">4</td>
+    <td class="tg-nrix">4.4</td>
+    <td class="tg-nrix">29</td>
+    <td class="tg-nrix">2091.5</td>
+</tr>
+<tr>
+    <td class="tg-eh08">max</td>
+    <td class="tg-nrix">97</td>
+    <td class="tg-nrix">415.04</td>
+    <td class="tg-nrix">60323.44</td>
+    <td class="tg-nrix">14.8</td>
+    <td class="tg-nrix">15.5</td>
+    <td class="tg-nrix">5.7</td>
+    <td class="tg-nrix">59</td>
+    <td class="tg-nrix">5892</td>
+</tr>
+</tbody></table></div><div style="height: 50px;"></div><p></p>
+<div class="no-click"><a class="reference internal image-reference" href="_images/kde_distributions.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/kde_distributions.svg" style="width: 950px;" />
+</a>
+</div><div style="height: 50px;"></div><a class="reference internal image-reference" href="_images/all_plots_comparisons_boxplot.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/all_plots_comparisons_boxplot.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><section id="age-related-distributions">
+<h4>Age-Related Distributions<a class="headerlink" href="#age-related-distributions" title="Link to this heading"></a></h4>
+<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_HTN.svg"><img alt="Stacked_Bar_Age_HTN" class="align-center" src="_images/Stacked_Bar_Age_HTN.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>HTN           No Hypertension   Hypertension    Total   No Hypertension %    Hypertension %
+18–29                    1711            193     1904               89.86             10.14
+30–39                    1311            335     1646               79.65             20.35
+40–49                    1682            633     2315               72.66             27.34
+50–59                    2166           1247     3413               63.46             36.54
+60–69                    2046           1766     3812               53.67             46.33
+70–79                    1322           1505     2827               46.76             53.24
+80–89                     304            360      664               45.78             54.22
+90–99                      16             22       38               42.11             57.89
+Total                   10558           6061    16619               63.53             36.47
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_DM.svg"><img alt="Stacked_Bar_Age_DM" class="align-center" src="_images/Stacked_Bar_Age_DM.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DM         No Diabetes  Diabetes  Total  No Diabetes_%  Diabetes_%
+Age_Group
+18-29             1785       119   1904          93.75        6.25
+30-39             1444       202   1646          87.73       12.27
+40-49             1776       539   2315          76.72       23.28
+50-59             2235      1178   3413          65.48       34.52
+60-69             2216      1596   3812          58.13       41.87
+70-79             1695      1132   2827          59.96       40.04
+80-89              423       241    664          63.70       36.30
+90-99               25        13     38          65.79       34.21
+Total            11599      5020  16619          69.79       30.21
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_SEX.svg"><img alt="Stacked_Bar_Age_SEX" class="align-center" src="_images/Stacked_Bar_Age_SEX.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>SEX        Male  Female  Total  Male_%  Female_%
+Age_Group
+18-29       328    1576   1904   17.23     82.77
+30-39       396    1250   1646   24.06     75.94
+40-49       508    1807   2315   21.94     78.06
+50-59       764    2649   3413   22.38     77.62
+60-69       779    3033   3812   20.44     79.56
+70-79       527    2300   2827   18.64     81.36
+80-89       143     521    664   21.54     78.46
+90-99         6      32     38   15.79     84.21
+Total      3451   13168  16619   20.77     79.23
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_ESRD_in_5_year_outcome.svg"><img alt="Stacked_Bar_Age_ESRD_in_5_year_outcome" class="align-center" src="_images/Stacked_Bar_Age_ESRD_in_5_year_outcome.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ESRD_in_5_year_outcome  No_ESRD  ESRD  Total  No_ESRD_%  ESRD_%
+Age_Group
+18-29                      1778   126   1904      93.38    6.62
+30-39                      1482   164   1646      90.04    9.96
+40-49                      2019   296   2315      87.21   12.79
+50-59                      2970   443   3413      87.02   12.98
+60-69                      3395   417   3812      89.06   10.94
+70-79                      2586   241   2827      91.48    8.52
+80-89                       610    54    664      91.87    8.13
+90-99                        35     3     38      92.11    7.89
+Total                     14875  1744  16619      89.51   10.49
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_ESRD_in_2_year_outcome.svg"><img alt="Stacked_Bar_Age_ESRD_in_2_year_outcome" class="align-center" src="_images/Stacked_Bar_Age_ESRD_in_2_year_outcome.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ESRD_in_2_year_outcome  No_ESRD  ESRD  Total  No_ESRD_%  ESRD_%
+Age_Group
+18-29                      1808    96   1904      94.96    5.04
+30-39                      1526   120   1646      92.71    7.29
+40-49                      2099   216   2315      90.67    9.33
+50-59                      3121   292   3413      91.44    8.56
+60-69                      3544   268   3812      92.97    7.03
+70-79                      2673   154   2827      94.55    5.45
+80-89                       634    30    664      95.48    4.52
+90-99                        35     3     38      92.11    7.89
+Total                     15440  1179  16619      92.91    7.09
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_ckd_stage.svg"><img alt="Stacked_Bar_Age_ckd_stage" class="align-center" src="_images/Stacked_Bar_Age_ckd_stage.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ckd_stage  CKD Stage 1  CKD Stage 2  CKD Stage 3a  CKD Stage 3b  CKD Stage 4  \
+Age_Group
+18-29             1165          467            74            68           66
+30-39              488          703           131            99          100
+40-49              476         1047           277           172          178
+50-59              581         1523           457           315          289
+60-69              421         1529           843           494          322
+70-79              105         1216           752           442          219
+80-89               24          286           165           123           48
+90-99                2           17             8             7            4
+Total             3262         6788          2707          1720         1226
+
+ckd_stage  CKD Stage 5  Total  CKD Stage 1_%  CKD Stage 2_%  CKD Stage 3a_%  \
+Age_Group
+18-29               64   1904          61.19          24.53            3.89
+30-39              125   1646          29.65          42.71            7.96
+40-49              165   2315          20.56          45.23           11.97
+50-59              248   3413          17.02          44.62           13.39
+60-69              203   3812          11.04          40.11           22.11
+70-79               93   2827           3.71          43.01           26.60
+80-89               18    664           3.61          43.07           24.85
+90-99                0     38           5.26          44.74           21.05
+Total              916  16619          19.63          40.84           16.29
+
+ckd_stage  CKD Stage 3b_%  CKD Stage 4_%  CKD Stage 5_%
+Age_Group
+18-29                3.57           3.47           3.36
+30-39                6.01           6.08           7.59
+40-49                7.43           7.69           7.13
+50-59                9.23           8.47           7.27
+60-69               12.96           8.45           5.33
+70-79               15.63           7.75           3.29
+80-89               18.52           7.23           2.71
+90-99               18.42          10.53           0.00
+Total               10.35           7.38           5.51
+</pre></div>
+</div>
+</section>
+<section id="ckd-related-distributions">
+<h4>CKD-Related Distributions<a class="headerlink" href="#ckd-related-distributions" title="Link to this heading"></a></h4>
+<a class="reference internal image-reference" href="_images/Stacked_Bar_CKD_HTN.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/Stacked_Bar_CKD_HTN.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>HTN               No Hypertension   Hypertension    Total   No Hypertension %    Hypertension %
+CKD Stage 1                  2715            547     3262               83.23             16.77
+CKD Stage 2                  4610           2178     6788               67.91             32.09
+CKD Stage 3a                 1423           1284     2707               52.57             47.43
+CKD Stage 3b                  906            814     1720               52.67             47.33
+CKD Stage 4                   557            669     1226               45.43             54.57
+CKD Stage 5                   347            569      916               37.88             62.12
+Total                       10558           6061    16619               63.53             36.47
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/Stacked_Bar_CKD_DM.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/Stacked_Bar_CKD_DM.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DM            No Diabetes  Diabetes  Total  No Diabetes_%  Diabetes_%
+ckd_stage
+CKD Stage 1          2571       691   3262          78.82       21.18
+CKD Stage 2          4740      2048   6788          69.83       30.17
+CKD Stage 3a         1776       931   2707          65.61       34.39
+CKD Stage 3b         1114       606   1720          64.77       35.23
+CKD Stage 4           757       469   1226          61.75       38.25
+CKD Stage 5           641       275    916          69.98       30.02
+Total               11599      5020  16619          69.79       30.21
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/Stacked_Bar_CKD_SEX.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/Stacked_Bar_CKD_SEX.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>SEX           Male  Female  Total  Male_%  Female_%
+ckd_stage
+CKD Stage 1    856    2406   3262   26.24     73.76
+CKD Stage 2   1413    5375   6788   20.82     79.18
+CKD Stage 3a   412    2295   2707   15.22     84.78
+CKD Stage 3b   322    1398   1720   18.72     81.28
+CKD Stage 4    275     951   1226   22.43     77.57
+CKD Stage 5    173     743    916   18.89     81.11
+Total         3451   13168  16619   20.77     79.23
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/Stacked_Bar_CKD_ESRD_in_2_year_outcome.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/Stacked_Bar_CKD_ESRD_in_2_year_outcome.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ESRD_in_2_year_outcome  No_ESRD  ESRD  Total  No_ESRD_%  ESRD_%
+ckd_stage
+CKD Stage 1                3199    63   3262      98.07    1.93
+CKD Stage 2                6670   118   6788      98.26    1.74
+CKD Stage 3a               2616    91   2707      96.64    3.36
+CKD Stage 3b               1636    84   1720      95.12    4.88
+CKD Stage 4                 933   293   1226      76.10   23.90
+CKD Stage 5                 386   530    916      42.14   57.86
+Total                     15440  1179  16619      92.91    7.09
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/Stacked_Bar_CKD_ESRD_in_5_year_outcome.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/Stacked_Bar_CKD_ESRD_in_5_year_outcome.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ESRD_in_5_year_outcome  No_ESRD  ESRD  Total  No_ESRD_%  ESRD_%
+ckd_stage
+CKD Stage 1                3160   102   3262      96.87    3.13
+CKD Stage 2                6565   223   6788      96.71    3.29
+CKD Stage 3a               2523   184   2707      93.20    6.80
+CKD Stage 3b               1516   204   1720      88.14   11.86
+CKD Stage 4                 797   429   1226      65.01   34.99
+CKD Stage 5                 314   602    916      34.28   65.72
+Total                     14875  1744  16619      89.51   10.49
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage_guide.html" class="btn btn-neutral float-left" title="Description" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="acknowledgements.html" class="btn btn-neutral float-right" title="Acknowledgements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Leonid Shpaner.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
