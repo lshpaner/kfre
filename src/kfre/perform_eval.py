@@ -204,7 +204,7 @@ def plot_kfre_metrics(
         Default is False.
 
     show_subplots : bool, optional
-        Whether to show subplos of all combinations. Default is False.
+        Whether to show subplots of all combinations. Default is False.
 
     decimal_places : int, optional
         Number of decimal places for AUC and AP scores in the plot legends.
