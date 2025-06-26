@@ -1,27 +1,67 @@
+import sys
+import builtins
+from .logo import *
+
+detailed_doc = """
+Welcome to Model Metrics! Model Metrics is a versatile Python 
+library designed to streamline the evaluation and interpretation of machine 
+learning models. It provides a robust framework for generating predictions, 
+computing model metrics, analyzing feature importance, and visualizing results. 
+Whether you're working with SHAP values, model coefficients, confusion matrices, 
+ROC curves, precision-recall plots, and other key performance indicators.
+
+PyPI: https://pypi.org/project/model-metrics/
+Documentation: https://lshpaner.github.io/model_metrics/
+
+
+Version: 0.0.3a
+
 """
 
-888    d8P  8888888888 8888888b.  8888888888
-888   d8P   888        888   Y88b 888
-888  d8P    888        888    888 888
-888d88K     8888888    888   d88P 8888888
-8888888b    888        8888888P"  888
-888  Y88b   888        888 T88b   888
-888   Y88b  888        888  T88b  888
-888    Y88b 888        888   T88b 8888888888
 
+# Define the custom help function
+def custom_help(obj=None):
+    """
+    Custom help function to dynamically include ASCII art in help() output.
+    """
+    if (
+        obj is None or obj is sys.modules[__name__]
+    ):  # When `help()` is called for this module
+        print(kfre_logo)  # Print ASCII art first
+        print(detailed_doc)  # Print the detailed documentation
+    else:
+        original_help(obj)  # Use the original help for other objects
+
+
+# Backup the original help function
+original_help = builtins.help
+
+# Override the global help function in builtins
+builtins.help = custom_help
+
+
+"""
 Kidney Failure Risk Equation (KFRE) Python Library
 ===================================================
 
-This library provides tools to compute CKD risk based on clinical parameters,
-using the Kidney Failure Risk Equation (KFRE). It includes functions for individual
-risk prediction, data conversion, and evaluation of KFRE metrics.
+`kfre` is a Python library designed to estimate the risk of chronic kidney disease 
+(CKD) progression over two distinct timelines: 2 years and 5 years. Using Tangri's 
+Kidney Failure Risk Equation (KFRE), the library provides tools for healthcare 
+professionals and researchers to predict CKD risk based on patient data. It supports 
+predictions for both males and females and includes specific adjustments for individuals 
+from North American and non-North American regions.
+
+PyPI: https://pypi.org/project/kfre/
+Documentation: https://lshpaner.github.io/kfre/
+
+Version: 0.1.13
 
 
 """
 
 __author__ = "Leonid Shpaner"
 __email__ = "lshpaner@ucla.edu"
-__version__ = "0.1.12"
+__version__ = "0.1.13"
 
 
 from .perform_eval import *
