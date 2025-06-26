@@ -1456,6 +1456,40 @@ Age-Related Distributions
     Total               10.35           7.38           5.51  
 
 
+.. raw:: html
+
+   <div class="no-click">
+
+.. image:: ../assets/freq_ckd_age.svg
+   :alt: freq_ckd_age
+   :align: center
+   :width: 550px
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+   
+   <div style="height: 20px;"></div>
+
+
+**Key Observations:**
+
+- **Stage 1 CKD** is most common in the 18-29 age group with 1,165 cases and decreases significantly in older age groups.
+- **Stage 2 CKD** shows a peak in the 60-69 age group, with 1,529 cases, and remains relatively high in adjacent age groups (50-79 years).
+- **Stage 3 CKD** (both 3a and 3b) becomes more prevalent in middle to older age groups, particularly from 50-79 years.
+- **Stages 4 and 5 CKD** are less frequent across all age groups, but Stage 4 sees an increase in the 60-69 age group and remains higher in older populations.
+
+**Clinical Implications:**
+
+- The data suggests that early-stage CKD is more common in younger adults, while later stages are more prevalent in older populations.
+- This pattern may reflect the progressive nature of CKD and the increasing risk with age.
+
+**Considerations:**
+
+- Future studies could focus on understanding the factors contributing to the peak in Stage 2 CKD in the 60-69 age group.
+- Intervention strategies might be tailored according to the age group and CKD stage distribution to improve patient outcomes.
 
 
 CKD-Related Distributions
