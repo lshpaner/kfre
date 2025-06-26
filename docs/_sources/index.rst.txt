@@ -44,7 +44,9 @@ Table of Contents
    :maxdepth: 3
    :caption: About KFRE
 
+   validation   
    acknowledgements
+   testimonials
    citations
    changelog
    references
