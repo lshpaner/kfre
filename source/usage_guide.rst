@@ -270,9 +270,6 @@ The following is an example to illustrate the usage of the ``perform_conversions
     converted_df = perform_conversions(
         df=df,
         reverse=False,
-        upcr_col="uPCR (mmol)",
-        calcium_col="Calcium",
-        albumin_col="Albumin",
         convert_all=True,
     )
 
