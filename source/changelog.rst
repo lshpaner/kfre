@@ -26,6 +26,17 @@
 Changelog
 =========
 
+0.1.13
+------
+
+* **Renamed** the ``show_grid`` parameter to ``show_subplots`` across all performance‐evaluation plotting functions for clarity.
+* **Moved** example and helper scripts into a new ``py_scripts/`` directory to cleanly separate library code from ad-hoc scripts.
+* **Introduced** a comprehensive suite of pytest‐based unittests to validate all core functionality.
+* **Added** an ASCII-art logo that prints on startup when you fire up the library in a terminal.
+* **Refreshed** the ``help()`` output for a cleaner, more focused presentation.
+* **Enhanced** module documentation in ``__init__.py`` to better explain public API and usage.
+
+
 0.1.12
 ------
 
