@@ -1,7 +1,7 @@
 # tests/test_classification_functions.py
 
 import pandas as pd
-from kfre.perform_eval import class_esrd_outcome, class_ckd_stages
+from kfre import class_esrd_outcome, class_ckd_stages
 
 
 def test_class_esrd_outcome_create_years_and_prefix_and_override():
