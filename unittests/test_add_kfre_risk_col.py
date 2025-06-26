@@ -12,7 +12,6 @@ def sample_for_risk():
             "uACR": [30],
             "Diabetes (1=yes; 0=no)": [0],
             "Hypertension (1=yes; 0=no)": [0],
-            # for 4-var, albumin-/phosphorous-/bicarb-/calcium not used
             "Albumin_g_dl": [4.0],
             "Phosphate_mg_dl": [1.0],
             "Bicarbonate (mmol/L)": [24.0],
@@ -40,8 +39,8 @@ def test_add_kfre_risk_col_4var_2year():
         is_north_american=True,
         copy=True,
     )
-    # column name format: kfre_4_var_2_year
-    assert "kfre_4_var_2_year" in out.columns
-    val = out["kfre_4_var_2_year"].iloc[0]
+    # actual column name in the output
+    assert "kfre_4var_2year" in out.columns
+    val = out["kfre_4var_2year"].iloc[0]
     assert isinstance(val, float)
     assert 0 <= val <= 1
