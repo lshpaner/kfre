@@ -524,7 +524,7 @@ Performance Assessment
 AUC ROC & Precision-Recall Curves
 ---------------------------------
 
-.. function:: plot_kfre_metrics(df, num_vars, fig_size=(12, 6), mode="both", image_path_png=None, image_path_svg=None, image_prefix=None, bbox_inches="tight", plot_type="all_plots", save_plots=False, show_years=[2, 5], plot_combinations=False, show_grids=False, decimal_places=2)
+.. function:: plot_kfre_metrics(df, num_vars, fig_size=(12, 6), mode="both", image_path_png=None, image_path_svg=None, image_prefix=None, bbox_inches="tight", plot_type="all_plots", save_plots=False, show_years=[2, 5], plot_combinations=False, show_subplots=False, decimal_places=2)
 
     :param DataFrame df: The input DataFrame containing the necessary columns for truth and predictions.
     :param int or list of int or tuple of int num_vars: Number of variables (e.g., ``4``) or a list/tuple of numbers of variables (e.g., ``[4, 6, 8]``) to generate predictions for.
@@ -538,7 +538,7 @@ AUC ROC & Precision-Recall Curves
     :param bool save_plots: (`optional`) Whether to save plots. Default is ``False``.
     :param int or list of int or tuple of int show_years: (`optional`) Year outcomes to show in the plots. Default is ``[2, 5]``.
     :param bool plot_combinations: (`optional`) Whether to plot all combinations of variables in a single plot. Default is ``False``.
-    :param bool show_grids: (`optional`) Whether to show grid plots of all combinations. Default is ``False``.
+    :param bool show_subplots: (`optional`) Whether to show subplots of all combinations. Default is ``False``.
     :param int decimal_places: (`optional`) Number of decimal places for AUC and AP scores in the plot legends. Default is ``2``.
 
     :returns: ``tuple`` (optional): Only returned if mode is 'prep' or 'both':
@@ -578,7 +578,7 @@ This function generates the true labels and predicted probabilities for 2-year a
         plot_type="all_plots",       # Can be 'auc_roc', 'precision_recall', or 'all_plots'
         show_years=[2, 5],           # Year outcomes to show in the plots
         plot_combinations=True,      # Plot combinations of all variables in one plot
-        show_grids=True,             # Place all plots on one grid; False does individual
+        show_subplots=True,          # Place all plots on one subplot; False does individual
         decimal_places=3,            # Number of decimal places in legend
     )
 
