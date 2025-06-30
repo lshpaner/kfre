@@ -1602,7 +1602,7 @@ CKD-Related Distributions
     Total                     14875  1744  16619      89.51   10.49
 
 
-Reference
+References
 ------------------
 
 1. Kang, M. W. (2024). [KFRE validation dataset, Asian cohort]. Unpublished dataset provided by personal communication, June 26, 2024. Department of Internal Medicine, Seoul National University College of Medicine, Seoul, Korea.
