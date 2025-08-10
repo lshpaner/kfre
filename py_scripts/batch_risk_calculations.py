@@ -25,7 +25,8 @@ df = add_kfre_risk_col(
     num_vars=[4, 6, 8],
     years=(2, 5),
     is_north_american=False,
-    copy=False,  # Modify the original DataFrame directly
+    copy=False,
+    precision=6,  # Modify the original DataFrame directly
 )
 # The resulting DataFrame 'df' now includes new columns with risk
 # predictions for each model and time frame

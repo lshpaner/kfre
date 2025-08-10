@@ -1,25 +1,25 @@
 from kfre import kfre_person
 
-risk_percentage = (
-    kfre_person(
-        age=57.28,
-        is_male=False,
-        eGFR=15.0,
-        uACR=1762.001840,
-        is_north_american=False,
-        years=2,
-        dm=None,
-        htn=None,
-        albumin=None,
-        phosphorous=None,
-        bicarbonate=None,
-        calcium=None,
-    )
-    * 100
-)  # Convert to percentage
+risk_percentage = kfre_person(
+    age=57.28,
+    is_male=False,
+    eGFR=15.0,
+    uACR=1762.001840,
+    is_north_american=False,
+    years=2,
+    dm=None,
+    htn=None,
+    albumin=None,
+    phosphorous=None,
+    bicarbonate=None,
+    calcium=None,
+    precision=12,
+)  # precision floating point check
 
 message = f"The 2-year risk of kidney failure for this patient is"
-print(f"{message} {risk_percentage:.2f}%.")
+print(
+    f"{message} {risk_percentage} --> precision floating point check"
+)  # precision floating point check
 
 
 for years in [2, 5]:

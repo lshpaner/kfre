@@ -63,6 +63,7 @@ def kfre_person(
     phosphorous=None,
     bicarbonate=None,
     calcium=None,
+    precision=None,
 ):
     """
     Direct function to predict CKD risk for an individual using specific clinical
@@ -97,6 +98,7 @@ def kfre_person(
         phosphorous=phosphorous,
         bicarbonate=bicarbonate,
         calcium=calcium,
+        precision=precision,
     )
 
 
