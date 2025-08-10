@@ -55,6 +55,7 @@ class RiskPredictor:
         is_north_american,
         use_extra_vars=False,
         num_vars=4,
+        precision=None,
     ):
         """
         Predicts the risk of chronic kidney disease (CKD) over a specified
@@ -120,8 +121,11 @@ class RiskPredictor:
                 df = self.df[necessary_cols].copy()
                 dm = df[self.columns["dm"]]
                 htn = df[self.columns["htn"]]
-                return risk_pred(
-                    age, sex, eGFR, uACR, is_north_american, dm, htn, years=years
+                return apply_precision(
+                    risk_pred(
+                        age, sex, eGFR, uACR, is_north_american, dm, htn, years=years
+                    ),
+                    precision=precision,
                 )
             elif num_vars == 8:
                 # Extend columns for 8-variable model
@@ -138,23 +142,29 @@ class RiskPredictor:
                 phosphorous = df[self.columns["phosphorous"]]
                 bicarbonate = df[self.columns["bicarbonate"]]
                 calcium = df[self.columns["calcium"]]
-                return risk_pred(
-                    age,
-                    sex,
-                    eGFR,
-                    uACR,
-                    is_north_american,
-                    None,
-                    None,
-                    albumin,
-                    phosphorous,
-                    bicarbonate,
-                    calcium,
-                    years=years,
+                return apply_precision(
+                    risk_pred(
+                        age,
+                        sex,
+                        eGFR,
+                        uACR,
+                        is_north_american,
+                        None,
+                        None,
+                        albumin,
+                        phosphorous,
+                        bicarbonate,
+                        calcium,
+                        years=years,
+                    ),
+                    precision=precision,
                 )
         else:
             # Call the function with basic parameters for the 4-variable model
-            return risk_pred(age, sex, eGFR, uACR, is_north_american, years=years)
+            return apply_precision(
+                risk_pred(age, sex, eGFR, uACR, is_north_american, years=years),
+                precision=precision,
+            )
 
     def kfre_person(
         self,
@@ -170,6 +180,7 @@ class RiskPredictor:
         phosphorous=None,
         bicarbonate=None,
         calcium=None,
+        precision=None,
     ):
         """
         Predicts CKD risk for an individual patient based on provided clinical
@@ -238,7 +249,36 @@ class RiskPredictor:
             bicarbonate=bicarbonate,
             calcium=calcium,
         )
-        return risk_prediction
+        return apply_precision(risk_prediction, precision=precision)
+
+
+###############################################################################
+# Precision helper
+###############################################################################
+
+
+def apply_precision(result, precision=None):
+    """
+    Optionally round numeric outputs to a given number of decimal places.
+    Works with scalars, numpy arrays, pandas Series, and DataFrames.
+    Returns the same type where possible.
+    """
+    if precision is None:
+        return result
+
+    # scalar numbers
+    if isinstance(result, (int, float)):
+        return round(result, precision)
+
+    # numpy arrays, pandas Series/DataFrame expose .round
+    if hasattr(result, "round"):
+        return result.round(precision)
+
+    # generic iterables fallback
+    try:
+        return type(result)(round(x, precision) for x in result)
+    except Exception:
+        return result
 
 
 ################################################################################
@@ -327,7 +367,13 @@ def upcr_uacr(df, sex_col, diabetes_col, hypertension_col, upcr_col, female_str)
 
 # convenience function as wrapper for method with the same name
 def predict_kfre(
-    df, columns, years, is_north_american, use_extra_vars=False, num_vars=4
+    df,
+    columns,
+    years,
+    is_north_american,
+    use_extra_vars=False,
+    num_vars=4,
+    precision=None,
 ):
     """
     A convenience function to predict CKD risk using the Tangri risk prediction
@@ -352,6 +398,7 @@ def predict_kfre(
         is_north_american=is_north_american,
         use_extra_vars=use_extra_vars,
         num_vars=num_vars,
+        precision=precision,
     )
 
 
@@ -371,6 +418,7 @@ def add_kfre_risk_col(
     years=(2, 5),
     is_north_american=False,
     copy=True,
+    precision=None,
 ):
     """
     Calculate CKD risks for specified variable num_vars and time frames or for
@@ -453,11 +501,14 @@ def add_kfre_risk_col(
         if all(column_map[req] is not None for req in model_requirements[model_vars]):
             for time_frame in years:
                 risk_column = f"kfre_{model_vars}var_{time_frame}year"
-                df_used[risk_column] = predictor.predict_kfre(
-                    years=time_frame,
-                    is_north_american=is_north_american,
-                    use_extra_vars=(model_vars > 4),
-                    num_vars=model_vars,
+                df_used[risk_column] = apply_precision(
+                    predictor.predict_kfre(
+                        years=time_frame,
+                        is_north_american=is_north_american,
+                        use_extra_vars=(model_vars > 4),
+                        num_vars=model_vars,
+                    ),
+                    precision=precision,
                 )
 
     return df_used
