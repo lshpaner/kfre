@@ -1,3 +1,7 @@
+<img src="https://raw.githubusercontent.com/lshpaner/kfre/main/assets/kfre_logo.svg" width="200" style="border: none; outline: none; box-shadow: none;" oncontextmenu="return false;">
+
+<br>
+
 # KFRE: Kidney Failure Risk Estimator
 
 [![PyPI](https://img.shields.io/pypi/v/kfre.svg)](https://pypi.org/project/kfre/)
