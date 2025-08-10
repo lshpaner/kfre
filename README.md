@@ -1,7 +1,5 @@
 <img src="https://raw.githubusercontent.com/lshpaner/kfre/main/assets/kfre_logo.svg" width="200" style="border: none; outline: none; box-shadow: none;" oncontextmenu="return false;">
 
-<br>
-
 # KFRE: Kidney Failure Risk Estimator
 
 [![PyPI](https://img.shields.io/pypi/v/kfre.svg)](https://pypi.org/project/kfre/)
@@ -396,7 +394,7 @@ Converted 'Albumin' to new column 'Albumin_g_dl' with factor 0.1
 <br><br>
 
 ## License
-`kfre` is distributed under the MIT License. See [`LICENSE`](LICENSE.md) for more information.
+`kfre` is distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
 
 ## Support
 If you have any questions or issues with `kfre`, please open an issue on this GitHub repository.
