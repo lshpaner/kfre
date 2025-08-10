@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import os
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 from sklearn.metrics import (
     roc_curve,
     auc,
