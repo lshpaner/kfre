@@ -20,13 +20,13 @@ from North American and non-North American regions.
 PyPI: https://pypi.org/project/kfre/
 Documentation: https://lshpaner.github.io/kfre/
 
-Version: 0.1.13
+Version: 0.1.14
 
 """
 
 __author__ = "Leonid Shpaner"
 __email__ = "lshpaner@ucla.edu"
-__version__ = "0.1.13"
+__version__ = "0.1.14"
 
 
 # Define the custom help function
