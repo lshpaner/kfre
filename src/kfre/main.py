@@ -123,7 +123,14 @@ class RiskPredictor:
                 htn = df[self.columns["htn"]]
                 return apply_precision(
                     risk_pred(
-                        age, sex, eGFR, uACR, is_north_american, dm, htn, years=years
+                        age,
+                        sex,
+                        eGFR,
+                        uACR,
+                        is_north_american,
+                        dm,
+                        htn,
+                        years=years,
                     ),
                     precision=precision,
                 )
