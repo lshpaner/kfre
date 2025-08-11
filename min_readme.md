@@ -21,8 +21,6 @@ Additionally, kfre has the following package dependencies:
 - **matplotlib**: version 3.2.2 or higher
 - **seaborn**: version 0.10.1 or higher
 - **scikit-learn**: version 0.23.1 or higher
-- **tqdm**: version 4.48.0 or higher
-
 
 ## Installation
 

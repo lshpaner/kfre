@@ -46,22 +46,24 @@ The function is designed for ease of use in clinical settings or research,
 providing immediate risk estimations that are crucial for patient management or 
 further analysis.
 
-.. function:: kfre_person(age, is_male, eGFR, uACR, is_north_american, years, dm, htn, albumin, phosphorous, bicarbonate, calcium)
+.. function:: kfre_person(age, is_male, eGFR, uACR, is_north_american, years=2, dm=None, htn=None, albumin=None, phosphorous=None, bicarbonate=None, calcium=None, precision=None)
 
     :param age: Age of the patient.
     :param bool is_male: ``True`` if the patient is male, ``False`` if female.
     :param float eGFR: Estimated Glomerular Filtration Rate.
     :param float uACR: Urinary Albumin to Creatinine Ratio.
     :param bool is_north_american: ``True`` if the patient is from North America, ``False`` otherwise.
-    :param int years: Time horizon for the risk prediction (default is 2 years). 
-    :param float dm: (`optional`) Diabetes mellitus indicator. ``(1=yes; 0=no).``
-    :param float htn: (`optional`) Hypertension indicator. ``(1=yes; 0=no).``
-    :param float albumin: (`optional`) Serum albumin level.
-    :param float phosphorous: (`optional`) Serum phosphorous level.
-    :param float bicarbonate: (`optional`) Serum bicarbonate level.
-    :param float calcium: (`optional`) Serum calcium level.
+    :param int years: Time horizon for the risk prediction (``2`` or ``5``, default is ``2``).
+    :param float dm: (``optional``) Diabetes mellitus indicator. ``(1=yes; 0=no).``
+    :param float htn: (``optional``) Hypertension indicator. ``(1=yes; 0=no).``
+    :param float albumin: (``optional``) Serum albumin level.
+    :param float phosphorous: (``optional``) Serum phosphorous level.
+    :param float bicarbonate: (``optional``) Serum bicarbonate level.
+    :param float calcium: (``optional``) Serum calcium level.
+    :param int precision: (``optional``) Decimal places to round the result. If ``None``, no rounding is applied.
 
     :returns:  ``float``: The risk of developing CKD within the specified timeframe, as a decimal. Multiply by 100 to convert to a percentage.
+    :raises ValueError: If required parameters are missing, if ``years`` is not ``2`` or ``5``, if ``is_north_american`` is ``None``, or if ``dm``/``htn`` are not in ``{0, 1, False, True}``.
 
   
 **Example Usage** 
@@ -444,30 +446,33 @@ the need for additional data manipulation steps.
     and reliability of the risk predictions.
 
 
-.. function:: add_kfre_risk_col(df, age_col, sex_col, eGFR_col, uACR_col, dm_col, htn_col, albumin_col, phosphorous_col, bicarbonate_col, calcium_col, num_vars, years, is_north_american, copy)
+.. function:: add_kfre_risk_col(df, age_col=None, sex_col=None, eGFR_col=None, uACR_col=None, dm_col=None, htn_col=None, albumin_col=None, phosphorous_col=None, bicarbonate_col=None, calcium_col=None, num_vars=8, years=(2, 5), is_north_american=False, copy=True, precision=None)
     
-    :param DataFrame df: The DataFrame containing the patient data. This DataFrame should include columns for patient-specific parameters that are relevant for calculating kidney failure risk.
-    :param str age_col: The column name in df that contains the patient's age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).
-    :param str sex_col: The column name in df that contains the patient's age. Age is a required parameter for all models (4-variable, 6-variable, 8-variable).
-    :param str eGFR_col: The column name for estimated Glomerular Filtration Rate (eGFR), which is a crucial measure of kidney function. This parameter is essential for all models.
-    :param str uACR_col: The column name for urinary Albumin-Creatinine Ratio (uACR), indicating kidney damage level. This parameter is included in all model calculations.
-    :param str dm_col: (`optional`) The column name for indicating the presence of diabetes mellitus (``1 = yes, 0 = no``). This parameter is necessary for the 6-variable and 8-variable models.
-    :param str htn_col: (`optional`) The column name for indicating the presence of diabetes mellitus (``1 = yes, 0 = no``). This parameter is necessary for the 6-variable and 8-variable models.
-    :param str albumin_col: (`optional`) The column name for serum albumin levels, which are included in the 8-variable model. Serum albumin is a protein in the blood that can indicate health issues including kidney function.
-    :param str phosphorous_col: (`optional`) The column name for serum phosphorus levels. This parameter is part of the 8-variable model and is important for assessing kidney health.
-    :param str calcium_col: (`optional`) The column name for serum calcium levels. This parameter is included in the 8-variable model and is crucial for assessing overall metabolic functions and kidney health.
-    :param int or list num_vars: Specifies the number of variables to be used in the model (options: ``4``, ``6``, ``8``). This determines which variables must be provided and which risk model is applied.
-    :param tuple or list years: Time frames for which to calculate the risk, typically provided as a tuple or list (e.g., (``2``, ``5``)). This parameter specifies over how many years the kidney failure risk is projected.
-    :param bool is_north_american: Specifies whether the calculations should use coefficients adjusted for North American populations. Different geographical regions may have different risk profiles due to genetic, environmental, and healthcare-related differences.
-    :param bool copy:  If set to ``True``, the function operates on a copy of the DataFrame, thereby preserving the original data. If set to ``False``, it modifies the DataFrame in place.
+    :param DataFrame df: The DataFrame containing the patient data.
+    :param str age_col: The column name in ``df`` for patient age. Required for ``4``-, ``6``-, and ``8``-variable models.
+    :param str sex_col: The column name in ``df`` for patient sex. Expected values map to male or female. Required for ``4``-, ``6``-, and ``8``-variable models.
+    :param str eGFR_col: The column name for estimated glomerular filtration rate (eGFR). Required for all models.
+    :param str uACR_col: The column name for urinary albumin-creatinine ratio (uACR). Required for all models.
+    :param str dm_col: (``optional``) Column for diabetes mellitus indicator (``1=yes; 0=no``). Required for the ``6``-variable model.
+    :param str htn_col: (``optional``) Column for hypertension indicator (``1=yes; 0=no``). Required for the ``6``-variable model.
+    :param str albumin_col: (``optional``) Column for serum albumin. Required for the ``8``-variable model.
+    :param str phosphorous_col: (``optional``) Column for serum phosphorous. Required for the ``8``-variable model.
+    :param str bicarbonate_col: (``optional``) Column for serum bicarbonate. Required for the ``8``-variable model.
+    :param str calcium_col: (``optional``) Column for serum calcium. Required for the ``8``-variable model.
+    :param int or list num_vars: Specifies which model sizes to compute, accepts ``4``, ``6``, ``8``, a list like ``[4, 6, 8]``, or ``"all"``. Default ``8``.
+    :param int or tuple or list or str years: Time horizons to compute, accepts ``2``, ``5``, a tuple or list like ``(2, 5)``, or ``"all"``. Default ``(2, 5)``.
+    :param bool is_north_american: Use North American coefficients if ``True``. Default ``False``.
+    :param bool copy: If ``True``, operate on a copy of ``df``. If ``False``, modify in place. Default ``True``.
+    :param int precision: (``optional``) Decimal places to round added risk columns. If ``None``, no rounding. Default ``None``.
 
-    :returns: ``pd.DataFrame``: The modified DataFrame with new columns added for each model and time frame specified. Columns are named following the pattern ``pred_{model_var}var_{year}year``, where ``{model_var}`` is the number of variables (``4``,  ``6``, or ``8``) and ``{year}`` is the time frame (``2`` or ``5``).
+    :returns: ``pd.DataFrame`` with added columns named ``kfre_{model_var}var_{year}year`` (for example, ``kfre_4var_2year``).
+    :raises ValueError: If required columns for a requested model size are not provided (for example, missing ``dm_col`` or ``htn_col`` for the ``6``-variable model, or missing any of ``albumin_col``, ``phosphorous_col``, ``bicarbonate_col``, ``calcium_col`` for the ``8``-variable model).
 
 This function is designed to compute the risk of chronic kidney disease (CKD) over specified or all possible models and time frames, directly appending the results as new columns to the provided DataFrame. It organizes the results by model (4-variable, 6-variable, 8-variable) first, followed by the time frame (2 years, 5 years) for each model type.
 
 .. important::
 
-    The ``sex_col`` must contain strings (case-insensitive) indicating either `female` or `male`.
+    The ``sex_col`` must contain strings (case-insensitive) indicating either ``female`` or ``male``.
 
 
 **Example Usage**
@@ -519,7 +524,7 @@ Performance Assessment
 =======================
 
 AUC ROC & Precision-Recall Curves
----------------------------------
+----------------------------------
 
 .. function:: plot_kfre_metrics(df, num_vars, fig_size=(12, 6), mode="both", image_path_png=None, image_path_svg=None, image_prefix=None, bbox_inches="tight", plot_type="all_plots", save_plots=False, show_years=[2, 5], plot_combinations=False, show_subplots=False, decimal_places=2)
 
@@ -598,7 +603,6 @@ This function generates the true labels and predicted probabilities for 2-year a
    <div style="height: 106px;"></div>
 
 \
-
 
 
 Performance Metrics
