@@ -42,7 +42,7 @@ https://www.leonshpaner.com
 
 ## ⚖️ License
 
-`kfre` is distributed under the MIT License. See [LICENSE](https://github.com/lshpaner/kfre/blob/main/LICENSE.md) for more information.
+`kfre` is distributed under the MIT License. See [LICENSE](https://github.com/lshpaner/kfre/blob/main/LICENSE) for more information.
 
 ## 📚 Citing `kfre`
 
