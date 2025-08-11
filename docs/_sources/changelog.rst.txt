@@ -26,6 +26,19 @@
 Changelog
 =========
 
+0.1.15
+------
+
+* Added precision floating point accuracy to **ALL** functions
+* Updated MIT License for 2025
+
+0.1.14
+------
+
+* Added precision floating point accuracy to functions
+* Tightened ``.gitignore`` with more robust directory structure
+* Added additional tests in new ``toy_dataset_test.py`` file.
+
 0.1.13
 ------
 
