@@ -11,7 +11,7 @@ import sphinx_rtd_theme  # type: ignore
 project = "KFRE"
 copyright = "2025, Leonid Shpaner"
 author = "Leonid Shpaner"
-release = "0.1.15"
+release = "0.1.16"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

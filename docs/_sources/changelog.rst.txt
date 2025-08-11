@@ -26,6 +26,11 @@
 Changelog
 =========
 
+0.1.16
+------
+
+* Removed unused ``tqdm`` import and library dependency
+
 0.1.15
 ------
 
