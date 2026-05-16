@@ -13,6 +13,18 @@ _build/
 data/
 images/
 
+# Virtual environments
+venv/
+venv*/
+.venv/
+.venv*/
+env/
+env*/
+ENV/
+.env/
+*-venv/
+*_venv/
+
 # Distribution / packaging
 .Python
 build/

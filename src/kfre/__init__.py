@@ -5,7 +5,6 @@ from .logo import *
 from .perform_eval import *
 from .main import *
 
-
 detailed_doc = """
 Kidney Failure Risk Equation (KFRE) Python Library
 ========================================================================================
@@ -20,13 +19,13 @@ from North American and non-North American regions.
 PyPI: https://pypi.org/project/kfre/
 Documentation: https://lshpaner.github.io/kfre/
 
-Version: 0.1.16
+Version: 0.1.17
 
 """
 
 __author__ = "Leonid Shpaner"
 __email__ = "lshpaner@ucla.edu"
-__version__ = "0.1.16"
+__version__ = "0.1.17"
 
 
 # Define the custom help function
