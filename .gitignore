@@ -10,6 +10,9 @@ _build/
 *.csv
 .DS_Store
 
+data/
+images/
+
 # Distribution / packaging
 .Python
 build/

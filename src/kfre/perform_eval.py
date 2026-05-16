@@ -1,17 +1,29 @@
+"""
+KFRE performance evaluation plotting.
+
+The save and per-curve drawing utilities live in `_plot_utils.py`. This
+module is the public surface and stays focused on argument validation,
+prediction assembly, and plot orchestration.
+"""
+
 import pandas as pd
 import numpy as np
-import os
 import matplotlib.pyplot as plt
 from sklearn.metrics import (
-    roc_curve,
-    auc,
     precision_score,
     average_precision_score,
     recall_score,
     roc_auc_score,
     brier_score_loss,
-    precision_recall_curve,
     precision_score,
+)
+
+from ._plot_utils import (
+    save_plot_images,
+    draw_roc,
+    draw_pr,
+    finalize_roc_axes,
+    finalize_pr_axes,
 )
 
 ################################################################################
@@ -139,10 +151,11 @@ def class_ckd_stages(
 def plot_kfre_metrics(
     df,
     num_vars,
-    fig_size=(12, 6),
+    figsize=(12, 6),
     mode="both",
     image_path_png=None,
     image_path_svg=None,
+    image_filename=None,
     image_prefix=None,
     bbox_inches="tight",
     plot_type="all_plots",
@@ -151,111 +164,83 @@ def plot_kfre_metrics(
     plot_combinations=False,
     show_subplots=False,
     decimal_places=2,
+    dpi=None,
 ):
     """
-    Generate the true labels and predicted probabilities for 2-year and 5-year
-    outcomes, and optionally plot and save ROC and Precision-Recall curves for
-    specified variable models.
+    Generate true labels and predicted probabilities for 2-year and 5-year
+    outcomes, and optionally plot/save ROC and Precision-Recall curves.
 
-    Parameters:
+    Parameters
     ----------
     df : pd.DataFrame
-        The input DataFrame containing the necessary columns for truth and
-        predictions.
-
+        DataFrame containing the required truth and prediction columns.
     num_vars : int, list of int, or tuple of int
-        Number of variables (e.g., 4) or a list/tuple of numbers of variables
-        (e.g., [4, 6]) to generate predictions for.
-
-    fig_size : tuple of int, optional
-        Size of the figure for the ROC plot, default is (12, 6).
-
-    mode : str, optional
-        Operation mode, can be 'prep', 'plot', or 'both'. Default is 'both'.
-        'prep' only prepares the metrics,
-        'plot' only plots the metrics (requires pre-prepped metrics),
-        'both' prepares and plots the metrics.
-
+        Number of variables (e.g., 4) or a list/tuple (e.g., [4, 6]) to
+        generate predictions for.
+    figsize : tuple of int, optional
+        Figure size. Default (12, 6).
+    mode : {'prep', 'plot', 'both'}, optional
+        'prep' returns prepared metrics only.
+        'plot' plots from pre-prepped metrics.
+        'both' prepares and plots. Default 'both'.
     image_path_png : str, optional
-        Path to save the PNG images. Default is None.
-
+        Directory for PNG output.
     image_path_svg : str, optional
-        Path to save the SVG images. Default is None.
-
+        Directory for SVG output.
+    image_filename : str, optional
+        Custom filename (no extension). When provided, saving is triggered
+        regardless of `save_plots`. For multi-output cases (combinations,
+        subplots, multi-var), a distinguishing suffix is appended.
     image_prefix : str, optional
-        Prefix to use for saved images. Default is None.
-
+        Prefix prepended to auto-generated filenames. Ignored when
+        `image_filename` is provided.
     bbox_inches : str, optional
-        Bounding box in inches for the saved images. Default is 'tight'.
-
-    plot_type : str, optional
-        Type of plot to generate, can be 'auc_roc', 'precision_recall', or
-        'all_plots'. Default is 'all_plots'.
-
+        Bounding box for saved images. Default 'tight'.
+    plot_type : {'auc_roc', 'precision_recall', 'all_plots'}, optional
+        Type of plot to generate. Default 'all_plots'.
     save_plots : bool, optional
-        Whether to save plots. Default is True.
-
+        Whether to save plots using auto-generated filenames. Default False.
     show_years : int, list of int, or tuple of int, optional
-        Year outcomes to show in the plots. Default is [2, 5].
-
+        Year outcomes to show. Allowed values: 2 and 5. Default [2, 5].
     plot_combinations : bool, optional
-        Whether to plot all combinations of variables in a single plot.
-        Default is False.
-
+        Whether to plot all variable combinations on a single set of axes.
+        Default False.
     show_subplots : bool, optional
-        Whether to show subplots of all combinations. Default is False.
-
+        Whether to combine all figures into a grid of subplots.
+        Default False.
     decimal_places : int, optional
-        Number of decimal places for AUC and AP scores in the plot legends.
-        Default is 2.
+        Decimal places for AUC/AP scores in legends. Default 2.
+    dpi : int, optional
+        DPI for PNG output. Default None (matplotlib default).
 
-    Returns:
+    Returns
     -------
-    tuple (optional)
-        Only returned if mode is 'prep' or 'both':
-        - y_true (list of pd.Series): True labels for specified year outcomes.
-        - preds (dict of list of pd.Series): Predicted probabilities for each
-          number of variables and each outcome.
-        - outcomes (list of str): List of outcome labels.
-
-    Raises:
-    -------
-    ValueError
-        If 'save_plots' is True without specifying 'image_path_png' or
-           'image_path_svg'.
-        If 'bbox_inches' is not a string or None.
-        If 'show_years' contains invalid year values.
-        If required KFRE probability columns are missing in the DataFrame.
-        If 'plot_type' is not one of 'auc_roc', 'precision_recall', or 'all_plots'.
+    tuple, optional
+        When mode is 'prep' or 'both', returns `(y_true, preds, outcomes)`.
     """
 
     def format_list_or_tuple(items):
         return ", ".join(map(str, items))
 
-    # Define valid years for outcome analysis. Only 2 and 5 years are considered
-    # valid in this function.
+    # ------------------------------------------------------------------
+    # Argument validation
+    # ------------------------------------------------------------------
     valid_years = [2, 5]
-
-    # Ensure show_years is a list, even if a single integer or tuple is provided.
     if isinstance(show_years, int):
         show_years = [show_years]
     elif isinstance(show_years, tuple):
         show_years = list(show_years)
-
-    # Validate that all years in show_years are within the allowed valid_years.
     if any(year not in valid_years for year in show_years):
         raise ValueError(
             f"The 'show_years' parameter must be a list or tuple containing "
             f"any of {valid_years}."
         )
 
-    # Ensure num_vars is a list, even if a single integer or tuple is provided.
     if isinstance(num_vars, int):
         num_vars = [num_vars]
     elif isinstance(num_vars, tuple):
         num_vars = list(num_vars)
 
-    # Validate the plot_type parameter
     valid_plot_types = ["auc_roc", "precision_recall", "all_plots"]
     if plot_type not in valid_plot_types:
         raise ValueError(
@@ -263,26 +248,21 @@ def plot_kfre_metrics(
             f"Provided: {plot_type}"
         )
 
-    # Check for invalid image saving configuration. If save_plots is True,
-    # either image_path_png or image_path_svg must be specified.
     if save_plots and not (image_path_png or image_path_svg):
         raise ValueError(
             "To save plots, 'image_path_png' or 'image_path_svg' must be specified."
         )
 
-    # Ensure bbox_inches is a string or None. This is used to set the bounding
-    # box for saving figures.
     if not isinstance(bbox_inches, (str, type(None))):
         raise ValueError("The 'bbox_inches' parameter must be a string or None.")
 
-    # Check for the required KFRE probability columns in the DataFrame
+    # Check required KFRE probability columns
     missing_columns = []
     for year in show_years:
         for n in num_vars:
             required_col = f"kfre_{n}var_{year}year"
             if required_col not in df.columns:
                 missing_columns.append(required_col)
-
     if missing_columns:
         raise ValueError(
             "Must derive KFRE probabilities before generating performance "
@@ -290,89 +270,152 @@ def plot_kfre_metrics(
             f"Missing columns: {', '.join(missing_columns)}"
         )
 
-    # Prepare lists to hold true labels and outcomes for the specified years.
+    # ------------------------------------------------------------------
+    # Build truth/prediction collections
+    # ------------------------------------------------------------------
     y_true = []
     outcomes = []
     for year in show_years:
-        # Use regex to find columns that match the pattern for outcome labels.
         outcome_cols = df.filter(regex=f".*{year}_year_outcome").columns
         if outcome_cols.empty:
             raise ValueError(
                 f"No outcome columns found matching pattern for {year}-year outcomes."
             )
-        # Append the true labels for the first matching outcome column.
         y_true.append(df[outcome_cols[0]])
-        # Append outcome labels as strings, e.g., "2-year" and "5-year".
         outcomes.append(f"{year}-year")
 
-    # Prepare a dictionary to hold predicted probabilities for each combination
-    # of variables and years.
     preds = {}
     for n in num_vars:
-        # Generate predicted probabilities for each number of variables and each
-        # outcome year.
         preds[f"{n}var"] = [df[f"kfre_{n}var_{year}year"] for year in show_years]
 
-    # If mode includes preparation (either 'prep' or 'both'), prepare the result
-    #  to return.
-    if mode in ["prep", "both"]:
-        result = (y_true, preds, outcomes)
-        if mode == "prep":
-            # If mode is 'prep', return the prepared data immediately.
-            return result
+    result = (y_true, preds, outcomes)
+    if mode == "prep":
+        return result
 
-    # Initialize lists to hold fig. objects for ROC & Precision-Recall (PR) plots.
+    # ------------------------------------------------------------------
+    # Filename resolution helpers
+    # ------------------------------------------------------------------
+    def _auto_name(suffix):
+        """Auto-generated filename with optional image_prefix."""
+        return f"{image_prefix}_{suffix}" if image_prefix else suffix
+
+    def _save(auto_suffix, multi_suffix=None, fig=None):
+        """
+        Resolve filename and call save_plot_images.
+
+        - When `image_filename` is set and `multi_suffix` is given (multi-output
+          mode), the suffix is appended to image_filename so files don't collide.
+        - When `image_filename` is set without `multi_suffix`, image_filename
+          is used verbatim.
+        """
+        if image_filename and multi_suffix:
+            effective_override = f"{image_filename}_{multi_suffix}"
+        else:
+            effective_override = image_filename
+        save_plot_images(
+            filename=_auto_name(auto_suffix),
+            save_plots=save_plots,
+            image_path_png=image_path_png,
+            image_path_svg=image_path_svg,
+            image_filename=effective_override,
+            fig=fig,
+            bbox_inches=bbox_inches,
+            dpi=dpi,
+        )
+
+    # ------------------------------------------------------------------
+    # Plotting
+    # ------------------------------------------------------------------
     roc_figs, pr_figs = [], []
 
-    # If mode includes plotting (either 'plot' or 'both'), generate the plots.
-    if mode in ["plot", "both"]:
-        if plot_combinations:
-            # If plot_combinations is True, plot all variable combinations in a
-            # single plot for each year outcome.
+    if mode not in ["plot", "both"]:
+        return result if mode == "both" else None
+
+    # Multi-output flag: True when one call produces >1 distinct file.
+    multi_output = (
+        (plot_combinations and plot_type == "all_plots")
+        or show_subplots
+        or (len(num_vars) > 1 and not plot_combinations)
+    )
+
+    if plot_combinations:
+        # ---- All variables overlaid on the same axes ----
+        if plot_type in ["auc_roc", "all_plots"]:
+            fig, ax = plt.subplots(figsize=figsize)
+            for n in num_vars:
+                draw_roc(
+                    ax,
+                    y_true,
+                    preds[f"{n}var"],
+                    outcomes,
+                    var_label=f"{n}-variable",
+                    decimal_places=decimal_places,
+                )
+            finalize_roc_axes(
+                ax,
+                f"AUC ROC: {format_list_or_tuple(num_vars)} Variable KFRE",
+            )
+            if not show_subplots:
+                _save(
+                    auto_suffix="auc_roc_curve_combined",
+                    multi_suffix="auc_roc_combined" if multi_output else None,
+                    fig=fig,
+                )
+            roc_figs.append(fig)
+            if not show_subplots:
+                plt.show()
+            else:
+                plt.close(fig)
+
+        if plot_type in ["precision_recall", "all_plots"]:
+            fig, ax = plt.subplots(figsize=figsize)
+            for n in num_vars:
+                draw_pr(
+                    ax,
+                    y_true,
+                    preds[f"{n}var"],
+                    outcomes,
+                    var_label=f"{n}-variable",
+                    decimal_places=decimal_places,
+                )
+            finalize_pr_axes(
+                ax,
+                f"Precision-Recall: {format_list_or_tuple(num_vars)} Variable KFRE",
+            )
+            if not show_subplots:
+                _save(
+                    auto_suffix="pr_curve_combined",
+                    multi_suffix="pr_combined" if multi_output else None,
+                    fig=fig,
+                )
+            pr_figs.append(fig)
+            if not show_subplots:
+                plt.show()
+            else:
+                plt.close(fig)
+
+    else:
+        # ---- One figure per variable count ----
+        for n in num_vars:
+            pred_list = preds[f"{n}var"]
+
             if plot_type in ["auc_roc", "all_plots"]:
-                fig = plt.figure(figsize=fig_size)
-                for n in num_vars:
-                    for true_labels, pred_labels, outcome in zip(
-                        y_true, preds[f"{n}var"], outcomes
-                    ):
-                        fpr, tpr, _ = roc_curve(
-                            true_labels, pred_labels
-                        )  # Compute ROC curve
-                        auc_score = auc(fpr, tpr)  # Compute AUC score
-                        plt.plot(
-                            fpr,
-                            tpr,
-                            label=(
-                                f"{n}-variable {outcome} outcome "
-                                f"(AUC = {auc_score:.{decimal_places}f})"
-                            ),
-                        )  # Plot ROC curve
-                plt.plot(
-                    [0, 1], [0, 1], linestyle="--", color="red"
-                )  # Add diagonal line for reference
-                plt.xlabel("1 - Specificity")
-                plt.ylabel("Sensitivity")
-                plt.title(f"AUC ROC: {format_list_or_tuple(num_vars)} Variable KFRE")
-                plt.legend(loc="best")
-                if save_plots and not show_subplots:
-                    # Save the plot if save_plots is True and show_subplots is False.
-                    filename = (
-                        f"{image_prefix}_auc_roc_curve_combined"
-                        if image_prefix
-                        else "auc_roc_curve_combined"
+                fig, ax = plt.subplots(figsize=figsize)
+                draw_roc(
+                    ax,
+                    y_true,
+                    pred_list,
+                    outcomes,
+                    var_label=f"{n}-variable",
+                    decimal_places=decimal_places,
+                )
+                finalize_roc_axes(ax, f"AUC ROC: {n} Variable KFRE")
+                if not show_subplots:
+                    _save(
+                        auto_suffix=f"{n}var_auc_roc",
+                        multi_suffix=(f"{n}var_auc_roc" if multi_output else None),
+                        fig=fig,
                     )
-                    if image_path_png:
-                        os.makedirs(image_path_png, exist_ok=True)
-                        plt.savefig(
-                            os.path.join(image_path_png, f"{filename}.png"),
-                            bbox_inches=bbox_inches,
-                        )
-                    if image_path_svg:
-                        os.makedirs(image_path_svg, exist_ok=True)
-                        plt.savefig(
-                            os.path.join(image_path_svg, f"{filename}.svg"),
-                            bbox_inches=bbox_inches,
-                        )
                 roc_figs.append(fig)
                 if not show_subplots:
                     plt.show()
@@ -380,245 +423,93 @@ def plot_kfre_metrics(
                     plt.close(fig)
 
             if plot_type in ["precision_recall", "all_plots"]:
-                fig = plt.figure(figsize=fig_size)
-                for n in num_vars:
-                    for true_labels, pred_labels, outcome in zip(
-                        y_true, preds[f"{n}var"], outcomes
-                    ):
-                        precision, recall, _ = precision_recall_curve(
-                            true_labels, pred_labels
-                        )  # Compute Precision-Recall curve
-                        ap_score = average_precision_score(
-                            true_labels, pred_labels
-                        )  # Compute Average Precision score
-                        plt.plot(
-                            recall,
-                            precision,
-                            label=(
-                                f"{n}-variable {outcome} outcome "
-                                f"(AP = {ap_score:.{decimal_places}f})"
-                            ),
-                        )  # Plot PR curve
-                plt.xlabel("Recall")
-                plt.ylabel("Precision")
-                plt.title(
-                    f"Precision-Recall: {format_list_or_tuple(num_vars)} Variable KFRE"
+                fig, ax = plt.subplots(figsize=figsize)
+                draw_pr(
+                    ax,
+                    y_true,
+                    pred_list,
+                    outcomes,
+                    var_label=f"{n}-variable",
+                    decimal_places=decimal_places,
                 )
-                plt.legend(loc="best")
-                if save_plots and not show_subplots:
-                    # Save plot if save_plots is True & show_subplots is False.
-                    filename = (
-                        f"{image_prefix}_pr_curve_combined"
-                        if image_prefix
-                        else "pr_curve__combined"
+                finalize_pr_axes(ax, f"Precision-Recall: {n} Variable KFRE")
+                if not show_subplots:
+                    _save(
+                        auto_suffix=f"{n}var_precision_recall",
+                        multi_suffix=(
+                            f"{n}var_precision_recall" if multi_output else None
+                        ),
+                        fig=fig,
                     )
-                    if image_path_png:
-                        os.makedirs(image_path_png, exist_ok=True)
-                        plt.savefig(
-                            os.path.join(image_path_png, f"{filename}.png"),
-                            bbox_inches=bbox_inches,
-                        )
-                    if image_path_svg:
-                        os.makedirs(image_path_svg, exist_ok=True)
-                        plt.savefig(
-                            os.path.join(image_path_svg, f"{filename}.svg"),
-                            bbox_inches=bbox_inches,
-                        )
                 pr_figs.append(fig)
                 if not show_subplots:
                     plt.show()
                 else:
                     plt.close(fig)
-        else:
-            # If plot_combinations is False, plot each variable and year
-            # combination in separate plots.
-            for n in num_vars:
-                pred_list = preds[f"{n}var"]
-                if plot_type in ["auc_roc", "all_plots"]:
-                    fig = plt.figure(figsize=fig_size)
-                    for i, (true_labels, outcome) in enumerate(
-                        zip(y_true, outcomes),
+
+    # ------------------------------------------------------------------
+    # Subplots grid (preserves the original line-replay approach)
+    # ------------------------------------------------------------------
+    if show_subplots:
+        subplot_figs = []
+        if plot_type in ["auc_roc", "all_plots"]:
+            subplot_figs += roc_figs
+        if plot_type in ["precision_recall", "all_plots"]:
+            subplot_figs += pr_figs
+
+        if subplot_figs:
+            subplot_cols = min(len(subplot_figs), 3)
+            subplot_rows = (len(subplot_figs) + subplot_cols - 1) // subplot_cols
+            fig, axs = plt.subplots(
+                subplot_rows,
+                subplot_cols,
+                figsize=(figsize[0] * subplot_cols, figsize[1] * subplot_rows),
+            )
+
+            if subplot_rows == 1 and subplot_cols == 1:
+                axs = np.array([axs])
+            elif subplot_rows == 1 or subplot_cols == 1:
+                axs = np.expand_dims(axs, axis=0 if subplot_rows == 1 else 1)
+
+            axs = axs.flatten()
+            for ax, fig_ in zip(axs, subplot_figs):
+                fig_.axes[0].get_figure().sca(fig_.axes[0])
+                for line in fig_.axes[0].get_lines():
+                    xdata = line.get_xdata()
+                    ydata = line.get_ydata()
+                    if (
+                        len(xdata) != 2
+                        or len(ydata) != 2
+                        or not ((xdata == [0, 1]).all() and (ydata == [0, 1]).all())
                     ):
-                        pred_labels = pred_list[i]
-                        fpr, tpr, _ = roc_curve(
-                            true_labels, pred_labels
-                        )  # Compute ROC curve
-                        auc_score = auc(fpr, tpr)  # Compute AUC score
-                        plt.plot(
-                            fpr,
-                            tpr,
-                            label=(
-                                f"{n}-variable {outcome} outcome "
-                                f"(AUC = {auc_score:.{decimal_places}f})"
-                            ),
-                        )  # Plot ROC curve
-                    plt.plot(
-                        [0, 1], [0, 1], linestyle="--", color="red"
-                    )  # Add diagonal line for reference
-                    plt.xlabel("1 - Specificity")
-                    plt.ylabel("Sensitivity")
-                    plt.title(f"AUC ROC: {n} Variable KFRE")
-                    plt.legend(loc="best")
-                    if save_plots and not show_subplots:
-                        # Save plot if save_plots is True & show_subplots is False.
-                        filename = (
-                            f"{image_prefix}_{n}var_auc_roc"
-                            if image_prefix
-                            else f"{n}var_auc_roc"
-                        )
-                        if image_path_png:
-                            os.makedirs(image_path_png, exist_ok=True)
-                            plt.savefig(
-                                os.path.join(image_path_png, f"{filename}.png"),
-                                bbox_inches=bbox_inches,
-                            )
-                        if image_path_svg:
-                            os.makedirs(image_path_svg, exist_ok=True)
-                            plt.savefig(
-                                os.path.join(image_path_svg, f"{filename}.svg"),
-                                bbox_inches=bbox_inches,
-                            )
-                    roc_figs.append(fig)
-                    if not show_subplots:
-                        plt.show()
-                    else:
-                        plt.close(fig)
+                        ax.plot(xdata, ydata, label=line.get_label())
+                if "roc" in fig_.axes[0].get_title().lower():
+                    ax.plot([0, 1], [0, 1], linestyle="--")
+                ax.legend(loc="best")
+                ax.set_title(fig_.axes[0].get_title())
+                ax.set_xlabel(fig_.axes[0].get_xlabel())
+                ax.set_ylabel(fig_.axes[0].get_ylabel())
+            for ax in axs[len(subplot_figs) :]:
+                fig.delaxes(ax)
+            plt.tight_layout()
 
-                if plot_type in ["precision_recall", "all_plots"]:
-                    fig = plt.figure(figsize=fig_size)
-                    for i, (true_labels, outcome) in enumerate(
-                        zip(y_true, outcomes),
-                    ):
-                        pred_labels = pred_list[i]
-                        precision, recall, _ = precision_recall_curve(
-                            true_labels, pred_labels
-                        )  # Compute Precision-Recall curve
-                        ap_score = average_precision_score(
-                            true_labels, pred_labels
-                        )  # Compute Average Precision score
-                        plt.plot(
-                            recall,
-                            precision,
-                            label=(
-                                f"{n}-variable {outcome} outcome "
-                                f"(AP = {ap_score:.{decimal_places}f})"
-                            ),
-                        )  # Plot PR curve
-                    plt.xlabel("Recall")
-                    plt.ylabel("Precision")
-                    plt.title(f"Precision-Recall: {n} Variable KFRE")
-                    plt.legend(loc="best")
-                    if save_plots and not show_subplots:
-                        # Save plot if save_plots is True & show_subplots is False.
-                        filename = (
-                            f"{image_prefix}_{n}var_precision_recall"
-                            if image_prefix
-                            else f"{n}var_precision_recall"
-                        )
-                        if image_path_png:
-                            os.makedirs(image_path_png, exist_ok=True)
-                            plt.savefig(
-                                os.path.join(image_path_png, f"{filename}.png"),
-                                bbox_inches=bbox_inches,
-                            )
-                        if image_path_svg:
-                            os.makedirs(image_path_svg, exist_ok=True)
-                            plt.savefig(
-                                os.path.join(image_path_svg, f"{filename}.svg"),
-                                bbox_inches=bbox_inches,
-                            )
-                    pr_figs.append(fig)
-                    if not show_subplots:
-                        plt.show()
-                    else:
-                        plt.close(fig)
+            if plot_type == "all_plots" and plot_combinations:
+                auto_suffix = "subplot_all_plots_combination"
+            elif image_prefix:
+                auto_suffix = "subplot"
+            else:
+                auto_suffix = "performance_subplot"
 
-        # Create and save subplots if show_subplots is True.
-        if show_subplots:
-            subplot_figs = []
-            if plot_type in ["auc_roc", "all_plots"]:
-                subplot_figs += roc_figs
-            if plot_type in ["precision_recall", "all_plots"]:
-                subplot_figs += pr_figs
+            _save(
+                auto_suffix=auto_suffix,
+                multi_suffix="subplot",
+                fig=fig,
+            )
+            plt.show()
 
-            if subplot_figs:
-                subplot_cols = min(
-                    len(subplot_figs), 3
-                )  # No. of columns in the subplot
-                subplot_rows = (
-                    len(subplot_figs) + subplot_cols - 1
-                ) // subplot_cols  # Number of rows in the subplot
-                fig, axs = plt.subplots(
-                    subplot_rows,
-                    subplot_cols,
-                    figsize=(fig_size[0] * subplot_cols, fig_size[1] * subplot_rows),
-                )
-
-                # Ensure axs is a 2D array even if there's only one subplot
-                if subplot_rows == 1 and subplot_cols == 1:
-                    axs = np.array([axs])
-                elif subplot_rows == 1 or subplot_cols == 1:
-                    axs = np.expand_dims(axs, axis=0 if subplot_rows == 1 else 1)
-
-                axs = axs.flatten()
-                for ax, fig_ in zip(axs, subplot_figs):
-                    fig_.axes[0].get_figure().sca(fig_.axes[0])
-                    for line in fig_.axes[0].get_lines():
-                        xdata = line.get_xdata()
-                        ydata = line.get_ydata()
-                        if (
-                            len(xdata) != 2
-                            or len(ydata) != 2
-                            or not (
-                                (xdata == [0, 1]).all() and (ydata == [0, 1]).all(),
-                            )
-                        ):
-                            ax.plot(xdata, ydata, label=line.get_label())
-                    # Add dotted red diagonal line for ROC
-                    if "roc" in fig_.axes[0].get_title().lower():
-                        ax.plot([0, 1], [0, 1], linestyle="--")
-                    ax.legend(loc="best")
-                    ax.set_title(fig_.axes[0].get_title())
-                    ax.set_xlabel(fig_.axes[0].get_xlabel())
-                    ax.set_ylabel(fig_.axes[0].get_ylabel())
-                for ax in axs[len(subplot_figs) :]:
-                    fig.delaxes(ax)
-                plt.tight_layout()
-                if save_plots:
-                    # Save the subplot if save_plots is True.
-                    filename = (
-                        f"subplot_{plot_type}_combination"
-                        if plot_type == "all_plots"
-                        and show_subplots
-                        and plot_combinations
-                        else (
-                            f"{image_prefix}_subplot"
-                            if image_prefix
-                            else "performance_subplot"
-                        )
-                    )
-
-                    if image_path_png:
-                        os.makedirs(image_path_png, exist_ok=True)
-                        plt.savefig(
-                            os.path.join(image_path_png, f"{filename}.png"),
-                            bbox_inches=bbox_inches,
-                        )
-                    if image_path_svg:
-                        os.makedirs(image_path_svg, exist_ok=True)
-                        plt.savefig(
-                            os.path.join(image_path_svg, f"{filename}.svg"),
-                            bbox_inches=bbox_inches,
-                        )
-                plt.show()
-
-        # If mode is 'plot', return nothing as the function ends here.
-        if mode == "plot":
-            return
-
-    # If mode is 'both', return the prepared data.
     if mode == "both":
         return result
+    return None
 
 
 ################################################################################
