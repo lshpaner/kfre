@@ -26,6 +26,25 @@
 Changelog
 =========
 
+0.1.17
+------
+
+**Added**
+
+- Figure generation utilities for CKD risk distribution by stage (boxplot)
+  and 4-variable vs. 8-variable model comparison (scatter plot)
+- SVG output support for publication-ready figure export
+
+**Changed**
+
+- Updated figure save paths to use ``figures/`` directory structure
+- Improved plot saving to support both PNG and SVG formats via ``image_path_svg``
+
+**Removed**
+
+- Removed duplicate ``precision_score`` import in ``perform_eval.py``
+
+
 0.1.16
 ------
 

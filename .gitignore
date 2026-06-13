@@ -10,6 +10,11 @@ _build/
 *.csv
 .DS_Store
 
+# Environments
+.env
+.venv
+**/*venv*/
+
 # Distribution / packaging
 .Python
 build/
