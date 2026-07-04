@@ -58,10 +58,11 @@ class RiskPredictor:
         precision=None,
     ):
         """
-        Predicts the risk of chronic kidney disease (CKD) over a specified
-        number of years using the Tangri risk prediction model. This method
-        supports the basic 4-variable model as well as the extended 6-variable
-        and 8-variable models if additional patient data is available.
+        Predicts the risk of kidney failure in a patient with chronic kidney
+        disease over a specified number of years using the Tangri Kidney
+        Failure Risk Equation (KFRE). This method supports the basic 4-variable
+        model as well as the extended 6-variable and 8-variable models if
+        additional patient data is available.
 
         Parameters:
         - years (int): The number of years over which the risk assessment is
@@ -77,7 +78,7 @@ class RiskPredictor:
 
         Returns:
         - float: A probability value between 0 and 1 representing the patient's
-          risk of CKD development within the specified timeframe.
+          risk of kidney failure within the specified timeframe.
 
         Raises:
         - ValueError: If `num_vars` is set to an unsupported number.
@@ -114,60 +115,65 @@ class RiskPredictor:
         eGFR = df[self.columns["eGFR"]]
         uACR = df[self.columns["uACR"]]
 
-        if use_extra_vars:
-            if num_vars == 6:
-                # Extend columns for 6-variable model
-                necessary_cols.extend([self.columns["dm"], self.columns["htn"]])
-                df = self.df[necessary_cols].copy()
-                dm = df[self.columns["dm"]]
-                htn = df[self.columns["htn"]]
-                return apply_precision(
-                    risk_pred(
-                        age,
-                        sex,
-                        eGFR,
-                        uACR,
-                        is_north_american,
-                        dm,
-                        htn,
-                        years=years,
-                    ),
-                    precision=precision,
-                )
-            elif num_vars == 8:
-                # Extend columns for 8-variable model
-                necessary_cols.extend(
-                    [
-                        self.columns["albumin"],
-                        self.columns["phosphorous"],
-                        self.columns["bicarbonate"],
-                        self.columns["calcium"],
-                    ]
-                )
-                df = self.df[necessary_cols].copy()
-                albumin = df[self.columns["albumin"]]
-                phosphorous = df[self.columns["phosphorous"]]
-                bicarbonate = df[self.columns["bicarbonate"]]
-                calcium = df[self.columns["calcium"]]
-                return apply_precision(
-                    risk_pred(
-                        age,
-                        sex,
-                        eGFR,
-                        uACR,
-                        is_north_american,
-                        None,
-                        None,
-                        albumin,
-                        phosphorous,
-                        bicarbonate,
-                        calcium,
-                        years=years,
-                    ),
-                    precision=precision,
-                )
+        # Validate num_vars up front so unsupported values fail loudly
+        # instead of silently returning None.
+        if num_vars not in (4, 6, 8):
+            raise ValueError(f"num_vars must be 4, 6, or 8; got {num_vars!r}.")
+
+        if use_extra_vars and num_vars == 6:
+            # Extend columns for 6-variable model
+            necessary_cols.extend([self.columns["dm"], self.columns["htn"]])
+            df = self.df[necessary_cols].copy()
+            dm = df[self.columns["dm"]]
+            htn = df[self.columns["htn"]]
+            return apply_precision(
+                risk_pred(
+                    age,
+                    sex,
+                    eGFR,
+                    uACR,
+                    is_north_american,
+                    dm,
+                    htn,
+                    years=years,
+                ),
+                precision=precision,
+            )
+        elif use_extra_vars and num_vars == 8:
+            # Extend columns for 8-variable model
+            necessary_cols.extend(
+                [
+                    self.columns["albumin"],
+                    self.columns["phosphorous"],
+                    self.columns["bicarbonate"],
+                    self.columns["calcium"],
+                ]
+            )
+            df = self.df[necessary_cols].copy()
+            albumin = df[self.columns["albumin"]]
+            phosphorous = df[self.columns["phosphorous"]]
+            bicarbonate = df[self.columns["bicarbonate"]]
+            calcium = df[self.columns["calcium"]]
+            return apply_precision(
+                risk_pred(
+                    age,
+                    sex,
+                    eGFR,
+                    uACR,
+                    is_north_american,
+                    None,
+                    None,
+                    albumin,
+                    phosphorous,
+                    bicarbonate,
+                    calcium,
+                    years=years,
+                ),
+                precision=precision,
+            )
         else:
-            # Call the function with basic parameters for the 4-variable model
+            # 4-variable model. Covers use_extra_vars=False, and the explicit
+            # use_extra_vars=True with num_vars=4 case.
             return apply_precision(
                 risk_pred(age, sex, eGFR, uACR, is_north_american, years=years),
                 precision=precision,
@@ -626,14 +632,24 @@ def risk_pred(
     bicarbonate=None,
     calcium=None,
     years=2,
+    num_vars=None,
 ):
     """
-    Calculates the risk of chronic kidney disease progression based on a range
-    of clinical parameters using the Tangri risk prediction model. This model
-    can use 4, 6, or 8 variables for prediction based on the data available.
-    The coefficients and constants used in the calculations are selected based
-    on the geographic region of the patient (North American or not) and the time
-    horizon for the risk prediction (2 or 5 years).
+    Calculates the risk of kidney failure in a patient with chronic kidney
+    disease using the Tangri Kidney Failure Risk Equation (KFRE). Three distinct
+    published models are supported (4-, 6-, and 8-variable); the appropriate
+    model is selected from the inputs provided, and its published coefficients
+    and baseline survival are applied for the requested region and horizon.
+
+    Model selection
+    ---------------
+    The 4-, 6-, and 8-variable KFRE are separate published models, each with its
+    own coefficients and baseline survival. When inputs for more than one model
+    are supplied, the library uses the variant with the most variables
+    (8 > 6 > 4), i.e. the most information-rich model the provided data support.
+    Pass ``num_vars`` (4, 6, or 8) to select a specific model explicitly; a
+    ``ValueError`` is raised if the inputs required by the requested model are
+    not all present.
 
     Parameters:
     - age (float): Age of the patient in years.
@@ -654,22 +670,50 @@ def risk_pred(
     - calcium (float, optional): Serum calcium level, required for the
       8-variable model.
     - years (int, default=2): The number of years over which the risk is
-      redicted (2 or 5 years).
+      predicted (2 or 5 years).
+    - num_vars (int, optional): Force a specific KFRE variant (4, 6, or 8).
+      When None (default), the variant is inferred using 8 > 6 > 4 precedence.
 
     Returns:
     - risk_prediction (float): A probability value between 0 and 1 representing
-      the patient's risk of developing chronic kidney disease within the
-      specified number of years.
+      the patient's risk of kidney failure within the specified number of years.
 
-    Notes:
-    The function accounts for the patient's geographic location by adjusting the
-    alpha constants in the risk calculation. It defaults to coefficients for the
-    4-variable model unless additional parameters are provided, in which case it
-    switches to the 6-variable or 8-variable models.
+    Raises:
+    - ValueError: If ``num_vars`` is not one of 4, 6, or 8, or if the inputs
+      required by the selected model are not all provided.
     """
 
-    # Define the alpha values and risk factor coefficients for each model
-    if dm is not None and htn is not None:
+    # Which optional input groups are fully available.
+    has_6var = dm is not None and htn is not None
+    has_8var = (
+        albumin is not None
+        and phosphorous is not None
+        and bicarbonate is not None
+        and calcium is not None
+    )
+
+    # Resolve which model to use: explicit override, else 8 > 6 > 4 precedence.
+    if num_vars is None:
+        if has_8var:
+            model = 8
+        elif has_6var:
+            model = 6
+        else:
+            model = 4
+    else:
+        if num_vars not in (4, 6, 8):
+            raise ValueError(f"num_vars must be 4, 6, or 8; got {num_vars!r}.")
+        if num_vars == 8 and not has_8var:
+            raise ValueError(
+                "The 8-variable model requires albumin, phosphorous, "
+                "bicarbonate, and calcium."
+            )
+        if num_vars == 6 and not has_6var:
+            raise ValueError("The 6-variable model requires dm and htn.")
+        model = num_vars
+
+    # Define the alpha values and risk factor coefficients for the chosen model.
+    if model == 6:
         # 6-variable model
         alpha_values = {
             (True, 2): 0.9750,
@@ -685,12 +729,7 @@ def risk_pred(
         }
         dm_factor = -0.1475  # DM risk factor coefficient
         htn_factor = 0.1426  # HTN risk factor coefficient
-    elif (
-        albumin is not None
-        and phosphorous is not None
-        and bicarbonate is not None
-        and calcium is not None
-    ):
+    elif model == 8:
         # 8-variable model
         alpha_values = {
             (True, 2): 0.9780,
@@ -736,17 +775,12 @@ def risk_pred(
         + risk_factors["uACR"] * (log_uACR - 5.137)
     )
 
-    # Adjust risk score for the 6-variable model if DM and HTN data is provided
-    if dm is not None and htn is not None:
+    # Adjust risk score for the 6-variable model
+    if model == 6:
         risk_score += dm_factor * (dm - 0.5106) + htn_factor * (htn - 0.8501)
 
-    # Adjust risk score for the 8-variable model if additional data is provided
-    if (
-        albumin is not None
-        and phosphorous is not None
-        and bicarbonate is not None
-        and calcium is not None
-    ):
+    # Adjust risk score for the 8-variable model
+    if model == 8:
         risk_score += (
             albumin_factor * (albumin - 3.997)
             + phosph_factor * (phosphorous - 3.916)
