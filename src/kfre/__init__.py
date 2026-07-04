@@ -113,4 +113,5 @@ __all__ = [
     "class_ckd_stages",
     "plot_kfre_metrics",
     "eval_kfre_metrics",
+    "bootstrap_metric_ci",
 ]
