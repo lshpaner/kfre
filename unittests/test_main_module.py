@@ -96,11 +96,13 @@ def test_predict_kfre_invalid_model():
     df = df_basic()[["Age", "SEX", "eGFR", "uACR"]]
     cols = {"age": "Age", "sex": "SEX", "eGFR": "eGFR", "uACR": "uACR"}
     rp = RiskPredictor(df, cols)
-    # invalid num_vars with use_extra_vars should simply return None
-    result = rp.predict_kfre(
-        years=2, is_north_american=True, use_extra_vars=True, num_vars=5
-    )
-    assert result is None
+    # invalid num_vars must now raise ValueError (previously returned None)
+    import pytest
+
+    with pytest.raises(ValueError):
+        rp.predict_kfre(
+            years=2, is_north_american=True, use_extra_vars=True, num_vars=5
+        )
 
 
 # --- Tests for RiskPredictor.kfre_person error cases (lines 349-350) ---

@@ -7,7 +7,8 @@ from .perform_eval import *
 
 class RiskPredictor:
     """
-    A class to represent a risk predictor for chronic kidney disease (CKD).
+    A class to represent a kidney failure risk predictor for patients with
+    chronic kidney disease (CKD).
 
     This class implements the Tangri risk prediction model, which is based on the
     multinational assessments described in Tangri N, Grams ME, Levey AS, et al.
@@ -24,8 +25,8 @@ class RiskPredictor:
     names in the data.
 
     Methods:
-    predict(years, use_extra_vars): Predicts the risk of CKD for the given
-    number of years, optionally using extra variables for the prediction.
+    predict(years, use_extra_vars): Predicts the risk of kidney failure for the
+    givennumber of years, optionally using extra variables for the prediction.
     """
 
     def __init__(
@@ -78,7 +79,8 @@ class RiskPredictor:
 
         Returns:
         - float: A probability value between 0 and 1 representing the patient's
-          risk of kidney failure within the specified timeframe.
+          risk of kidney failure within the specified timeframe. Rows with an
+          unrecognized or missing sex value are returned as NaN.
 
         Raises:
         - ValueError: If `num_vars` is set to an unsupported number.
@@ -104,10 +106,11 @@ class RiskPredictor:
         # Retrieve data only once
         df = self.df[necessary_cols].copy()
 
-        # Convert sex to numeric in a vectorized way
-        df[self.columns["sex"]] = (
-            df[self.columns["sex"]].str.lower() == "male"
-        ).astype(int)
+        # Resolve sex robustly: recognized female/male map to 0/1; unrecognized
+        # values warn and are marked invalid so they yield NaN rather than being
+        # silently coerced. (1 - female) gives the male=1 encoding used below.
+        female_flag, sex_valid = _resolve_sex_series(df[self.columns["sex"]])
+        df[self.columns["sex"]] = (1 - female_flag).astype(int)
 
         # Extract basic parameters from the DataFrame
         age = df[self.columns["age"]]
@@ -126,7 +129,7 @@ class RiskPredictor:
             df = self.df[necessary_cols].copy()
             dm = df[self.columns["dm"]]
             htn = df[self.columns["htn"]]
-            return apply_precision(
+            result = apply_precision(
                 risk_pred(
                     age,
                     sex,
@@ -154,7 +157,7 @@ class RiskPredictor:
             phosphorous = df[self.columns["phosphorous"]]
             bicarbonate = df[self.columns["bicarbonate"]]
             calcium = df[self.columns["calcium"]]
-            return apply_precision(
+            result = apply_precision(
                 risk_pred(
                     age,
                     sex,
@@ -174,10 +177,16 @@ class RiskPredictor:
         else:
             # 4-variable model. Covers use_extra_vars=False, and the explicit
             # use_extra_vars=True with num_vars=4 case.
-            return apply_precision(
+            result = apply_precision(
                 risk_pred(age, sex, eGFR, uACR, is_north_american, years=years),
                 precision=precision,
             )
+
+        # Rows with an unrecognized/missing sex value get NaN rather than a
+        # prediction based on a silently coerced sex.
+        result = pd.Series(result, index=self.df.index)
+        result[~sex_valid.to_numpy()] = np.nan
+        return result
 
     def kfre_person(
         self,
@@ -196,8 +205,8 @@ class RiskPredictor:
         precision=None,
     ):
         """
-        Predicts CKD risk for an individual patient based on provided clinical
-        parameters.
+        Predicts kidney failure risk for an individual patient based on provided
+        clinical parameters.
 
         Parameters:
         - age (float): Age of the patient.
@@ -213,9 +222,11 @@ class RiskPredictor:
         - phosphorous (float, optional): Serum phosphorous level.
         - bicarbonate (float, optional): Serum bicarbonate level.
         - calcium (float, optional): Serum calcium level.
+        - precision (int, optional): Number of decimal places to round the
+          predicted risk to. If None, no rounding is applied.
 
         Returns:
-        - float: The computed risk of developing CKD.
+        - float: The computed risk of kidney failure.
         """
         errors = []
 
@@ -295,27 +306,86 @@ def apply_precision(result, precision=None):
 
 
 ################################################################################
+################################# Sex Helper ###################################
+################################################################################
+
+
+def _resolve_sex_series(sex_series, female_str=None):
+    """
+    Robustly resolve a sex column into a female indicator and a validity mask.
+
+    Recognized values are matched case-insensitively: female {"female", "f"}
+    and male {"male", "m"}. If ``female_str`` is provided, that exact label is
+    also accepted as female (case-insensitively). Any non-empty value that is
+    not recognized (e.g. typos, "unknown") triggers a warning and is marked
+    invalid; genuinely missing values (NaN, empty) are marked invalid quietly.
+
+    Returns
+    -------
+    (female_flag, valid_mask) : (pd.Series[int], pd.Series[bool])
+        ``female_flag`` is 1 for female, 0 otherwise (0 is meaningless where
+        ``valid_mask`` is False). ``valid_mask`` is True only for rows with a
+        recognized sex value.
+    """
+    import warnings
+
+    female_tokens = {"female", "f"}
+    male_tokens = {"male", "m"}
+    if female_str is not None:
+        female_tokens = female_tokens | {str(female_str).strip().lower()}
+
+    normalized = sex_series.astype("string").str.strip().str.lower()
+
+    female_flag = normalized.isin(female_tokens)
+    male_flag = normalized.isin(male_tokens)
+    valid_mask = female_flag | male_flag
+
+    # Warn about non-empty values that were not recognized (data-quality issue),
+    # but stay quiet about genuinely missing entries.
+    non_empty = normalized.notna() & (normalized.str.len() > 0)
+    unrecognized = non_empty & ~valid_mask
+    if unrecognized.any():
+        bad = sorted(set(sex_series[unrecognized].astype(str)))
+        warnings.warn(
+            "Unrecognized sex value(s) "
+            f"{bad} were treated as missing (result set to NaN). "
+            "Recognized values are female/f and male/m "
+            "(case-insensitive).",
+            UserWarning,
+            stacklevel=2,
+        )
+
+    return female_flag.astype(int), valid_mask
+
+
+################################################################################
 ################################ uPCR to uACR ##################################
 ################################################################################
 
 
 def upcr_uacr(df, sex_col, diabetes_col, hypertension_col, upcr_col, female_str):
     """
-    Converts urinary protein-creatinine ratio (uPCR) to urinary
-    albumin-creatinine ratio (uACR) for an entire DataFrame using vectorized
-    operations to enhance performance. This function is designed to handle large
-    datasets efficiently by applying the conversion formula across columns,
-    rather than row-by-row.
+    Estimate the urinary albumin-creatinine ratio (uACR) from the urinary
+    protein-creatinine ratio (uPCR) for an entire DataFrame using vectorized
+    operations. This function is designed to handle large datasets efficiently
+    by applying the conversion formula across columns, rather than row-by-row.
 
     The conversion uses patient-specific factors such as sex, presence of
-    diabetes, and presence of hypertension to adjust the uACR calculation
-    according to a specified logarithmic and exponential formula. This approach
-    is critical in clinical settings where accurate adjustments based on
-    demographic factors are essential for proper diagnosis and treatment planning.
+    diabetes, and presence of hypertension to adjust the uACR estimate
+    according to a specified logarithmic and exponential formula.
+
+    IMPORTANT: The uPCR-to-uACR conversion is an APPROXIMATION, not a
+    measurement. The albumin fraction of total urinary protein varies between
+    individuals (and with the underlying cause of proteinuria), so there is no
+    universally agreed conversion, and estimated uACR values carry inherent
+    measurement error. A directly measured uACR should always be preferred when
+    available; converted values should be interpreted with caution, and this
+    limitation should be reported wherever converted uACR is used. A runtime
+    warning is emitted whenever this function produces estimated values.
 
     Parameters:
     - df (pd.DataFrame): The DataFrame containing the patient data.
-    - sex_col (str): Column name in 'df' that contains the patient's gender.
+    - sex_col (str): Column name in 'df' that contains the patient's sex.
     - diabetes_col (str): Column name in 'df' that indicates whether the
       patient has diabetes (1=yes; 0=no).
     - hypertension_col (str): Column name in 'df' that indicates whether the
@@ -325,12 +395,12 @@ def upcr_uacr(df, sex_col, diabetes_col, hypertension_col, upcr_col, female_str)
     - female_str (str): The string used in the dataset to identify female patients.
 
     Returns:
-    - pd.Series: A pandas Series object containing the computed urinary
+    - pd.Series: A pandas Series object containing the estimated urinary
       albumin-creatinine ratio (uACR) for each patient in the DataFrame.
 
     This function ensures that all calculations respect the integrity of the
-    original data by not modifying any existing columns and only adding the
-    resulting uACR as a new column. It handles NaN values by excluding them
+    original data by not modifying any existing columns and only returning the
+    resulting uACR as a new Series. It handles NaN values by excluding them
     from the calculation, thus retaining them in the resulting uACR values to
     reflect the lack of information for certain patients.
 
@@ -345,30 +415,48 @@ def upcr_uacr(df, sex_col, diabetes_col, hypertension_col, upcr_col, female_str)
     Ann Intern Med, 173(6), 426-435, doi: 10.7326/M20-0529.
 
     """
-    # Convert to float and get the female mask
+    import warnings
+
+    # Convert to float and resolve sex robustly. Recognized female/male values
+    # are mapped explicitly; anything unrecognized (typos, "unknown", blanks)
+    # is treated as missing so it yields NaN rather than being silently coerced
+    # into a valid-looking prediction.
     upcr = df[upcr_col].astype(float)
-    female = (df[sex_col] == female_str).astype(int)
+    female_flag, sex_valid = _resolve_sex_series(df[sex_col], female_str)
 
     # Masks to identify valid data for diabetes and hypertension
     diabetic_mask = ~df[diabetes_col].isna()
     hypertensive_mask = ~df[hypertension_col].isna()
 
-    # Only calculate uACR where we have complete information
-    valid_mask = diabetic_mask & hypertensive_mask
+    # Only calculate uACR where we have complete information (including a
+    # recognized sex value)
+    valid_mask = diabetic_mask & hypertensive_mask & sex_valid
 
     # Initialize uACR with NaNs
     uacr = np.full(df.shape[0], np.nan)
 
     # Calculate uACR only for valid data
-    uacr[valid_mask] = np.exp(
+    uacr[valid_mask.to_numpy()] = np.exp(
         5.2659
         + 0.2934 * np.log(np.minimum(upcr[valid_mask] / 50, 1))
         + 1.5643 * np.log(np.maximum(np.minimum(upcr[valid_mask] / 500, 1), 0.1))
         + 1.1109 * np.log(np.maximum(upcr[valid_mask] / 500, 1))
-        - 0.0773 * female[valid_mask]
+        - 0.0773 * female_flag[valid_mask]
         + 0.0797 * df[diabetes_col][valid_mask].astype(int)
         + 0.1265 * df[hypertension_col][valid_mask].astype(int)
     )
+
+    # Disclaimer on the software output: values are estimated, not measured.
+    if bool(valid_mask.any()):
+        warnings.warn(
+            "uACR values were ESTIMATED from uPCR using the Sumida et al. "
+            "(2020) conversion. This conversion is an approximation without "
+            "universal consensus and carries inherent measurement error; "
+            "prefer a measured uACR when available and report this limitation "
+            "wherever converted values are used.",
+            UserWarning,
+            stacklevel=2,
+        )
 
     return pd.Series(uacr, index=df.index)
 
@@ -389,8 +477,8 @@ def predict_kfre(
     precision=None,
 ):
     """
-    A convenience function to predict CKD risk using the Tangri risk prediction
-    model without directly creating an instance of the RiskPredictor class.
+    A convenience function to predict kidney failure risk using the Tangri risk
+    prediction
 
     Parameters:
     - df (DataFrame): The DataFrame containing patient data.
@@ -540,26 +628,42 @@ def perform_conversions(
     albumin_col=None,
 ):
     """
-    Convert specified units of columns in a dataframe and create new columns
-    for the results, with specific suffixes based on the conversion direction.
-    Original columns are preserved.
+    Convert specified laboratory columns between SI and conventional units,
+    adding new columns and preserving the originals.
+
+    Direction:
+    - reverse=False (default): SI -> conventional units, i.e.
+      uPCR mg/mmol -> mg/g, calcium mmol/L -> mg/dL,
+      phosphate mmol/L -> mg/dL, albumin g/L -> g/dL.
+      These are the conventional units expected by the KFRE.
+    - reverse=True: the inverse conversion (conventional -> SI).
+
+    Conversion factors (applied by multiplication when reverse=False):
+      uPCR x1/0.11312 (~8.84), calcium x4, phosphate x3.1, albumin x0.1.
 
     Parameters:
     - df (DataFrame): The dataframe containing the data.
-    - reverse (bool): If True, revert to original units by dividing; if False,
-      perform the standard conversion by multiplying.
-    - convert_all (bool): If True, automatically convert all recognized columns.
+    - reverse (bool): If True, convert from conventional -> SI units; if False,
+      convert from SI -> conventional units.
+    - convert_all (bool): If True, automatically identify columns for conversion.
     - upcr_col (str, optional): Column name for urine protein-creatinine ratio.
     - calcium_col (str, optional): Column name for calcium.
     - phosphate_col (str, optional): Column name for phosphate.
     - albumin_col (str, optional): Column name for albumin.
     """
-    # Define the conversion factors and the suffixes for the converted units
+    # Conversion factors verified against standard reference values
+    # (molar masses / standard SI<->conventional factors):
+    #   Calcium:   1 mmol/L = 4.0 mg/dL    (MW 40.08; x4)
+    #   Phosphate: 1 mmol/L = 3.1 mg/dL    (MW ~31; x3.1)
+    #   Albumin:   1 g/L    = 0.1 g/dL     (x0.1)
+    #   uPCR:      mg/mmol  -> mg/g  via 1 mmol creatinine = 0.11312 g
+    #              (creatinine MW 113.12; x 1/0.11312 ~= 8.8401)
+
     conversion_factors = {
-        "uPCR": 1 / 0.11312,  # From mg/g to mmol/L
-        "Calcium": 4,  # From mg/dL to mmol/L
-        "Phosphate": 3.1,  # From mg/dL to mmol/L
-        "Albumin": 1 / 10,  # From g/dL to g/L
+        "uPCR": 1 / 0.11312,
+        "Calcium": 4,
+        "Phosphate": 3.1,
+        "Albumin": 1 / 10,
     }
 
     # Define the suffixes for new column names based on conversion direction
@@ -578,7 +682,12 @@ def perform_conversions(
         "Albumin": albumin_col,
     }
 
-    # If convert_all is True, automatically identify columns for conversion
+    # If convert_all is True, automatically identify columns for conversion by
+    # name. NOTE: convert_all is intended for a single pass over a frame of raw
+    # input values. To reverse a conversion, pass the specific converted column
+    # names explicitly (e.g. calcium_col="Calcium_mg_dl") rather than relying on
+    # convert_all, which cannot disambiguate an original column from its own
+    # converted output when both are present.
     if convert_all:
         columns_to_convert = {
             key: next((col for col in df.columns if key.lower() in col.lower()), None)
@@ -617,6 +726,64 @@ def perform_conversions(
 ################################################################################
 ############################## KFRE Risk Predictor #############################
 ################################################################################
+
+
+def _warn_out_of_bounds(
+    age=None,
+    eGFR=None,
+    uACR=None,
+    albumin=None,
+    phosphorous=None,
+    bicarbonate=None,
+    calcium=None,
+    model=4,
+):
+    """
+    Emit a UserWarning when covariates fall outside broad, physiologically
+    plausible ranges for the KFRE (adults with CKD stages G3-G5). Conservative
+    scope checks only: values are not modified and predictions are still
+    returned; the warning flags possible extrapolation. Works for scalar or
+    array-like inputs.
+    """
+    import warnings
+
+    # (name, value, low, high) using inclusive bounds. Ranges are intentionally
+    # broad so the check flags clear out-of-scope values, not borderline ones.
+    checks = [
+        ("age", age, 18, 100),  # adult population
+        ("eGFR", eGFR, 0, 60),  # KFRE scope: CKD G3-G5 (eGFR < 60)
+        ("uACR", uACR, 0, 25000),  # mg/g; upper guard against implausible entries
+    ]
+    if model == 8:
+        checks += [
+            ("albumin", albumin, 1.0, 6.0),  # g/dL
+            ("phosphorous", phosphorous, 1.0, 10.0),  # mg/dL
+            ("bicarbonate", bicarbonate, 5.0, 45.0),  # mEq/L
+            ("calcium", calcium, 5.0, 15.0),  # mg/dL
+        ]
+
+    offenders = []
+    for name, val, low, high in checks:
+        if val is None:
+            continue
+        arr = np.asarray(val, dtype=float)
+        with np.errstate(invalid="ignore"):
+            out = (arr < low) | (arr > high)
+        # ignore NaNs (handled elsewhere); only flag real out-of-range values
+        out = np.where(np.isnan(arr), False, out)
+        if np.any(out):
+            offenders.append(f"{name} (expected {low}-{high})")
+
+    if offenders:
+        warnings.warn(
+            "One or more covariates fall outside the KFRE's intended range: "
+            + "; ".join(offenders)
+            + ". Predictions are still returned but may be unreliable for "
+            "values outside the model's development population "
+            "(adults, CKD stages G3-G5).",
+            UserWarning,
+            stacklevel=2,
+        )
 
 
 def risk_pred(
@@ -712,6 +879,22 @@ def risk_pred(
             raise ValueError("The 6-variable model requires dm and htn.")
         model = num_vars
 
+    # Warn if covariates fall outside broad, physiologically plausible ranges
+    # for which the KFRE (developed on CKD stages G3-G5 in adults) is intended.
+    # These are conservative scope checks, not the equation's exact validation
+    # envelope; predictions for out-of-range values are still returned but may
+    # be unreliable because the model is linear and extrapolates poorly.
+    _warn_out_of_bounds(
+        age=age,
+        eGFR=eGFR,
+        uACR=uACR,
+        albumin=albumin,
+        phosphorous=phosphorous,
+        bicarbonate=bicarbonate,
+        calcium=calcium,
+        model=model,
+    )
+
     # Define the alpha values and risk factor coefficients for the chosen model.
     if model == 6:
         # 6-variable model
@@ -764,8 +947,29 @@ def risk_pred(
         }
 
     # Ensure uACR is positive to avoid log(0)
-    uACR = np.maximum(uACR, 1e-6)
-    log_uACR = np.log(uACR)
+    # uACR is a strictly positive ratio; non-positive values (<= 0) are
+    # invalid and must not be silently rescued into a valid-looking result.
+    # Scalar input: raise. Array/Series input: warn and set the offending
+    # entries to NaN so a single bad row does not abort a whole cohort.
+    uACR = np.asarray(uACR, dtype=float)
+    invalid = uACR <= 0
+    if np.ndim(uACR) == 0:
+        if bool(invalid):
+            raise ValueError(f"uACR must be positive; got {float(uACR)}.")
+        log_uACR = np.log(uACR)
+    else:
+        if invalid.any():
+            import warnings
+
+            n_bad = int(invalid.sum())
+            warnings.warn(
+                f"{n_bad} uACR value(s) were non-positive and set to NaN "
+                "(uACR must be > 0).",
+                UserWarning,
+                stacklevel=2,
+            )
+        safe = np.where(invalid, np.nan, uACR)
+        log_uACR = np.log(safe)
 
     # Compute the base risk score using the coefficients
     risk_score = (

@@ -153,7 +153,7 @@ assert np.allclose(p1_6, p6.iloc[1], atol=5e-11)
 assert np.allclose(p0_8, p8.iloc[0], atol=5e-10)
 assert np.allclose(p1_8, p8.iloc[1], atol=5e-10)
 
-# Optional: add the KFRE columns like you will in R
+# Optional: add the KFRE columns
 toy_kfre = add_kfre_risk_col(
     df=toy,
     age_col="age",
@@ -177,9 +177,8 @@ print(toy_kfre)
 
 toy_kfre.to_csv("./data/toy_kfre.csv", index=False)
 
-# Optional: assert against the numbers you saw in R
 expected_p4 = np.array([0.01247073, 0.09997874])
-expected_p6 = np.array([0.03683839, 0.30356514])  # keep your targets as-is
+expected_p6 = np.array([0.03683839, 0.30356514])  # keep targets as-is
 expected_p8 = np.array([0.01126961, 0.11930161])
 assert np.allclose(np.array(p4), expected_p4, rtol=0, atol=1e-4)
 assert np.allclose(np.array(p6), expected_p6, rtol=0, atol=1e-4)

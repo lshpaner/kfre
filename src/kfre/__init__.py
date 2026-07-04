@@ -9,23 +9,23 @@ detailed_doc = """
 Kidney Failure Risk Equation (KFRE) Python Library
 ========================================================================================
 
-`kfre` is a Python library designed to estimate the risk of chronic kidney disease 
-(CKD) progression over two distinct timelines: 2 years and 5 years. Using Tangri's 
-Kidney Failure Risk Equation (KFRE), the library provides tools for healthcare 
-professionals and researchers to predict CKD risk based on patient data. It supports 
-predictions for both males and females and includes specific adjustments for individuals 
-from North American and non-North American regions.
+`kfre` is a Python library designed to estimate the risk of kidney failure in patients 
+with chronic kidney disease, over two distinct timelines: 2 years and 5 years. 
+Using Tangri's Kidney Failure Risk Equation (KFRE), the library provides tools 
+for healthcare professionals and researchers to predict kidney failure risk based 
+on patient data. It supports predictions for both males and females and includes 
+specific adjustments for individuals from North American and non-North American regions.
 
 PyPI: https://pypi.org/project/kfre/
 Documentation: https://lshpaner.github.io/kfre/
 
-Version: 0.1.17
+Version: 0.1.18
 
 """
 
 __author__ = "Leonid Shpaner"
 __email__ = "lshpaner@ucla.edu"
-__version__ = "0.1.17"
+__version__ = "0.1.18"
 
 
 # Define the custom help function
@@ -65,8 +65,8 @@ def kfre_person(
     precision=None,
 ):
     """
-    Direct function to predict CKD risk for an individual using specific clinical
-    parameters.
+    Direct function to predict kidney failure risk for an individual using
+    specific clinical parameters.
 
     :param age: Age of the patient.
     :param is_male: True if the patient is male, False if female.
@@ -81,7 +81,7 @@ def kfre_person(
     :param phosphorous: Serum phosphorous level, optional.
     :param bicarbonate: Serum bicarbonate level, optional.
     :param calcium: Serum calcium level, optional.
-    :return: The computed risk of developing CKD.
+    :return: The computed risk of kidney failure.
     """
     predictor = RiskPredictor()
     return predictor.kfre_person(

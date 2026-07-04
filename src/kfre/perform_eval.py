@@ -38,24 +38,50 @@ def class_esrd_outcome(
     duration_col,
     prefix=None,
     create_years_col=True,
+    censor_incomplete=False,
 ):
-    """Calculate outcome based on a given number of years.
+    """Label a kidney-failure outcome within a given time horizon.
 
-    This function creates a new column in the dataframe which is populated with
-    a 1 or a 0 based on certain conditions.
+    This function does not derive the kidney-failure event itself; it applies a
+    time window to a user-supplied event indicator (`col`), labeling the outcome
+    as 1 when the event occurred within `years` years and 0 otherwise. It is a
+    convenience utility for preparing binary outcome labels for KFRE evaluation,
+    not a survival-analysis routine.
 
     Parameters:
     df (pd.DataFrame): DataFrame to perform calculations on.
-    col (str): The column name with ESRD (should be eGFR < 15 flag).
+    col (str): Column name of a binary indicator of the kidney-failure event as
+    KFRE defines it, i.e. initiation of maintenance dialysis or kidney
+    transplantation (kidney replacement therapy / ESKD). This is supplied by the
+    user; the function does not infer the event from eGFR or any other lab value.
     years (int): The number of years to use in the condition.
-    duration_col (str): The name of the column containing the duration data.
+    duration_col (str): The name of the column containing the duration data
+    (follow-up time to event or censoring).
     prefix (str, optional): Custom prefix for the new column name.
     If None, no prefix is added.
     create_years_col (bool, optional): Whether to create the 'years' column.
     Default is True.
+    censor_incomplete (bool, optional): If True, patients with no event whose
+    follow-up is shorter than `years` are labeled NaN (censored) rather than 0,
+    so they can be excluded from fixed-horizon evaluation. Default is False,
+    which preserves the naive labeling (all non-events -> 0).
 
     Returns:
-    pd.DataFrame: DataFrame with the new column added.
+    pd.DataFrame: DataFrame with the new binary outcome column added.
+
+    Notes:
+    This is a naive fixed-horizon labeling: with the default
+    ``censor_incomplete=False``, a value of 0 means "no event observed within
+    `years` years" and therefore includes patients who were censored before the
+    horizon (e.g. death without kidney failure, or loss to follow-up). It does
+    not account for the competing risk of death or for right-censoring, and so
+    is not a substitute for time-to-event survival analysis. In cohorts with
+    substantial early mortality, treating all non-events as event-free can bias
+    performance estimates; users requiring unbiased estimates should apply
+    survival methods (e.g. cause-specific or subdistribution hazard models) that
+    handle censoring and competing risks explicitly. Setting
+    ``censor_incomplete=True`` provides a basic guard by excluding (NaN)
+    non-event patients whose observed follow-up does not reach the horizon.
     """
     if create_years_col:
         # Create a 'years' column based on the duration_col
@@ -75,7 +101,17 @@ def class_esrd_outcome(
     if column_name in df.columns:
         df.drop(columns=[column_name], inplace=True)
 
-    df[column_name] = np.where((df[col] == 1) & (df[years_col] <= years), 1, 0)
+    # Event within the horizon -> 1; otherwise 0.
+    outcome = np.where((df[col] == 1) & (df[years_col] <= years), 1, 0).astype(float)
+
+    if censor_incomplete:
+        # A non-event patient whose follow-up ends before the horizon is
+        # censored, not a confirmed non-event: label NaN so they can be
+        # excluded from fixed-horizon evaluation.
+        censored = (df[col] != 1) & (df[years_col] < years)
+        outcome[censored.to_numpy()] = np.nan
+
+    df[column_name] = outcome
     return df
 
 
@@ -670,3 +706,125 @@ def eval_kfre_metrics(
 
     # Return the resulting DataFrame containing the performance metrics
     return metrics_df_n_var
+
+
+################################################################################
+############################ Bootstrap Metric CI ###############################
+################################################################################
+
+
+def bootstrap_metric_ci(
+    y_true,
+    y_score,
+    metric="auc_roc",
+    n_boot=1000,
+    ci=95,
+    threshold=0.5,
+    seed=None,
+    progress=True,
+):
+    """
+    Estimate a bootstrap confidence interval for a performance metric.
+
+    Resamples patients with replacement ``n_boot`` times, recomputes the metric
+    on each resample, and returns the point estimate together with the lower and
+    upper percentile bounds of the requested confidence level. Resamples in which
+    the metric is undefined (e.g. only one outcome class present, which makes
+    AUC ROC / average precision undefined) are skipped.
+
+    Parameters:
+    - y_true (array-like): Binary ground-truth labels (0/1). NaNs are dropped
+      pairwise with y_score before resampling.
+    - y_score (array-like): Predicted risk scores (probabilities in [0, 1]).
+    - metric (str): One of "precision", "average_precision", "sensitivity",
+      "specificity", "auc_roc", "brier". Threshold-based metrics (precision,
+      sensitivity, specificity) use ``threshold`` to binarize y_score.
+    - n_boot (int): Number of bootstrap resamples. Default 1000.
+    - ci (float): Confidence level as a percentage (e.g. 95). Default 95.
+    - threshold (float): Cutoff for threshold-based metrics. Default 0.5.
+    - seed (int, optional): Seed for reproducibility.
+
+    Returns:
+    - dict: {"metric": str, "point": float, "lower": float, "upper": float,
+             "ci": float, "n_boot_valid": int} where point is the metric on the
+      full sample and lower/upper are the CI bounds. Values are NaN if the metric
+      cannot be computed on the full sample.
+    """
+    import numpy as np
+    from sklearn.metrics import (
+        precision_score,
+        recall_score,
+        roc_auc_score,
+        average_precision_score,
+        brier_score_loss,
+    )
+
+    def _compute(yt, ys):
+        # Returns the metric value or np.nan if undefined for this sample.
+        classes = np.unique(yt)
+        if metric == "brier":
+            return brier_score_loss(yt, ys)
+        if metric in ("auc_roc", "average_precision"):
+            if classes.size < 2:
+                return np.nan
+            if metric == "auc_roc":
+                return roc_auc_score(yt, ys)
+            return average_precision_score(yt, ys)
+        # Threshold-based metrics
+        yp = (ys > threshold).astype(int)
+        if metric == "precision":
+            return precision_score(yt, yp, zero_division=0)
+        if metric == "sensitivity":
+            return recall_score(yt, yp, zero_division=0)
+        if metric == "specificity":
+            return recall_score(yt, yp, pos_label=0, zero_division=0)
+        raise ValueError(
+            f"Unknown metric {metric!r}. Choose from: precision, "
+            "average_precision, sensitivity, specificity, auc_roc, brier."
+        )
+
+    y_true = np.asarray(y_true, dtype=float)
+    y_score = np.asarray(y_score, dtype=float)
+
+    # Drop pairs with NaN in either array (e.g. censored outcomes).
+    keep = ~(np.isnan(y_true) | np.isnan(y_score))
+    y_true = y_true[keep].astype(int)
+    y_score = y_score[keep]
+
+    point = _compute(y_true, y_score) if y_true.size else np.nan
+
+    rng = np.random.default_rng(seed)
+    n = y_true.size
+    boot_vals = []
+
+    # Single progress bar over all resamples for this call.
+    iterator = range(n_boot)
+    if progress:
+        try:
+            from tqdm import tqdm
+
+            iterator = tqdm(iterator, total=n_boot, desc=f"Bootstrapping {metric}")
+        except ImportError:
+            print("tqdm not installed; proceeding without a progress bar.")
+
+    for _ in iterator:
+        idx = rng.integers(0, n, size=n)
+        val = _compute(y_true[idx], y_score[idx])
+        if not np.isnan(val):
+            boot_vals.append(val)
+
+    if boot_vals:
+        alpha = (100 - ci) / 2
+        lower = float(np.percentile(boot_vals, alpha))
+        upper = float(np.percentile(boot_vals, 100 - alpha))
+    else:
+        lower = upper = np.nan
+
+    return {
+        "metric": metric,
+        "point": float(point) if not np.isnan(point) else np.nan,
+        "lower": lower,
+        "upper": upper,
+        "ci": float(ci),
+        "n_boot_valid": len(boot_vals),
+    }
