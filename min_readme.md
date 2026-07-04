@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/lshpaner/kfre/tree/main?tab=License-1-ov-file)
 [![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.11100222.svg)](https://doi.org/10.5281/zenodo.11100222)
 
-`kfre` is a Python library designed to estimate the risk of chronic kidney disease (CKD) progression using the Kidney Failure Risk Equation (KFRE) developed by Tangri et al. It provides risk assessments over two distinct timelines: 2 years and 5 years. The library is tailored for healthcare professionals and researchers, enabling precise CKD risk predictions based on patient data. It supports predictions for both males and females and includes adjustments for individuals from North American and non-North American regions.
+`kfre` is a Python library designed to estimate the risk of kidney failure in patients with chronic kidney disease (CKD) using the Kidney Failure Risk Equation (KFRE) developed by Tangri et al. It provides risk assessments over two distinct timelines: 2 years and 5 years. The library is tailored for healthcare professionals and researchers, enabling kidney failure risk predictions based on patient data. It supports predictions for both males and females and includes adjustments for individuals from North American and non-North American regions.
 
 ## Prerequisites
 Before you install `kfre`, ensure you have the following:
@@ -21,6 +21,7 @@ Additionally, kfre has the following package dependencies:
 - **matplotlib**: version 3.2.2 or higher
 - **seaborn**: version 0.10.1 or higher
 - **scikit-learn**: version 0.23.1 or higher
+- **tqdm**: version 4.0 or higher
 
 ## Installation
 
@@ -29,6 +30,17 @@ You can install `kfre` directly from PyPI:
 ```bash
 pip install kfre
 ```
+
+## Features
+
+- KFRE risk estimation (4-, 6-, and 8-variable models) at 2- and 5-year horizons
+- Unit conversion and uPCR-to-uACR estimation (see caveat below)
+- CKD stage classification and outcome labeling
+- Performance evaluation with bootstrap confidence intervals
+
+**Note on uACR estimation:** the uPCR-to-uACR conversion is an approximation
+without universal consensus and carries measurement error; a directly measured
+uACR is preferred when available.
 
 ## 📄 Official Documentation
 

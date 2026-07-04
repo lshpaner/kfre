@@ -1,4 +1,5 @@
 import matplotlib
+
 matplotlib.use("Agg")
 
 import os
@@ -16,10 +17,10 @@ from kfre import (
     upcr_uacr,
 )
 
-
 # ---------------------------------------------------------------------------
 # Shared fixture: minimal UK-style CKD cohort (unit-converted, outcomes set)
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def uk_cohort():
@@ -32,20 +33,22 @@ def uk_cohort():
     np.random.seed(42)
     n = 50
 
-    df = pd.DataFrame({
-        "Age": np.random.uniform(45, 85, n),
-        "SEX": np.random.choice(["Male", "Female"], n),
-        "eGFR-EPI": np.random.uniform(8, 29, n),       # Stage 4 & 5 only
-        "uACR": np.random.uniform(50, 3000, n),
-        "Diabetes (1=yes; 0=no)": np.random.choice([0, 1], n),
-        "Hypertension (1=yes; 0=no)": np.random.choice([0, 1], n),
-        "Albumin_g_dl": np.random.uniform(2.5, 5.0, n),
-        "Phosphate_mg_dl": np.random.uniform(2.5, 6.5, n),
-        "Bicarbonate (mmol/L)": np.random.uniform(18, 28, n),
-        "Calcium_mg_dl": np.random.uniform(8.0, 10.5, n),
-        "ESRD": np.random.choice([0, 1], n, p=[0.6, 0.4]),
-        "Follow-up YEARS": np.random.uniform(0.5, 5.0, n),
-    })
+    df = pd.DataFrame(
+        {
+            "Age": np.random.uniform(45, 85, n),
+            "SEX": np.random.choice(["Male", "Female"], n),
+            "eGFR-EPI": np.random.uniform(8, 29, n),  # Stage 4 & 5 only
+            "uACR": np.random.uniform(50, 3000, n),
+            "Diabetes (1=yes; 0=no)": np.random.choice([0, 1], n),
+            "Hypertension (1=yes; 0=no)": np.random.choice([0, 1], n),
+            "Albumin_g_dl": np.random.uniform(2.5, 5.0, n),
+            "Phosphate_mg_dl": np.random.uniform(2.5, 6.5, n),
+            "Bicarbonate (mmol/L)": np.random.uniform(18, 28, n),
+            "Calcium_mg_dl": np.random.uniform(8.0, 10.5, n),
+            "ESRD": np.random.choice([0, 1], n, p=[0.6, 0.4]),
+            "Follow-up YEARS": np.random.uniform(0.5, 5.0, n),
+        }
+    )
     return df
 
 
@@ -56,35 +59,45 @@ def cohort_with_predictions(uk_cohort):
 
     # Label outcomes
     df = class_esrd_outcome(
-        df, col="ESRD", years=2,
+        df,
+        col="ESRD",
+        years=2,
         duration_col="Follow-up YEARS",
-        prefix="esrd", create_years_col=False,
+        prefix="esrd",
+        create_years_col=False,
     )
     df = class_esrd_outcome(
-        df, col="ESRD", years=5,
+        df,
+        col="ESRD",
+        years=5,
         duration_col="Follow-up YEARS",
-        prefix="esrd", create_years_col=False,
+        prefix="esrd",
+        create_years_col=False,
     )
 
     # Add KFRE predictions
     df = add_kfre_risk_col(
         df=df,
-        age_col="Age", sex_col="SEX",
-        eGFR_col="eGFR-EPI", uACR_col="uACR",
+        age_col="Age",
+        sex_col="SEX",
+        eGFR_col="eGFR-EPI",
+        uACR_col="uACR",
         dm_col="Diabetes (1=yes; 0=no)",
         htn_col="Hypertension (1=yes; 0=no)",
         albumin_col="Albumin_g_dl",
         phosphorous_col="Phosphate_mg_dl",
         bicarbonate_col="Bicarbonate (mmol/L)",
         calcium_col="Calcium_mg_dl",
-        num_vars=[4, 6, 8], years=(2, 5),
+        num_vars=[4, 6, 8],
+        years=(2, 5),
         is_north_american=False,
         copy=True,
     )
 
     # Add CKD stages
     df = class_ckd_stages(
-        df, egfr_col="eGFR-EPI",
+        df,
+        egfr_col="eGFR-EPI",
         stage_col="stage",
         combined_stage_col="stage_combined",
     )
@@ -96,14 +109,17 @@ def cohort_with_predictions(uk_cohort):
 # uPCR -> uACR conversion (mirrors conversions.py pipeline)
 # ---------------------------------------------------------------------------
 
+
 def test_upcr_to_uacr_full_cohort():
     """perform_conversions + upcr_uacr on a cohort with uPCR column."""
-    df = pd.DataFrame({
-        "uPCR": [150.0, 600.0, 50.0, 300.0],
-        "SEX": ["Female", "Male", "Female", "Male"],
-        "Diabetes (1=yes; 0=no)": [1, 0, 1, 0],
-        "Hypertension (1=yes; 0=no)": [1, 1, 0, 1],
-    })
+    df = pd.DataFrame(
+        {
+            "uPCR": [150.0, 600.0, 50.0, 300.0],
+            "SEX": ["Female", "Male", "Female", "Male"],
+            "Diabetes (1=yes; 0=no)": [1, 0, 1, 0],
+            "Hypertension (1=yes; 0=no)": [1, 1, 0, 1],
+        }
+    )
     converted = perform_conversions(df.copy(), reverse=False, convert_all=True)
     assert "uPCR_mg_g" in converted.columns
 
@@ -124,11 +140,13 @@ def test_upcr_to_uacr_full_cohort():
 # class_ckd_stages: Stage 4 and Stage 5 only (matches UK cohort)
 # ---------------------------------------------------------------------------
 
+
 def test_ckd_stages_stage4_and_stage5_only():
     """eGFR values 8-29 should produce only Stage 4 and Stage 5."""
     df = pd.DataFrame({"eGFR": [28, 20, 12, 8, 15, 25]})
     out = class_ckd_stages(
-        df, egfr_col="eGFR",
+        df,
+        egfr_col="eGFR",
         stage_col="stage",
         combined_stage_col="stage_combined",
     )
@@ -149,11 +167,15 @@ def test_ckd_stages_present_in_cohort(cohort_with_predictions):
 # KFRE predictions: all six columns present, values in [0, 1]
 # ---------------------------------------------------------------------------
 
+
 def test_all_kfre_columns_present(cohort_with_predictions):
     expected = [
-        "kfre_4var_2year", "kfre_4var_5year",
-        "kfre_6var_2year", "kfre_6var_5year",
-        "kfre_8var_2year", "kfre_8var_5year",
+        "kfre_4var_2year",
+        "kfre_4var_5year",
+        "kfre_6var_2year",
+        "kfre_6var_5year",
+        "kfre_8var_2year",
+        "kfre_8var_5year",
     ]
     for col in expected:
         assert col in cohort_with_predictions.columns
@@ -185,6 +207,7 @@ def test_8var_correlated_with_4var(cohort_with_predictions):
 # ---------------------------------------------------------------------------
 # eval_kfre_metrics: no NaNs, correct structure
 # ---------------------------------------------------------------------------
+
 
 def test_eval_kfre_metrics_no_nans(cohort_with_predictions):
     df = cohort_with_predictions.dropna(
@@ -231,6 +254,7 @@ def test_eval_kfre_metrics_auc_in_range(cohort_with_predictions):
 # Figure generation: boxplot and scatter save without error
 # ---------------------------------------------------------------------------
 
+
 def test_risk_by_stage_figure_saves(cohort_with_predictions, tmp_path):
     df = cohort_with_predictions
     stage_order = ["CKD Stage 4", "CKD Stage 5"]
@@ -239,7 +263,8 @@ def test_risk_by_stage_figure_saves(cohort_with_predictions, tmp_path):
         for s in stage_order
     ]
     fig, ax = plt.subplots(figsize=(8, 6))
-    ax.boxplot(data_by_stage, tick_labels=["Stage 4", "Stage 5"])
+    ax.boxplot(data_by_stage)
+    ax.set_xticklabels(["Stage 4", "Stage 5"])
     ax.set_ylim(bottom=0)
     ax.set_xlabel("CKD Stage")
     ax.set_ylabel("Predicted 2-Year Risk")
@@ -252,9 +277,7 @@ def test_risk_by_stage_figure_saves(cohort_with_predictions, tmp_path):
 
 
 def test_4var_vs_8var_scatter_saves(cohort_with_predictions, tmp_path):
-    df = cohort_with_predictions.dropna(
-        subset=["kfre_4var_2year", "kfre_8var_2year"]
-    )
+    df = cohort_with_predictions.dropna(subset=["kfre_4var_2year", "kfre_8var_2year"])
     fig, ax = plt.subplots(figsize=(6, 6))
     ax.scatter(df["kfre_4var_2year"], df["kfre_8var_2year"], alpha=0.5, s=10)
     lims = [0, max(df["kfre_4var_2year"].max(), df["kfre_8var_2year"].max())]

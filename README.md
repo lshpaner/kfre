@@ -5,15 +5,15 @@
 [![PyPI](https://img.shields.io/pypi/v/kfre.svg)](https://pypi.org/project/kfre/)
 [![Downloads](https://pepy.tech/badge/kfre)](https://pepy.tech/project/kfre)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/lshpaner/kfre/tree/main?tab=License-1-ov-file)
-[![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.11100223.svg)](https://doi.org/10.5281/zenodo.11100222)
+[![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.11100222.svg)](https://doi.org/10.5281/zenodo.11100222)
 
 `kfre` is a Python library designed to estimate the risk of kidney failure in patients with chronic kidney disease (CKD) over two distinct timelines: 2 years and 5 years. Using Tangri's Kidney Failure Risk Equation (KFRE), the library provides tools for healthcare professionals and researchers to predict kidney failure risk based on patient data.
 
 --------
 ## Table of Contents
 
-1. [Features](#Features)
-2. [Prerequisites](#Prerequisites)
+1. [Features](#features)
+2. [Prerequisites](#prerequisites)
 3. [Installation](#installation)
 4. [Usage Guide](#usage-guide)
    - [Single Patient Risk Calculation](#single-patient-risk-calculation)
@@ -23,9 +23,10 @@
         - [Calcium](#calcium)
         - [Phosphate](#phosphate)
         - [Albumin](#albumin)
+   - [Performance Evaluation](#performance-evaluation)
 5. [Contributor/Maintainer](#contributormaintainer)
 6. [License](#license)
-7. [Support](#acknowledgements)
+7. [Support](#support)
 8. [References](#references)
 --------
 
@@ -38,6 +39,8 @@
     - 8 variables: sex, age, eGFR, uACR (log-normalized), serum albumin, serum phosphorous, serum calcium, and serum bicarbonate.
 - **Data Flexibility**: Handles various input data formats and maps them to required model parameters.
 - **Conversion Utilities**: Includes functions to convert common laboratory results to the required units for risk prediction.
+- **Outcome Labeling**: Prepare binary kidney-failure outcome labels for fixed time horizons, with an optional guard for right-censoring.
+- **Performance Evaluation**: Compute discrimination and calibration metrics (AUROC, average precision, precision, sensitivity, specificity, Brier score) with bootstrap confidence intervals, and plot ROC and precision-recall curves.
 
 ### Important Note on Data Units
 The kfre library requires precise data input, with clear specification of the units for each variable. The variables can be expressed in multiple units, and it's crucial that the data being used clearly delineates which units the variables are expressed in. For instance:
@@ -53,12 +56,16 @@ This flexibility allows the library to be used with a variety of clinical data s
 ## Prerequisites
 Before you install `kfre`, ensure you have the following:
 
-- **Python**: Python 3.6 or higher is required to run `kfre`.
+- **Python**: Python 3.7.4 or higher is required to run `kfre`.
 
 Additionally, kfre has the following package dependencies:
 
 - **NumPy**: Version 1.18.5 or higher
 - **Pandas**: Version 1.0.5 or higher
+- **Matplotlib**: Version 3.2.2 or higher
+- **Seaborn**: Version 0.10.1 or higher
+- **scikit-learn**: Version 0.23.1 or higher
+- **tqdm**: Version 4.0 or higher
 
 These dependencies will be automatically installed when you install kfre using pip.
 
@@ -174,7 +181,7 @@ When using the `add_kfre_risk_col` function, the library will append new columns
 
 ***Disclaimer***
 
-The `kfre` library is designed to facilitate risk prediction using Tangri's KFRE model based on a given set of patient data. It is crucial to ensure that all patient data within a batch calculation are consistent in terms of regional categorization—that is, either all North American or all non-North American. To this end, it is crucial to ensure that all patient data within a batch calculation are consistent in terms of regional categorization. Mixing patient data from different regions within a single batch is not supported, as the function is set to apply one regional coefficient set at a time. This approach ensures the accuracy and reliability of the risk predictions.
+The `kfre` library is designed to facilitate risk prediction using Tangri's KFRE model based on a given set of patient data. It is crucial to ensure that all patient data within a batch calculation are consistent in terms of regional categorization: that is, either all North American or all non-North American. Mixing patient data from different regions within a single batch is not supported, as the function is set to apply one regional coefficient set at a time. This approach ensures the accuracy and reliability of the risk predictions.
 
 Example Usage:
 
@@ -239,7 +246,7 @@ data_with_risks
 
 Purpose:
 
-This function is designed to compute the risk of chronic kidney disease (CKD) over specified or all possible models and time frames, directly appending the results as new columns to the provided DataFrame. It organizes the results by model (4-variable, 6-variable, 8-variable) first, followed by the time frame (2 years, 5 years) for each model type.
+This function is designed to compute the risk of kidney failure over specified or all possible models and time frames, directly appending the results as new columns to the provided DataFrame. It organizes the results by model (4-variable, 6-variable, 8-variable) first, followed by the time frame (2 years, 5 years) for each model type.
 
 Usage: 
 
@@ -274,7 +281,7 @@ Parameters:
 
 Returns: 
 
-- `DataFrame`: The modified DataFrame with new columns added for each model and time frame specified. Columns are named following the pattern `pred_{model_var}var_{year}year`, where `{model_var}` is the number of variables (4, 6, or 8) and `{year}` is the time frame (2 or 5).
+- `DataFrame`: The modified DataFrame with new columns added for each model and time frame specified. Columns are named following the pattern `kfre_{model_var}var_{year}year`, where `{model_var}` is the number of variables (4, 6, or 8) and `{year}` is the time frame (2 or 5).
 
 ## Conversion of Clinical Parameters
 
@@ -289,13 +296,20 @@ The `kfre` library includes a utility function `perform_conversions` designed to
 **Parameters**
 
 - `df` (DataFrame): The DataFrame containing the data to be converted.
-- `reverse` (bool): If True, performs the reverse conversion (e.g., mmol/L to mg/dL). If False, performs the standard conversion (e.g., mg/dL to mmol/L).
+- `reverse` (bool): If False (default), performs the standard conversion (SI to conventional units, e.g. mmol/L to mg/dL). If True, performs the reverse conversion (conventional to SI units).
 - `convert_all` (bool): If True, attempts to automatically identify and convert all recognized columns.
 - `upcr_col`, `calcium_col`, `phosphate_col`, `albumin_col` (str, optional): Column names in the DataFrame that contain the values to be converted.
 
 ### Convert Specific Variables from mmol/L to mg/g and/or g/dL
 
 #### uPCR to uACR
+
+> **Note:** The uPCR-to-uACR conversion is an approximation. The albumin
+> fraction of total urinary protein varies between individuals, so there is no
+> universally agreed conversion and estimated uACR values carry inherent
+> measurement error. A directly measured uACR is preferred when available, and
+> this limitation should be reported wherever converted values are used.
+
 The conversion of uPCR from mg/mmol to mg/g involves understanding that both mg/mmol and mg/g are ratios that can be related through their units.
 
 - mg/mmol is a ratio of mass (in milligrams) to molar concentration (in millimoles), while
@@ -383,6 +397,35 @@ Converted 'Albumin' to new column 'Albumin_g_dl' with factor 0.1
 |        0.5        |         2.5        |      1.2      |     0.45    |    4.420085   |         10        |         3.72        |       0.045      |
 |        0.7        |          2         |      1.3      |     0.5     |    6.188119   |         8         |         4.03        |       0.05       |
 |        0.2        |         2.2        |      1.1      |     0.47    |    1.768034   |        8.8        |         3.41        |       0.047      |
+
+
+## Performance Evaluation
+
+The library provides utilities to evaluate KFRE predictions against observed
+outcomes on your own cohort. `class_esrd_outcome` prepares a binary
+kidney-failure outcome label for a chosen time horizon (with an optional
+`censor_incomplete` guard for patients whose follow-up ends before the horizon);
+`eval_kfre_metrics` tabulates discrimination and calibration metrics; and
+`bootstrap_metric_ci` returns a point estimate with a bootstrap confidence
+interval for any supported metric.
+
+```python
+from kfre import bootstrap_metric_ci
+
+result = bootstrap_metric_ci(
+    y_true,          # observed binary outcome (e.g. df["esrd_2_year_outcome"])
+    y_score,         # KFRE risk score (e.g. df["kfre_4var_2year"])
+    metric="auc_roc",
+    n_boot=1000,
+    ci=95,
+    seed=42,
+)
+print(f"AUROC {result['point']:.3f} "
+      f"(95% CI {result['lower']:.3f}-{result['upper']:.3f})")
+```
+
+Supported metrics: `auc_roc`, `average_precision`, `precision`, `sensitivity`,
+`specificity`, and `brier`.
 
 
 ## Contributor/Maintainer
