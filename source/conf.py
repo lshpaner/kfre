@@ -10,8 +10,8 @@ import sphinx_rtd_theme  # type: ignore
 
 project = "KFRE"
 copyright = "2026, Leon Shpaner"
-author = "Leon Shpaner"
-release = "0.1.17"
+author = "Leonid Shpaner"
+release = "0.1.18"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
