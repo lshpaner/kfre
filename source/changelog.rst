@@ -26,6 +26,41 @@
 Changelog
 =========
 
+0.1.18
+------
+
+**Fixed**
+
+- ``risk_pred`` no longer raises ``UnboundLocalError`` when inputs for multiple models are supplied at once. Model selection is now resolved a single time with an explicit 8 > 6 > 4 precedence, so the coefficient block and the risk-score adjustment always agree on the chosen model.
+- ``RiskPredictor.predict_kfre`` now validates ``num_vars`` and raises ``ValueError`` for unsupported values (e.g. ``num_vars=5``) instead of falling through and returning ``None``.
+- Unrecognized or missing sex values are no longer silently coerced to female in the batch paths (``upcr_uacr``, ``RiskPredictor.predict_kfre``). Recognized values are matched case-insensitively (``female``/``f``, ``male``/``m``); unrecognized non-empty values raise a warning and yield ``NaN``.
+- Non-positive uACR values are no longer silently clamped to ``1e-6``. A non-positive scalar uACR now raises ``ValueError``; in batch inputs, offending rows are set to ``NaN`` with a warning.
+- Corrected the direction described in the ``perform_conversions`` comments and docstring (the conversion factors themselves were already correct and are unchanged), and documented the single-pass scope of ``convert_all``.
+
+**Added**
+
+- ``bootstrap_metric_ci``: bootstrap confidence intervals for any supported metric (``auc_roc``, ``average_precision``, ``precision``, ``sensitivity``, ``specificity``, ``brier``), with reproducible resampling via ``seed`` and a progress bar over resamples.
+- Out-of-bounds covariate warnings in ``risk_pred``: a ``UserWarning`` is emitted when covariates fall outside broad, physiologically plausible ranges for the KFRE's intended population (adults, CKD stages G3-G5). Predictions are still returned. Applies to all public entry points.
+- ``censor_incomplete`` option on ``class_esrd_outcome``: when ``True``, non-event patients whose follow-up ends before the horizon are labeled ``NaN`` (censored) rather than ``0``, so right-censored patients can be excluded from fixed-horizon evaluation. Defaults to ``False`` to preserve existing behavior.
+- uPCR-to-uACR approximation disclaimer: ``upcr_uacr`` now documents that the conversion is an approximation without universal consensus and emits a one-time ``UserWarning`` when it produces estimated values.
+- Explicit ``num_vars`` override on ``risk_pred`` to force a specific model variant (4, 6, or 8) regardless of which optional inputs are present.
+- Regression test suites for input validation, out-of-bounds warnings, and bootstrap confidence intervals.
+
+**Changed**
+
+- Docstring and README wording now consistently describes estimating the risk of *kidney failure in patients with CKD*, rather than "CKD development" or "CKD progression."
+- ``class_esrd_outcome`` documentation corrected: the event indicator is a user-supplied dialysis/transplantation (kidney replacement therapy / ESKD) flag; the function applies a time window to it and does not derive the event from eGFR.
+- Serum measurements labeled explicitly for albumin, phosphorous, bicarbonate, and calcium in the parameter documentation.
+
+**Dependencies**
+
+- Re-added ``tqdm`` (``>= 4.0``) as a dependency, now used for the ``bootstrap_metric_ci`` progress bar. (It had been removed in 0.1.16.)
+
+**Notes**
+
+- No KFRE coefficients or baseline survival values were changed. Risk estimates for valid inputs are identical to 0.1.17.
+
+
 0.1.17
 ------
 
@@ -207,6 +242,3 @@ New Calculator Function: The introduction of the ``kfre_person()`` function enab
 **Conversion Tools:** The new ``perform_conversions()`` function facilitates the conversion of relevant clinical metrics, streamlining data preparation for analysis.
 
 This release reflects ongoing efforts to enhance and refine ``kfre``, driven by feedback from users and continuous research into improving its utility and functionality.
-
-
-

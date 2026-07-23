@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Description &mdash; KFRE 0.1.17 documentation</title>
+  <title>Description &mdash; KFRE 0.1.18 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=71734efd"></script>
+      <script src="_static/documentation_options.js?v=9969ed3f"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -86,6 +86,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#performance-metrics">Performance Metrics</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#eval_kfre_metrics"><code class="docutils literal notranslate"><span class="pre">eval_kfre_metrics()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#bootstrap-confidence-intervals">Bootstrap Confidence Intervals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bootstrap_metric_ci"><code class="docutils literal notranslate"><span class="pre">bootstrap_metric_ci()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -168,7 +172,7 @@ further analysis.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">float</span></code>: The risk of developing CKD within the specified timeframe, as a decimal. Multiply by 100 to convert to a percentage.</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">float</span></code>: The risk of kidney failure within the specified timeframe, as a decimal. Multiply by 100 to convert to a percentage.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If required parameters are missing, if <code class="docutils literal notranslate"><span class="pre">years</span></code> is not <code class="docutils literal notranslate"><span class="pre">2</span></code> or <code class="docutils literal notranslate"><span class="pre">5</span></code>, if <code class="docutils literal notranslate"><span class="pre">is_north_american</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, or if <code class="docutils literal notranslate"><span class="pre">dm</span></code>/<code class="docutils literal notranslate"><span class="pre">htn</span></code> are not in <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">False,</span> <span class="pre">True}</span></code>.</p>
@@ -261,6 +265,17 @@ ratio (uPCR), calcium, phosphate, and albumin levels.</p>
 </ul>
 <section id="upcr-to-uacr">
 <h2>uPCR to uACR<a class="headerlink" href="#upcr-to-uacr" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The uPCR-to-uACR conversion is an <strong>approximation</strong>, not a measurement. The
+albumin fraction of total urinary protein varies between individuals and by
+the underlying cause of proteinuria, no single conversion has reached
+consensus, and estimated values therefore carry inherent measurement error.
+A directly measured uACR should be preferred when available, and this
+limitation should be reported wherever converted values are used.
+<code class="docutils literal notranslate"><span class="pre">upcr_uacr()</span></code> emits a runtime warning whenever it produces estimated
+values.</p>
+</div>
 <p>The conversion of uPCR from mg/mmol to mg/g involves understanding that both
 mg/mmol and mg/g are ratios that can be related through their units.</p>
 <ul class="simple">
@@ -509,25 +524,48 @@ Converted<span class="w"> </span><span class="s1">&#39;Albumin (g/l)&#39;</span>
 <h1>Classifying ESRD Outcomes<a class="headerlink" href="#classifying-esrd-outcomes" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="class_esrd_outcome">
-<span class="sig-name descname"><span class="pre">class_esrd_outcome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_years_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#class_esrd_outcome" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">class_esrd_outcome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_years_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">censor_incomplete</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#class_esrd_outcome" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>DataFrame</em>) – The DataFrame to perform calculations on. This DataFrame should include columns relevant for calculating ESRD outcomes.</p></li>
-<li><p><strong>col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The column name with ESRD (should be eGFR &lt; 15 flag).</p></li>
-<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – The number of years to use in the condition.</p></li>
-<li><p><strong>duration_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The name of the column containing the duration data.</p></li>
+<li><p><strong>df</strong> (<em>DataFrame</em>) – The DataFrame to perform calculations on. This DataFrame should include columns relevant for labeling kidney-failure outcomes.</p></li>
+<li><p><strong>col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Column name of a binary indicator of the kidney-failure event as the KFRE defines it, i.e. initiation of maintenance dialysis or kidney transplantation (kidney replacement therapy / ESKD). This indicator is supplied by the user; the function does <strong>not</strong> infer the event from eGFR or any other laboratory value.</p></li>
+<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – The number of years to use in the condition (the time horizon).</p></li>
+<li><p><strong>duration_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – The name of the column containing the follow-up duration (time to event or censoring).</p></li>
 <li><p><strong>prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – (<cite>optional</cite>) Custom prefix for the new column name. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, no prefix is added.</p></li>
-<li><p><strong>create_years_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – (<cite>optional</cite>) Whether to create the ‘years’ column. Default is True.</p></li>
+<li><p><strong>create_years_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – (<cite>optional</cite>) If <code class="docutils literal notranslate"><span class="pre">True</span></code>, treats <code class="docutils literal notranslate"><span class="pre">duration_col</span></code> as <strong>days</strong> and converts it to years (dividing by 365.25) into a new column <code class="docutils literal notranslate"><span class="pre">ESRD_duration_years</span></code>. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, uses <code class="docutils literal notranslate"><span class="pre">duration_col</span></code> directly and assumes it is already expressed in <strong>years</strong>. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>censor_incomplete</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – (<cite>optional</cite>) If <code class="docutils literal notranslate"><span class="pre">True</span></code>, patients with no event whose follow-up is shorter than <code class="docutils literal notranslate"><span class="pre">years</span></code> are labeled <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (censored) rather than <code class="docutils literal notranslate"><span class="pre">0</span></code>, so they can be excluded from fixed-horizon evaluation. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>, which preserves the naive labeling (all non-events become <code class="docutils literal notranslate"><span class="pre">0</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>: The modified DataFrame with the new column added.</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>: The modified DataFrame with the new binary outcome column added.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<p>This function creates a new column in the DataFrame which is populated with a <code class="docutils literal notranslate"><span class="pre">1</span></code> or a <code class="docutils literal notranslate"><span class="pre">0</span></code> based on whether the ESRD condition (eGFR &lt; 15) is met within the specified number of years. If <code class="docutils literal notranslate"><span class="pre">create_years_col</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, it calculates the ‘years’ column based on the <code class="docutils literal notranslate"><span class="pre">duration_col</span></code> provided. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, it uses the <code class="docutils literal notranslate"><span class="pre">duration_col</span></code> directly. The new column is named using the specified prefix and number of years, or just the number of years if no prefix is provided.</p>
+<p>This function applies a time window to a user-supplied kidney-failure event indicator, populating a new column with <code class="docutils literal notranslate"><span class="pre">1</span></code> when the event occurred within the specified number of years and <code class="docutils literal notranslate"><span class="pre">0</span></code> otherwise. It does not derive the event itself. The new column is named using the specified prefix and number of years, or just the number of years if no prefix is provided.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Match <code class="docutils literal notranslate"><span class="pre">create_years_col</span></code> to the units of your <code class="docutils literal notranslate"><span class="pre">duration_col</span></code>. Use
+<code class="docutils literal notranslate"><span class="pre">create_years_col=True</span></code> when the column is in days, and
+<code class="docutils literal notranslate"><span class="pre">create_years_col=False</span></code> when it is already in years. Passing a
+years-valued column with <code class="docutils literal notranslate"><span class="pre">create_years_col=True</span></code> divides it by 365.25,
+which makes every value fall below the horizon and silently collapses the
+time window.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is a naive fixed-horizon labeling. With the default
+<code class="docutils literal notranslate"><span class="pre">censor_incomplete=False</span></code>, a value of <code class="docutils literal notranslate"><span class="pre">0</span></code> means “no event observed
+within <code class="docutils literal notranslate"><span class="pre">years</span></code> years” and therefore also includes patients who were
+censored before the horizon (for example, death without kidney failure, or
+loss to follow-up). It does not account for the competing risk of death or
+for right-censoring, and is not a substitute for time-to-event survival
+analysis. In cohorts with substantial early mortality, treating all
+non-events as event-free can bias performance estimates. Setting
+<code class="docutils literal notranslate"><span class="pre">censor_incomplete=True</span></code> provides a basic guard by excluding (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>)
+non-event patients whose observed follow-up does not reach the horizon.</p>
+</div>
 <p><strong>Example Usage</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kfre</span><span class="w"> </span><span class="kn">import</span> <span class="n">class_esrd_outcome</span>
 </pre></div>
@@ -1020,6 +1058,58 @@ and reliability of the risk predictions.</p>
 </tr>
 </tbody>
 </table>
+</section>
+<hr class="docutils" />
+<section id="bootstrap-confidence-intervals">
+<h2>Bootstrap Confidence Intervals<a class="headerlink" href="#bootstrap-confidence-intervals" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="bootstrap_metric_ci">
+<span class="sig-name descname"><span class="pre">bootstrap_metric_ci</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auc_roc'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_boot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ci</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bootstrap_metric_ci" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>array-like</em>) – Binary ground-truth labels (<code class="docutils literal notranslate"><span class="pre">0</span></code>/<code class="docutils literal notranslate"><span class="pre">1</span></code>). <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values are dropped pairwise with <code class="docutils literal notranslate"><span class="pre">y_score</span></code> before resampling, so censored outcomes can be passed directly.</p></li>
+<li><p><strong>y_score</strong> (<em>array-like</em>) – Predicted risk scores (probabilities in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>).</p></li>
+<li><p><strong>metric</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – One of <code class="docutils literal notranslate"><span class="pre">&quot;precision&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;average_precision&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;sensitivity&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;specificity&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;auc_roc&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;brier&quot;</span></code>. Threshold-based metrics use <code class="docutils literal notranslate"><span class="pre">threshold</span></code> to binarize <code class="docutils literal notranslate"><span class="pre">y_score</span></code>.</p></li>
+<li><p><strong>n_boot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – (<cite>optional</cite>) Number of bootstrap resamples. Default is <code class="docutils literal notranslate"><span class="pre">1000</span></code>.</p></li>
+<li><p><strong>ci</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – (<cite>optional</cite>) Confidence level as a percentage. Default is <code class="docutils literal notranslate"><span class="pre">95</span></code>.</p></li>
+<li><p><strong>threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – (<cite>optional</cite>) Cutoff for threshold-based metrics. Default is <code class="docutils literal notranslate"><span class="pre">0.5</span></code>.</p></li>
+<li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – (<cite>optional</cite>) Seed for reproducible resampling.</p></li>
+<li><p><strong>progress</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – (<cite>optional</cite>) Display a progress bar over the resamples. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict</span></code>: <code class="docutils literal notranslate"><span class="pre">{&quot;metric&quot;,</span> <span class="pre">&quot;point&quot;,</span> <span class="pre">&quot;lower&quot;,</span> <span class="pre">&quot;upper&quot;,</span> <span class="pre">&quot;ci&quot;,</span> <span class="pre">&quot;n_boot_valid&quot;}</span></code>, where <code class="docutils literal notranslate"><span class="pre">point</span></code> is the metric computed on the full sample and <code class="docutils literal notranslate"><span class="pre">lower</span></code>/<code class="docutils literal notranslate"><span class="pre">upper</span></code> are the confidence-interval bounds.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If an unsupported <code class="docutils literal notranslate"><span class="pre">metric</span></code> name is supplied.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>This function resamples patients with replacement <code class="docutils literal notranslate"><span class="pre">n_boot</span></code> times, recomputes the requested metric on each resample, and reports the point estimate together with the percentile bounds of the requested confidence level. Resamples in which the metric is undefined (for example, only one outcome class present, which makes AUC ROC and average precision undefined) are skipped and reported through <code class="docutils literal notranslate"><span class="pre">n_boot_valid</span></code>. Reporting interval estimates alongside point estimates conveys the precision of each metric given the cohort size and the prevalence of kidney-failure events.</p>
+<p><strong>Example Usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">kfre</span><span class="w"> </span><span class="kn">import</span> <span class="n">bootstrap_metric_ci</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">bootstrap_metric_ci</span><span class="p">(</span>
+    <span class="n">y_true</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;2_year_outcome&quot;</span><span class="p">],</span>     <span class="c1"># observed binary outcome</span>
+    <span class="n">y_score</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;kfre_4var_2year&quot;</span><span class="p">],</span>   <span class="c1"># KFRE risk score</span>
+    <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;auc_roc&quot;</span><span class="p">,</span>
+    <span class="n">n_boot</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">ci</span><span class="o">=</span><span class="mi">95</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;AUROC </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;(95% CI </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>AUROC 0.795 (95% CI 0.760-0.829)
+</pre></div>
+</div>
 <hr class="docutils" />
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id5" role="doc-footnote">
