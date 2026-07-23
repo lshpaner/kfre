@@ -62,7 +62,7 @@ further analysis.
     :param float calcium: (``optional``) Serum calcium level.
     :param int precision: (``optional``) Decimal places to round the result. If ``None``, no rounding is applied.
 
-    :returns:  ``float``: The risk of developing CKD within the specified timeframe, as a decimal. Multiply by 100 to convert to a percentage.
+    :returns:  ``float``: The risk of kidney failure within the specified timeframe, as a decimal. Multiply by 100 to convert to a percentage.
     :raises ValueError: If required parameters are missing, if ``years`` is not ``2`` or ``5``, if ``is_north_american`` is ``None``, or if ``dm``/``htn`` are not in ``{0, 1, False, True}``.
 
   
@@ -162,6 +162,17 @@ ratio (uPCR), calcium, phosphate, and albumin levels.
 
 uPCR to uACR
 -------------
+
+.. warning::
+
+   The uPCR-to-uACR conversion is an **approximation**, not a measurement. The
+   albumin fraction of total urinary protein varies between individuals and by
+   the underlying cause of proteinuria, no single conversion has reached
+   consensus, and estimated values therefore carry inherent measurement error.
+   A directly measured uACR should be preferred when available, and this
+   limitation should be reported wherever converted values are used.
+   ``upcr_uacr()`` emits a runtime warning whenever it produces estimated
+   values.
 
 The conversion of uPCR from mg/mmol to mg/g involves understanding that both 
 mg/mmol and mg/g are ratios that can be related through their units.
@@ -353,18 +364,41 @@ The ``upcr_uacr`` function is typically used in clinical data processing where a
 Classifying ESRD Outcomes
 =========================
 
-.. function:: class_esrd_outcome(df, col, years, duration_col, prefix=None, create_years_col=True)
+.. function:: class_esrd_outcome(df, col, years, duration_col, prefix=None, create_years_col=True, censor_incomplete=False)
 
-    :param DataFrame df: The DataFrame to perform calculations on. This DataFrame should include columns relevant for calculating ESRD outcomes.
-    :param str col: The column name with ESRD (should be eGFR < 15 flag).
-    :param int years: The number of years to use in the condition.
-    :param str duration_col: The name of the column containing the duration data.
+    :param DataFrame df: The DataFrame to perform calculations on. This DataFrame should include columns relevant for labeling kidney-failure outcomes.
+    :param str col: Column name of a binary indicator of the kidney-failure event as the KFRE defines it, i.e. initiation of maintenance dialysis or kidney transplantation (kidney replacement therapy / ESKD). This indicator is supplied by the user; the function does **not** infer the event from eGFR or any other laboratory value.
+    :param int years: The number of years to use in the condition (the time horizon).
+    :param str duration_col: The name of the column containing the follow-up duration (time to event or censoring).
     :param str prefix: (`optional`) Custom prefix for the new column name. If ``None``, no prefix is added.
-    :param bool create_years_col: (`optional`) Whether to create the 'years' column. Default is True.
+    :param bool create_years_col: (`optional`) If ``True``, treats ``duration_col`` as **days** and converts it to years (dividing by 365.25) into a new column ``ESRD_duration_years``. If ``False``, uses ``duration_col`` directly and assumes it is already expressed in **years**. Default is ``True``.
+    :param bool censor_incomplete: (`optional`) If ``True``, patients with no event whose follow-up is shorter than ``years`` are labeled ``NaN`` (censored) rather than ``0``, so they can be excluded from fixed-horizon evaluation. Default is ``False``, which preserves the naive labeling (all non-events become ``0``).
 
-    :returns: ``pd.DataFrame``: The modified DataFrame with the new column added.
+    :returns: ``pd.DataFrame``: The modified DataFrame with the new binary outcome column added.
 
-This function creates a new column in the DataFrame which is populated with a ``1`` or a ``0`` based on whether the ESRD condition (eGFR < 15) is met within the specified number of years. If ``create_years_col`` is set to ``True``, it calculates the 'years' column based on the ``duration_col`` provided. If ``False``, it uses the ``duration_col`` directly. The new column is named using the specified prefix and number of years, or just the number of years if no prefix is provided.
+This function applies a time window to a user-supplied kidney-failure event indicator, populating a new column with ``1`` when the event occurred within the specified number of years and ``0`` otherwise. It does not derive the event itself. The new column is named using the specified prefix and number of years, or just the number of years if no prefix is provided.
+
+.. note::
+
+   Match ``create_years_col`` to the units of your ``duration_col``. Use
+   ``create_years_col=True`` when the column is in days, and
+   ``create_years_col=False`` when it is already in years. Passing a
+   years-valued column with ``create_years_col=True`` divides it by 365.25,
+   which makes every value fall below the horizon and silently collapses the
+   time window.
+
+.. warning::
+
+   This is a naive fixed-horizon labeling. With the default
+   ``censor_incomplete=False``, a value of ``0`` means "no event observed
+   within ``years`` years" and therefore also includes patients who were
+   censored before the horizon (for example, death without kidney failure, or
+   loss to follow-up). It does not account for the competing risk of death or
+   for right-censoring, and is not a substitute for time-to-event survival
+   analysis. In cohorts with substantial early mortality, treating all
+   non-events as event-free can bias performance estimates. Setting
+   ``censor_incomplete=True`` provides a basic guard by excluding (``NaN``)
+   non-event patients whose observed follow-up does not reach the horizon.
 
 
 **Example Usage**
@@ -740,7 +774,55 @@ Where:
 +-------------------+-------------------+-------------------+-------------------+-------------------+-------------------+-------------------+
 
 
+----
+
+Bootstrap Confidence Intervals
+-------------------------------
+
+.. function:: bootstrap_metric_ci(y_true, y_score, metric="auc_roc", n_boot=1000, ci=95, threshold=0.5, seed=None, progress=True)
+
+    :param array-like y_true: Binary ground-truth labels (``0``/``1``). ``NaN`` values are dropped pairwise with ``y_score`` before resampling, so censored outcomes can be passed directly.
+    :param array-like y_score: Predicted risk scores (probabilities in ``[0, 1]``).
+    :param str metric: One of ``"precision"``, ``"average_precision"``, ``"sensitivity"``, ``"specificity"``, ``"auc_roc"``, or ``"brier"``. Threshold-based metrics use ``threshold`` to binarize ``y_score``.
+    :param int n_boot: (`optional`) Number of bootstrap resamples. Default is ``1000``.
+    :param float ci: (`optional`) Confidence level as a percentage. Default is ``95``.
+    :param float threshold: (`optional`) Cutoff for threshold-based metrics. Default is ``0.5``.
+    :param int seed: (`optional`) Seed for reproducible resampling.
+    :param bool progress: (`optional`) Display a progress bar over the resamples. Default is ``True``.
+
+    :returns: ``dict``: ``{"metric", "point", "lower", "upper", "ci", "n_boot_valid"}``, where ``point`` is the metric computed on the full sample and ``lower``/``upper`` are the confidence-interval bounds.
+
+    :raises ValueError: If an unsupported ``metric`` name is supplied.
+
+This function resamples patients with replacement ``n_boot`` times, recomputes the requested metric on each resample, and reports the point estimate together with the percentile bounds of the requested confidence level. Resamples in which the metric is undefined (for example, only one outcome class present, which makes AUC ROC and average precision undefined) are skipped and reported through ``n_boot_valid``. Reporting interval estimates alongside point estimates conveys the precision of each metric given the cohort size and the prevalence of kidney-failure events.
+
+**Example Usage**
+
+.. code-block:: python
+
+    from kfre import bootstrap_metric_ci
+
+.. code-block:: python
+
+    result = bootstrap_metric_ci(
+        y_true=df["2_year_outcome"],     # observed binary outcome
+        y_score=df["kfre_4var_2year"],   # KFRE risk score
+        metric="auc_roc",
+        n_boot=1000,
+        ci=95,
+        seed=42,
+    )
+
+    print(
+        f"AUROC {result['point']:.3f} "
+        f"(95% CI {result['lower']:.3f}-{result['upper']:.3f})"
+    )
+
+.. code-block:: text
+
+    AUROC 0.795 (95% CI 0.760-0.829)
+
 
 ----
 
-.. [#] Ali, I., Donne, R. L., & Kalra, P. A. (2021). A validation study of the kidney failure risk equation in advanced chronic kidney disease according to disease aetiology with evaluation of discrimination, calibration and clinical utility. *BMC Nephrology, 22(1),* 194. https://doi.org/10.1186/s12882-021-02402-1 
+.. [#] Ali, I., Donne, R. L., & Kalra, P. A. (2021). A validation study of the kidney failure risk equation in advanced chronic kidney disease according to disease aetiology with evaluation of discrimination, calibration and clinical utility. *BMC Nephrology, 22(1),* 194. https://doi.org/10.1186/s12882-021-02402-1

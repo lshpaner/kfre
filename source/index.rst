@@ -28,14 +28,15 @@
 Welcome to the KFRE Python Library Documentation!
 =============================================================
 .. note::
-   This documentation is for ``kfre`` stable version ``0.1.17``.
+   This documentation is for ``kfre`` stable version ``0.1.18``.
 
 
-``kfre`` is a Python library designed to estimate the risk of chronic kidney disease 
-(CKD) progression using the Kidney Failure Risk Equation (KFRE) developed by
-Tangri et al. It provides risk assessments over two distinct timelines: 
-2 years and 5 years. The library is tailored for healthcare professionals and 
-researchers, enabling precise CKD risk predictions based on patient data. 
+``kfre`` is a Python library designed to estimate the risk of kidney failure in 
+patients with chronic kidney disease (CKD) using the Kidney Failure Risk Equation 
+(KFRE) developed by Tangri et al. It provides risk assessments over two distinct 
+timelines: 2 years and 5 years. The library is intended as a research and 
+validation tool for biostatisticians and data scientists working with patient 
+cohorts, enabling kidney failure risk predictions based on patient data. 
 It supports predictions for both males and females and includes adjustments 
 for individuals from North American and non-North American regions.
 
@@ -46,7 +47,7 @@ Prerequisites
 -------------
 Before you install ``kfre``, ensure your system meets the following requirements:
 
-- **Python**: version ``3.6`` or higher is required to run ``kfre``.
+- **Python**: version ``3.7.4`` or higher is required to run ``kfre``.
 
 Additionally, ``kfre`` depends on the following packages, which will be automatically installed when you install ``kfre``:
 
@@ -55,6 +56,7 @@ Additionally, ``kfre`` depends on the following packages, which will be automati
 - **matplotlib**: version ``3.2.2`` or higher
 - **seaborn**: version ``0.10.1`` or higher
 - **scikit-learn**: version ``0.23.1`` or higher
+- **tqdm**: version ``4.0`` or higher
 
 .. _installation:
 
@@ -95,6 +97,3 @@ Table of Contents
    citations
    changelog
    references
-
-   
-
