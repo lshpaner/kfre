@@ -53,55 +53,44 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Welcome to the KFRE Python Library Documentation!</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html#table-of-contents">Table of Contents</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
+<p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#input-requirements-and-common-pitfalls">Input Requirements and Common Pitfalls</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#values-that-break-the-risk-equations">Values that break the risk equations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#unit-mismatches-that-fail-silently">Unit mismatches that fail silently</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#approximations">Approximations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#conditions-that-raise-valueerror">Conditions that raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#input-requirements-and-common-pitfalls">Input Requirements and Common Pitfalls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#values-that-break-the-risk-equations">Values that break the risk equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unit-mismatches-that-fail-silently">Unit mismatches that fail silently</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#approximations">Approximations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conditions-that-raise-valueerror">Conditions that raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#single-patient-risk-calculation">Single Patient Risk Calculation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#kfre_person"><code class="docutils literal notranslate"><span class="pre">kfre_person()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conversion-of-clinical-parameters">Conversion of Clinical Parameters</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#single-patient-risk-calculation">Single Patient Risk Calculation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#kfre_person"><code class="docutils literal notranslate"><span class="pre">kfre_person()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="#conversion-of-clinical-parameters">Conversion of Clinical Parameters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#upcr-to-uacr">uPCR to uACR</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#calcium">Calcium</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#phosphate">Phosphate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#albumin">Albumin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#conversion-functions">Conversion Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#perform_conversions"><code class="docutils literal notranslate"><span class="pre">perform_conversions()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#upcr_uacr"><code class="docutils literal notranslate"><span class="pre">upcr_uacr()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="#classifying-esrd-outcomes">Classifying ESRD Outcomes</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="#upcr-to-uacr">uPCR to uACR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#calcium">Calcium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#phosphate">Phosphate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#albumin">Albumin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#conversion-functions">Conversion Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#perform_conversions"><code class="docutils literal notranslate"><span class="pre">perform_conversions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upcr_uacr"><code class="docutils literal notranslate"><span class="pre">upcr_uacr()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#class_esrd_outcome"><code class="docutils literal notranslate"><span class="pre">class_esrd_outcome()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="#batch-risk-calculation-for-multiple-patients">Batch Risk Calculation for Multiple Patients</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#add_kfre_risk_col"><code class="docutils literal notranslate"><span class="pre">add_kfre_risk_col()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#performance-assessment">Performance Assessment</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#auc-roc-precision-recall-curves">AUC ROC &amp; Precision-Recall Curves</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#plot_kfre_metrics"><code class="docutils literal notranslate"><span class="pre">plot_kfre_metrics()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#auc-roc-precision-recall-curves">AUC ROC &amp; Precision-Recall Curves</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plot_kfre_metrics"><code class="docutils literal notranslate"><span class="pre">plot_kfre_metrics()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#performance-metrics">Performance Metrics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#eval_kfre_metrics"><code class="docutils literal notranslate"><span class="pre">eval_kfre_metrics()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#performance-metrics">Performance Metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#eval_kfre_metrics"><code class="docutils literal notranslate"><span class="pre">eval_kfre_metrics()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#bootstrap-confidence-intervals">Bootstrap Confidence Intervals</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#bootstrap_metric_ci"><code class="docutils literal notranslate"><span class="pre">bootstrap_metric_ci()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="#bootstrap-confidence-intervals">Bootstrap Confidence Intervals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bootstrap_metric_ci"><code class="docutils literal notranslate"><span class="pre">bootstrap_metric_ci()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -141,16 +130,17 @@
              
   <div class="no-click"><a class="reference internal image-reference" href="_images/kfre_logo.svg"><img alt="KFRE Library Logo" class="align-left" src="_images/kfre_logo.svg" style="width: 200px;" />
 </a>
-</div><div style="height: 106px;"></div><section id="description">
-<span id="id1"></span><h1>Usage Guide<a class="headerlink" href="#description" title="Link to this heading"></a></h1>
+</div><div style="height: 106px;"></div><section id="id1">
+<span id="id2"></span><h1>Usage Guide<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
 <p>This section provides guidance on using the KFRE library.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library offers a flexible and user-friendly interface to estimate the
-risk of kidney failure for individual patients using the KFRE model developed by Tangri et al. With
-<code class="docutils literal notranslate"><span class="pre">kfre</span></code>, you can calculate the risk using the classic 4-variable model, the
-detailed 8-variable model, and, uniquely, a 6-variable model that is not commonly
-found in online calculators.</p>
+risk of kidney failure for individual patients using the KFRE model developed by
+Tangri et al. With  <code class="docutils literal notranslate"><span class="pre">kfre</span></code>, you can calculate the risk using the classic
+4-variable model, the detailed 8-variable model, and, uniquely, a 6-variable
+model that is not commonly found in online calculators.</p>
+</section>
 <section id="input-requirements-and-common-pitfalls">
-<span id="input-validation"></span><h2>Input Requirements and Common Pitfalls<a class="headerlink" href="#input-requirements-and-common-pitfalls" title="Link to this heading"></a></h2>
+<span id="input-validation"></span><h1>Input Requirements and Common Pitfalls<a class="headerlink" href="#input-requirements-and-common-pitfalls" title="Link to this heading"></a></h1>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Read this before running any risk calculation. The conditions below either
@@ -158,7 +148,7 @@ raise an error, emit a runtime warning, or silently return values that look
 plausible but are wrong.</p>
 </div>
 <section id="values-that-break-the-risk-equations">
-<h3>Values that break the risk equations<a class="headerlink" href="#values-that-break-the-risk-equations" title="Link to this heading"></a></h3>
+<h2>Values that break the risk equations<a class="headerlink" href="#values-that-break-the-risk-equations" title="Link to this heading"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p><strong>uACR must be strictly greater than 0.</strong> The KFRE risk equations take the
@@ -174,7 +164,7 @@ substitute the assay’s lower limit of detection.</p>
 </div>
 </section>
 <section id="unit-mismatches-that-fail-silently">
-<h3>Unit mismatches that fail silently<a class="headerlink" href="#unit-mismatches-that-fail-silently" title="Link to this heading"></a></h3>
+<h2>Unit mismatches that fail silently<a class="headerlink" href="#unit-mismatches-that-fail-silently" title="Link to this heading"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>These produce no error and no warning. The output is simply wrong.</p>
@@ -193,7 +183,7 @@ an order of magnitude. Convert with <code class="docutils literal notranslate"><
 </div>
 </section>
 <section id="approximations">
-<h3>Approximations<a class="headerlink" href="#approximations" title="Link to this heading"></a></h3>
+<h2>Approximations<a class="headerlink" href="#approximations" title="Link to this heading"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The uPCR-to-uACR conversion is an estimate, not a measurement. See
@@ -204,7 +194,7 @@ patients as <code class="docutils literal notranslate"><span class="pre">0</span
 </div>
 </section>
 <section id="conditions-that-raise-valueerror">
-<h3>Conditions that raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code><a class="headerlink" href="#conditions-that-raise-valueerror" title="Link to this heading"></a></h3>
+<h2>Conditions that raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code><a class="headerlink" href="#conditions-that-raise-valueerror" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">years</span></code> is anything other than <code class="docutils literal notranslate"><span class="pre">2</span></code> or <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">is_north_american</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
@@ -218,11 +208,8 @@ patients as <code class="docutils literal notranslate"><span class="pre">0</span
 <code class="docutils literal notranslate"><span class="pre">image_path_svg</span></code>.</p></li>
 <li><p>An unsupported <code class="docutils literal notranslate"><span class="pre">metric</span></code> name is passed to <code class="docutils literal notranslate"><span class="pre">bootstrap_metric_ci</span></code>.</p></li>
 </ul>
-</section>
-</section>
-</section>
 <section id="single-patient-risk-calculation">
-<h1>Single Patient Risk Calculation<a class="headerlink" href="#single-patient-risk-calculation" title="Link to this heading"></a></h1>
+<h3>Single Patient Risk Calculation<a class="headerlink" href="#single-patient-risk-calculation" title="Link to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">kfre_person</span></code> function allows for detailed, personalized risk assessments
 based on a range of clinical parameters. Depending on the completeness of the
 data provided, the function can apply a basic 4-variable model or more
@@ -332,7 +319,7 @@ The<span class="w"> </span><span class="m">5</span>-year<span class="w"> </span>
 </div>
 </section>
 <section id="conversion-of-clinical-parameters">
-<h1>Conversion of Clinical Parameters<a class="headerlink" href="#conversion-of-clinical-parameters" title="Link to this heading"></a></h1>
+<h3>Conversion of Clinical Parameters<a class="headerlink" href="#conversion-of-clinical-parameters" title="Link to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library includes a utility function <code class="docutils literal notranslate"><span class="pre">perform_conversions</span></code>
 designed to convert clinical measurement units. This function is especially
 useful when preparing data for analyses that require specific units. It can
@@ -344,8 +331,11 @@ ratio (uPCR), calcium, phosphate, and albumin levels.</p>
 <li><p><strong>Batch Processing:</strong> It can process entire columns of data, making it suitable for datasets with multiple patients.</p></li>
 <li><p><strong>Custom Column Names:</strong> Users can specify which columns to convert, providing flexibility in handling datasets with varied naming conventions.</p></li>
 </ul>
+</section>
+</section>
+</section>
 <section id="upcr-to-uacr">
-<h2>uPCR to uACR<a class="headerlink" href="#upcr-to-uacr" title="Link to this heading"></a></h2>
+<h1>uPCR to uACR<a class="headerlink" href="#upcr-to-uacr" title="Link to this heading"></a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The uPCR-to-uACR conversion is an <strong>approximation</strong>, not a measurement. The
@@ -374,7 +364,7 @@ Since 1 mmol of creatinine is 113.12 mg:</p>
 \[\frac{\text{1 mg protein}}{\text{0.11312 g creatinine}} \approx 8.84  {\text{ mg/g}}\]</div>
 </section>
 <section id="calcium">
-<h2>Calcium<a class="headerlink" href="#calcium" title="Link to this heading"></a></h2>
+<h1>Calcium<a class="headerlink" href="#calcium" title="Link to this heading"></a></h1>
 <p>Calcium is often measured in millimoles per liter (mmol/L) and needs to be
 converted to milligrams per deciliter (mg/dL) for certain clinical applications
 or study comparisons.
@@ -385,7 +375,7 @@ This is derived as follows:</p>
 \[\text{1 mmol/L} \times  \frac{\text{40.08 mg}}{{\text{1 mmol}}} \times \frac{\text {1L} } {\text{10 dL}} = 4.008 \text{ mg/dL}\]</div>
 </section>
 <section id="phosphate">
-<h2>Phosphate<a class="headerlink" href="#phosphate" title="Link to this heading"></a></h2>
+<h1>Phosphate<a class="headerlink" href="#phosphate" title="Link to this heading"></a></h1>
 <p>Phosphate concentrations are similarly reported in mmol/L but often need to be expressed in mg/dL.</p>
 <ul class="simple">
 <li><p>Molecular weight of Phosphate (PO₄³⁻): The molar mass of phosphate as an ion (considering phosphorus and oxygen) is approximately 94.97 g/mol.</p></li>
@@ -395,7 +385,7 @@ This is derived as follows:</p>
 \[\text{1 mmol/L} \times  \frac{\text{94.97 mg}}{{\text{1 mmol}}} \times \frac{\text {1L} } {\text{10 dL}} \approx 9.497 \text{ mg/dL}\]</div>
 </section>
 <section id="albumin">
-<h2>Albumin<a class="headerlink" href="#albumin" title="Link to this heading"></a></h2>
+<h1>Albumin<a class="headerlink" href="#albumin" title="Link to this heading"></a></h1>
 <p>Albumin measurements are often made in grams per liter (g/L) and converted to
 grams per deciliter (g/dL) for standard reporting in many clinical contexts.</p>
 <p>Conversion factor: Converting g/L to g/dL is straightforward as it involves
@@ -407,7 +397,7 @@ values across different systems and studies, facilitating better comparison and
 understanding of patient data.</p>
 </section>
 <section id="conversion-functions">
-<h2>Conversion Functions<a class="headerlink" href="#conversion-functions" title="Link to this heading"></a></h2>
+<h1>Conversion Functions<a class="headerlink" href="#conversion-functions" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="perform_conversions">
 <span class="sig-name descname"><span class="pre">perform_conversions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upcr_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calcium_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albumin_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_all</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#perform_conversions" title="Link to this definition"></a></dt>
@@ -429,7 +419,7 @@ understanding of patient data.</p>
 <p>These parameters provide the flexibility to tailor the unit conversion process to specific data needs, enabling precise and appropriate conversions crucial for accurate data analysis and interpretation in clinical or scientific research.</p>
 <p><strong>Example Usage</strong></p>
 <p>The following is an example to illustrate the usage of the <code class="docutils literal notranslate"><span class="pre">perform_conversions</span></code> function. This example shows how to convert values from mmol to mg for various clinical parameters within a DataFrame.</p>
-<p><cite>First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p><cite>First 5 Rows of Biochemical Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id7" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>uPCR</p></th>
@@ -487,7 +477,7 @@ Converted<span class="w"> </span><span class="s1">&#39;Phosphate (mmol/L)&#39;</
 Converted<span class="w"> </span><span class="s1">&#39;Albumin (g/l)&#39;</span><span class="w"> </span>to<span class="w"> </span>new<span class="w"> </span>column<span class="w"> </span><span class="s1">&#39;Albumin_g_dl&#39;</span><span class="w"> </span>with<span class="w"> </span>factor<span class="w"> </span><span class="m">0</span>.1
 </pre></div>
 </div>
-<p><cite>First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p><cite>First 5 Rows of Biochemical Data with Conversions (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id7" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <table class="docutils align-left">
 <thead>
 <tr class="row-odd"><th class="head"><p>uPCR</p></th>
@@ -599,10 +589,6 @@ Converted<span class="w"> </span><span class="s1">&#39;Albumin (g/l)&#39;</span>
 <span class="n">Name</span><span class="p">:</span> <span class="n">uACR</span><span class="p">,</span> <span class="n">Length</span><span class="p">:</span> <span class="mi">745</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="classifying-esrd-outcomes">
-<h1>Classifying ESRD Outcomes<a class="headerlink" href="#classifying-esrd-outcomes" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="class_esrd_outcome">
 <span class="sig-name descname"><span class="pre">class_esrd_outcome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_years_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">censor_incomplete</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#class_esrd_outcome" title="Link to this definition"></a></dt>
@@ -672,7 +658,7 @@ non-event patients whose observed follow-up does not reach the horizon.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><cite>First 5 Rows of Outcome Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p><cite>First 5 Rows of Outcome Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id7" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <table class="docutils align-left">
 <thead>
 <tr class="row-odd"><th class="head"><p>Index</p></th>
@@ -703,9 +689,6 @@ non-event patients whose observed follow-up does not reach the horizon.</p>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="batch-risk-calculation-for-multiple-patients">
-<h1>Batch Risk Calculation for Multiple Patients<a class="headerlink" href="#batch-risk-calculation-for-multiple-patients" title="Link to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">kfre</span></code> library provides the functionality to perform batch processing of
 patient data, allowing for the computation of kidney failure risk predictions
 across multiple patients in a single operation. This capability is especially
@@ -792,7 +775,7 @@ and reliability of the risk predictions.</p>
 <span class="c1"># predictions for each model and time frame</span>
 </pre></div>
 </div>
-<p><cite>First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id6" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p><cite>First 5 Rows of Kidney Failure Risk Data (Adapted from Ali et al., 2021, BMC Nephrol)</cite> <a class="footnote-reference brackets" href="#id7" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <table class="docutils align-left">
 <thead>
 <tr class="row-odd"><th class="head"><p>Age</p></th>
@@ -890,10 +873,8 @@ and reliability of the risk predictions.</p>
 </tbody>
 </table>
 </section>
-<section id="performance-assessment">
-<h1>Performance Assessment<a class="headerlink" href="#performance-assessment" title="Link to this heading"></a></h1>
 <section id="auc-roc-precision-recall-curves">
-<h2>AUC ROC &amp; Precision-Recall Curves<a class="headerlink" href="#auc-roc-precision-recall-curves" title="Link to this heading"></a></h2>
+<h1>AUC ROC &amp; Precision-Recall Curves<a class="headerlink" href="#auc-roc-precision-recall-curves" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="plot_kfre_metrics">
 <span class="sig-name descname"><span class="pre">plot_kfre_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(12,</span> <span class="pre">6)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_path_png</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_path_svg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox_inches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tight'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all_plots'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_plots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_combinations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_subplots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal_places</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#plot_kfre_metrics" title="Link to this definition"></a></dt>
@@ -960,7 +941,7 @@ and reliability of the risk predictions.</p>
 </div><div style="height: 106px;"></div><p></p>
 </section>
 <section id="performance-metrics">
-<h2>Performance Metrics<a class="headerlink" href="#performance-metrics" title="Link to this heading"></a></h2>
+<h1>Performance Metrics<a class="headerlink" href="#performance-metrics" title="Link to this heading"></a></h1>
 <p>This section explains the various performance metrics calculated by the <code class="docutils literal notranslate"><span class="pre">eval_kfre_metrics</span></code> function.</p>
 <p><strong>Precision (Positive Predictive Value)</strong></p>
 <p>Precision, also known as Positive Predictive Value (PPV), is the ratio of correctly predicted positive observations to the total predicted positives. It is calculated as:</p>
@@ -1142,7 +1123,7 @@ and reliability of the risk predictions.</p>
 </section>
 <hr class="docutils" />
 <section id="bootstrap-confidence-intervals">
-<h2>Bootstrap Confidence Intervals<a class="headerlink" href="#bootstrap-confidence-intervals" title="Link to this heading"></a></h2>
+<h1>Bootstrap Confidence Intervals<a class="headerlink" href="#bootstrap-confidence-intervals" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="bootstrap_metric_ci">
 <span class="sig-name descname"><span class="pre">bootstrap_metric_ci</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auc_roc'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_boot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ci</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bootstrap_metric_ci" title="Link to this definition"></a></dt>
@@ -1193,12 +1174,11 @@ and reliability of the risk predictions.</p>
 </div>
 <hr class="docutils" />
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id6" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="id7" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">1</a><span class="fn-bracket">]</span></span>
 <p>Ali, I., Donne, R. L., &amp; Kalra, P. A. (2021). A validation study of the kidney failure risk equation in advanced chronic kidney disease according to disease aetiology with evaluation of discrimination, calibration and clinical utility. <em>BMC Nephrology, 22(1),</em> 194. <a class="reference external" href="https://doi.org/10.1186/s12882-021-02402-1">https://doi.org/10.1186/s12882-021-02402-1</a></p>
 </aside>
 </aside>
-</section>
 </section>
 
 

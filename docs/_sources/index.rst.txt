@@ -81,7 +81,7 @@ Table of Contents
 
 .. toctree::
    :maxdepth: 3
-   :caption: Usage Guide
+   :caption: Documentation
 
    usage_guide
 

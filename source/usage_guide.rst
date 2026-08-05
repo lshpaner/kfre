@@ -20,18 +20,18 @@
    <div style="height: 106px;"></div>
 
 
-.. _description:
+.. _usage_guide:
 
 Usage Guide
-============
+----------------
 
 This section provides guidance on using the KFRE library.
 
 The ``kfre`` library offers a flexible and user-friendly interface to estimate the 
-risk of kidney failure for individual patients using the KFRE model developed by Tangri et al. With 
-``kfre``, you can calculate the risk using the classic 4-variable model, the 
-detailed 8-variable model, and, uniquely, a 6-variable model that is not commonly 
-found in online calculators.
+risk of kidney failure for individual patients using the KFRE model developed by 
+Tangri et al. With  ``kfre``, you can calculate the risk using the classic 
+4-variable model, the detailed 8-variable model, and, uniquely, a 6-variable 
+model that is not commonly found in online calculators.
 
 .. _input_validation:
 
