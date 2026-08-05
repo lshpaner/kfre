@@ -19,11 +19,15 @@
    
    <div style="height: 106px;"></div>
 
-\
 
+.. _description:
+
+###########
+Usage Guide
+###########
 
 Description
-===========
+============
 
 This section provides guidance on using the KFRE library.
 
@@ -36,7 +40,7 @@ found in online calculators.
 .. _input_validation:
 
 Input Requirements and Common Pitfalls
-======================================
+------------------------------------------
 
 .. important::
 
@@ -45,7 +49,7 @@ Input Requirements and Common Pitfalls
    plausible but are wrong.
 
 Values that break the risk equations
-------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. warning::
 
@@ -63,7 +67,7 @@ Values that break the risk equations
    **eGFR must be strictly greater than 0** for the same reason.
 
 Unit mismatches that fail silently
-----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. warning::
 
@@ -81,7 +85,7 @@ Unit mismatches that fail silently
      ``add_kfre_risk_col`` call applies one coefficient set to all rows.
 
 Approximations
---------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. warning::
 
@@ -93,7 +97,7 @@ Approximations
    patients as ``0``. See the warning under that function.
 
 Conditions that raise ``ValueError``
-------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - ``years`` is anything other than ``2`` or ``5``.
 - ``is_north_american`` is ``None``.

@@ -23,8 +23,6 @@
    <div style="height: 106px;"></div>
 
 
-.. _getting_started:   
-
 Welcome to the KFRE Python Library Documentation!
 =============================================================
 .. note::
