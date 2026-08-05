@@ -1,0 +1,134 @@
+.. _single_patient:   
+
+.. _target-link:
+
+.. raw:: html
+
+   <div class="no-click">
+
+.. image:: ../assets/kfre_logo.svg
+   :alt: KFRE Library Logo
+   :align: left
+   :width: 200px
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+   
+   <div style="height: 106px;"></div>
+
+\
+
+Single Patient Risk Calculation
+===============================
+
+The ``kfre_person`` function allows for detailed, personalized risk assessments 
+based on a range of clinical parameters. Depending on the completeness of the 
+data provided, the function can apply a basic 4-variable model or more 
+comprehensive models incorporating additional risk factors like diabetes, 
+hypertension, and various biochemical markers.
+
+The function is designed for ease of use in clinical settings or research, 
+providing immediate risk estimations that are crucial for patient management or 
+further analysis.
+
+.. function:: kfre_person(age, is_male, eGFR, uACR, is_north_american, years=2, dm=None, htn=None, albumin=None, phosphorous=None, bicarbonate=None, calcium=None, precision=None)
+
+    :param age: Age of the patient.
+    :param bool is_male: ``True`` if the patient is male, ``False`` if female.
+    :param float eGFR: Estimated Glomerular Filtration Rate.
+    :param float uACR: Urinary Albumin to Creatinine Ratio.
+    :param bool is_north_american: ``True`` if the patient is from North America, ``False`` otherwise.
+    :param int years: Time horizon for the risk prediction (``2`` or ``5``, default is ``2``).
+    :param float dm: (``optional``) Diabetes mellitus indicator. ``(1=yes; 0=no).``
+    :param float htn: (``optional``) Hypertension indicator. ``(1=yes; 0=no).``
+    :param float albumin: (``optional``) Serum albumin level.
+    :param float phosphorous: (``optional``) Serum phosphorous level.
+    :param float bicarbonate: (``optional``) Serum bicarbonate level.
+    :param float calcium: (``optional``) Serum calcium level.
+    :param int precision: (``optional``) Decimal places to round the result. If ``None``, no rounding is applied.
+
+    :returns:  ``float``: The risk of kidney failure within the specified timeframe, as a decimal. Multiply by 100 to convert to a percentage.
+    :raises ValueError: If required parameters are missing, if ``years`` is not ``2`` or ``5``, if ``is_north_american`` is ``None``, or if ``dm``/``htn`` are not in ``{0, 1, False, True}``.
+
+  
+**Example Usage** 
+
+.. code-block:: python
+
+    from kfre import kfre_person
+
+
+.. code-block:: python
+
+    risk_percentage = kfre_person(
+        age=57.28,
+        is_male=False,
+        eGFR=15.0,
+        uACR=1762.001840,
+        is_north_american=False,
+        years=2,
+        dm=None,
+        htn=None,
+        albumin=None,
+        phosphorous=None,
+        bicarbonate=None,
+        calcium=None
+    ) * 100  # Convert to percentage
+
+    message = f"The 2-year risk of kidney failure for this patient is"
+    print(f"{message} {risk_percentage:.2f}%.")    
+
+.. code-block:: bash
+
+    The 2-year risk of kidney failure for this patient is 44.66%.
+
+**Example Calculation for 2-year and 5-year Risk**
+
+Here's how to estimate the 2-year and 5-year kidney failure risk for a 
+hypothetical 57.28-year-old female who is not from North America and has 
+specific clinical characteristics.
+
+Ensure to:  
+
+- Uncomment ``dm`` and ``htn`` if you are using the 6-variable KFRE model.  
+
+- For the 8-variable KFRE, keep ``dm`` and ``htn`` commented out and instead, uncomment the ``albumin``, ``phosphorous``, ``bicarbonate``, and ``calcium`` variables.
+
+.. code-block:: python
+
+    for years in [2, 5]:
+        risk_percentage = (
+            kfre_person(
+                age=57.28,
+                is_male=False,  # is the patient male?
+                eGFR=15.0,  # ml/min/1.73 m^2
+                uACR=1762.001840,  # mg/g
+                is_north_american=False,  # is the patient from North America?
+                years=years,
+                ################################################################
+                # Uncomment "dm" and "htn" for the 6-variable model:
+                ################################################################
+                # dm=0,
+                # htn=1,
+                ################################################################
+                # Comment out "dm" and "htn"; uncomment the following lines for
+                # the 8-variable model:
+                ################################################################
+                # albumin=3.0, # g/dL
+                # phosphorous=3.162, # mg/dL
+                # bicarbonate=21.3, # mEq/L
+                # calcium=9.72, # mg/dL
+            )
+            * 100  # multiply by 100 to convert to percentage
+        )
+
+        message = f"The {years}-year risk of kidney failure for this patient is"
+        print(f"{message} {risk_percentage:.2f}%.")    
+
+.. code-block:: bash
+
+    The 2-year risk of kidney failure for this patient is 44.66%.
+    The 5-year risk of kidney failure for this patient is 89.89%.    

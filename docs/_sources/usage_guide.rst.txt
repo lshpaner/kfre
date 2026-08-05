@@ -22,11 +22,7 @@
 
 .. _description:
 
-###########
 Usage Guide
-###########
-
-Description
 ============
 
 This section provides guidance on using the KFRE library.
