@@ -70,3 +70,30 @@ You can install ``kfre`` directly from PyPI:
 .. code-block:: bash
 
     pip install kfre
+
+Table of Contents
+====================
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Getting Started
+
+   getting_started
+
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Usage Guide
+
+   usage_guide
+
+.. toctree::
+   :maxdepth: 3
+   :caption: About KFRE
+
+   validation   
+   acknowledgements
+   testimonials
+   citations
+   changelog
+   references

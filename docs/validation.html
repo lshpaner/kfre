@@ -50,10 +50,12 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Welcome to the KFRE Python Library Documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#table-of-contents">Table of Contents</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage_guide.html">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_guide.html#input-requirements-and-common-pitfalls">Input Requirements and Common Pitfalls</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage_guide.html#single-patient-risk-calculation">Single Patient Risk Calculation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage_guide.html#conversion-of-clinical-parameters">Conversion of Clinical Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage_guide.html#classifying-esrd-outcomes">Classifying ESRD Outcomes</a></li>
@@ -99,6 +101,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="getting_started.html">Welcome to the KFRE Python Library Documentation!</a></li>
       <li class="breadcrumb-item active">An Independent Validation of the Kidney Failure Risk Equation (KFRE) on a Seoul University Hospital Population</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -1039,18 +1042,18 @@ text-align: left;
 <li><p>Combine the 4-variable model predictions into a list <code class="docutils literal notranslate"><span class="pre">preds_4var</span></code>.</p></li>
 </ul>
 <span style="background-color: yellow;">These steps set up the necessary true labels and predictions for subsequent performance evaluation and analysis of the 4-variable and 6-variable KFRE models for both 2-year and 5-year outcomes.</span><div style="height: 20px;"></div><p></p>
-<div class="no-click"><a class="reference internal image-reference" href="_images/performance_4_var_grid.svg"><img alt="Performance Grid" class="align-left" src="_images/performance_4_var_grid.svg" style="width: 950px;" />
+<div class="no-click"><a class="reference internal image-reference" href="_images/performance_4_subplot.svg"><img alt="Performance Grid" class="align-left" src="_images/performance_4_subplot.svg" style="width: 950px;" />
 </a>
-<a class="reference internal image-reference" href="_images/performance_6_var_grid.svg"><img alt="Performance Grid" class="align-left" src="_images/performance_6_var_grid.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/performance_6_subplot.svg"><img alt="Performance Grid" class="align-left" src="_images/performance_6_subplot.svg" style="width: 950px;" />
 </a>
-<a class="reference internal image-reference" href="_images/performance_8_var_grid.svg"><img alt="Performance Grid" class="align-left" src="_images/performance_8_var_grid.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/performance_8_subplot.svg"><img alt="Performance Grid" class="align-left" src="_images/performance_8_subplot.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><p>Table below displays KFRE metrics across models.</p>
 </div><style>
 .kf2-wrap {
 overflow-x: auto;
 display: block;
-max-width: 1000px;  /* ← semicolon added */
+max-width: 1000px;
 }
 .kf2-table th:first-child {
 text-align: left;
@@ -1111,12 +1114,12 @@ background-color: white !important;
     </tr>
 </thead>
 <tbody>
-    <tr><td class="kf2-metric-label">Precision/PPV</td><td>0.614641</td><td>0.590909</td><td>0.616874</td><td>0.593812</td><td>0.589202</td><td>0.558601</td></tr>
-    <tr><td class="kf2-metric-label">Average Precision</td><td>0.559144</td><td>0.602071</td><td>0.559212</td><td>0.603624</td><td>0.548023</td><td>0.587199</td></tr>
-    <tr><td class="kf2-metric-label">Sensitivity</td><td>0.445892</td><td>0.641297</td><td>0.446894</td><td>0.635659</td><td>0.503006</td><td>0.675123</td></tr>
-    <tr><td class="kf2-metric-label">Specificity</td><td>0.949919</td><td>0.877670</td><td>0.950278</td><td>0.880194</td><td>0.937175</td><td>0.853010</td></tr>
-    <tr><td class="kf2-metric-label">AUC ROC</td><td>0.875196</td><td>0.844687</td><td>0.875311</td><td>0.845210</td><td>0.877136</td><td>0.843695</td></tr>
-    <tr><td class="kf2-metric-label">Brier Score</td><td>0.091249</td><td>0.137478</td><td>0.091271</td><td>0.136473</td><td>0.096593</td><td>0.148403</td></tr>
+    <tr><td class="kf2-metric-label">Precision/PPV</td><td>0.615</td><td>0.591</td><td>0.617</td><td>0.594</td><td>0.589</td><td>0.559</td></tr>
+    <tr><td class="kf2-metric-label">Average Precision</td><td>0.561</td><td>0.605</td><td>0.561</td><td>0.606</td><td>0.550</td><td>0.589</td></tr>
+    <tr><td class="kf2-metric-label">Sensitivity</td><td>0.448</td><td>0.645</td><td>0.449</td><td>0.640</td><td>0.506</td><td>0.679</td></tr>
+    <tr><td class="kf2-metric-label">Specificity</td><td>0.950</td><td>0.877</td><td>0.950</td><td>0.879</td><td>0.937</td><td>0.852</td></tr>
+    <tr><td class="kf2-metric-label">AUC ROC</td><td>0.879</td><td>0.849</td><td>0.879</td><td>0.849</td><td>0.880</td><td>0.847</td></tr>
+    <tr><td class="kf2-metric-label">Brier Score</td><td>0.091</td><td>0.137</td><td>0.091</td><td>0.136</td><td>0.097</td><td>0.148</td></tr>
 </tbody>
 </table>
 </div><div style="height: 50px;"></div></section>
@@ -1251,13 +1254,13 @@ font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
     <td class="tg-nrix">5892</td>
 </tr>
 </tbody></table></div><div style="height: 50px;"></div><p></p>
-<div class="no-click"><a class="reference internal image-reference" href="_images/kde_distributions.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/kde_distributions.svg" style="width: 950px;" />
+<div class="no-click"><a class="reference internal image-reference" href="_images/count_distributions.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/count_distributions.svg" style="width: 950px;" />
 </a>
-</div><div style="height: 50px;"></div><a class="reference internal image-reference" href="_images/all_plots_comparisons_boxplot.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/all_plots_comparisons_boxplot.svg" style="width: 950px;" />
+</div><div style="height: 50px;"></div><a class="reference internal image-reference" href="_images/age_group_boxplots.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/age_group_boxplots.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><section id="age-related-distributions">
 <h4>Age-Related Distributions<a class="headerlink" href="#age-related-distributions" title="Link to this heading"></a></h4>
-<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_HTN.svg"><img alt="Stacked_Bar_Age_HTN" class="align-center" src="_images/Stacked_Bar_Age_HTN.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/stacked_bar_age_HTN.svg"><img alt="Stacked_Bar_Age_HTN" class="align-center" src="_images/stacked_bar_age_HTN.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>HTN           No Hypertension   Hypertension    Total   No Hypertension %    Hypertension %
 18–29                    1711            193     1904               89.86             10.14
@@ -1271,7 +1274,7 @@ font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
 Total                   10558           6061    16619               63.53             36.47
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_DM.svg"><img alt="Stacked_Bar_Age_DM" class="align-center" src="_images/Stacked_Bar_Age_DM.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/stacked_bar_age_DM.svg"><img alt="Stacked_Bar_Age_DM" class="align-center" src="_images/stacked_bar_age_DM.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DM         No Diabetes  Diabetes  Total  No Diabetes_%  Diabetes_%
 Age_Group
@@ -1286,7 +1289,7 @@ Age_Group
 Total            11599      5020  16619          69.79       30.21
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_SEX.svg"><img alt="Stacked_Bar_Age_SEX" class="align-center" src="_images/Stacked_Bar_Age_SEX.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/stacked_bar_age_SEX.svg"><img alt="Stacked_Bar_Age_SEX" class="align-center" src="_images/stacked_bar_age_SEX.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>SEX        Male  Female  Total  Male_%  Female_%
 Age_Group
@@ -1301,22 +1304,7 @@ Age_Group
 Total      3451   13168  16619   20.77     79.23
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_ESRD_in_5_year_outcome.svg"><img alt="Stacked_Bar_Age_ESRD_in_5_year_outcome" class="align-center" src="_images/Stacked_Bar_Age_ESRD_in_5_year_outcome.svg" style="width: 950px;" />
-</a>
-<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ESRD_in_5_year_outcome  No_ESRD  ESRD  Total  No_ESRD_%  ESRD_%
-Age_Group
-18-29                      1778   126   1904      93.38    6.62
-30-39                      1482   164   1646      90.04    9.96
-40-49                      2019   296   2315      87.21   12.79
-50-59                      2970   443   3413      87.02   12.98
-60-69                      3395   417   3812      89.06   10.94
-70-79                      2586   241   2827      91.48    8.52
-80-89                       610    54    664      91.87    8.13
-90-99                        35     3     38      92.11    7.89
-Total                     14875  1744  16619      89.51   10.49
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_ESRD_in_2_year_outcome.svg"><img alt="Stacked_Bar_Age_ESRD_in_2_year_outcome" class="align-center" src="_images/Stacked_Bar_Age_ESRD_in_2_year_outcome.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/stacked_bar_age_ESRD_in_2_year_outcome.svg"><img alt="stacked_bar_age_ESRD_in_2_year_outcome" class="align-center" src="_images/stacked_bar_age_ESRD_in_2_year_outcome.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ESRD_in_2_year_outcome  No_ESRD  ESRD  Total  No_ESRD_%  ESRD_%
 Age_Group
@@ -1331,7 +1319,22 @@ Age_Group
 Total                     15440  1179  16619      92.91    7.09
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/Stacked_Bar_Age_ckd_stage.svg"><img alt="Stacked_Bar_Age_ckd_stage" class="align-center" src="_images/Stacked_Bar_Age_ckd_stage.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/stacked_bar_age_ESRD_in_5_year_outcome.svg"><img alt="Stacked_Bar_Age_ESRD_in_5_year_outcome" class="align-center" src="_images/stacked_bar_age_ESRD_in_5_year_outcome.svg" style="width: 950px;" />
+</a>
+<div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ESRD_in_5_year_outcome  No_ESRD  ESRD  Total  No_ESRD_%  ESRD_%
+Age_Group
+18-29                      1778   126   1904      93.38    6.62
+30-39                      1482   164   1646      90.04    9.96
+40-49                      2019   296   2315      87.21   12.79
+50-59                      2970   443   3413      87.02   12.98
+60-69                      3395   417   3812      89.06   10.94
+70-79                      2586   241   2827      91.48    8.52
+80-89                       610    54    664      91.87    8.13
+90-99                        35     3     38      92.11    7.89
+Total                     14875  1744  16619      89.51   10.49
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/stacked_bar_age_ckd_stage.svg"><img alt="stacked_bar_age_ckd_stage" class="align-center" src="_images/stacked_bar_age_ckd_stage.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ckd_stage  CKD Stage 1  CKD Stage 2  CKD Stage 3a  CKD Stage 3b  CKD Stage 4  \
 Age_Group
@@ -1392,7 +1395,7 @@ Total               10.35           7.38           5.51
 </section>
 <section id="ckd-related-distributions">
 <h4>CKD-Related Distributions<a class="headerlink" href="#ckd-related-distributions" title="Link to this heading"></a></h4>
-<a class="reference internal image-reference" href="_images/Stacked_Bar_CKD_HTN.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/Stacked_Bar_CKD_HTN.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/stacked_bar_ckd_HTN.svg"><img alt="stacked_bar_ckd_HTN" class="align-center" src="_images/stacked_bar_ckd_HTN.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>HTN               No Hypertension   Hypertension    Total   No Hypertension %    Hypertension %
 CKD Stage 1                  2715            547     3262               83.23             16.77
@@ -1404,7 +1407,7 @@ CKD Stage 5                   347            569      916               37.88   
 Total                       10558           6061    16619               63.53             36.47
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/Stacked_Bar_CKD_DM.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/Stacked_Bar_CKD_DM.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/stacked_bar_ckd_DM.svg"><img alt="stacked_bar_ckd_DM" class="align-center" src="_images/stacked_bar_ckd_DM.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DM            No Diabetes  Diabetes  Total  No Diabetes_%  Diabetes_%
 ckd_stage
@@ -1417,7 +1420,7 @@ CKD Stage 5           641       275    916          69.98       30.02
 Total               11599      5020  16619          69.79       30.21
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/Stacked_Bar_CKD_SEX.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/Stacked_Bar_CKD_SEX.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/stacked_bar_ckd_SEX.svg"><img alt="stacked_bar_ckd_SEX" class="align-center" src="_images/stacked_bar_ckd_SEX.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>SEX           Male  Female  Total  Male_%  Female_%
 ckd_stage
@@ -1430,7 +1433,7 @@ CKD Stage 5    173     743    916   18.89     81.11
 Total         3451   13168  16619   20.77     79.23
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/Stacked_Bar_CKD_ESRD_in_2_year_outcome.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/Stacked_Bar_CKD_ESRD_in_2_year_outcome.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/stacked_bar_ckd_ESRD_in_2_year_outcome.svg"><img alt="stacked_bar_ckd_ESRD_in_2_year_outcome" class="align-center" src="_images/stacked_bar_ckd_ESRD_in_2_year_outcome.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ESRD_in_2_year_outcome  No_ESRD  ESRD  Total  No_ESRD_%  ESRD_%
 ckd_stage
@@ -1443,7 +1446,7 @@ CKD Stage 5                 386   530    916      42.14   57.86
 Total                     15440  1179  16619      92.91    7.09
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/Stacked_Bar_CKD_ESRD_in_5_year_outcome.svg"><img alt="KDE Density Distributions" class="align-center" src="_images/Stacked_Bar_CKD_ESRD_in_5_year_outcome.svg" style="width: 950px;" />
+<a class="reference internal image-reference" href="_images/stacked_bar_ckd_ESRD_in_5_year_outcome.svg"><img alt="stacked_bar_ckd_ESRD_in_5_year_outcome" class="align-center" src="_images/stacked_bar_ckd_ESRD_in_5_year_outcome.svg" style="width: 950px;" />
 </a>
 <div style="height: 50px;"></div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ESRD_in_5_year_outcome  No_ESRD  ESRD  Total  No_ESRD_%  ESRD_%
 ckd_stage

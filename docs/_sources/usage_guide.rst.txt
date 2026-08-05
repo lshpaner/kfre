@@ -33,6 +33,80 @@ risk of kidney failure for individual patients using the KFRE model developed by
 detailed 8-variable model, and, uniquely, a 6-variable model that is not commonly 
 found in online calculators.
 
+.. _input_validation:
+
+Input Requirements and Common Pitfalls
+======================================
+
+.. important::
+
+   Read this before running any risk calculation. The conditions below either
+   raise an error, emit a runtime warning, or silently return values that look
+   plausible but are wrong.
+
+Values that break the risk equations
+------------------------------------
+
+.. warning::
+
+   **uACR must be strictly greater than 0.** The KFRE risk equations take the
+   natural logarithm of uACR, which is undefined at ``0`` and for negative
+   values. A ``0`` propagates as ``-inf`` through the linear predictor and
+   drives the returned risk to ``0``, which is indistinguishable from a
+   genuinely low-risk patient. Screen for non-positive uACR before calling
+   ``kfre_person`` or ``add_kfre_risk_col``, and either drop those rows or
+   substitute the assay's lower limit of detection.
+
+   The same constraint applies to ``uPCR`` when converting through
+   ``upcr_uacr``, since a non-positive uPCR yields a non-positive uACR.
+
+   **eGFR must be strictly greater than 0** for the same reason.
+
+Unit mismatches that fail silently
+----------------------------------
+
+.. warning::
+
+   These produce no error and no warning. The output is simply wrong.
+
+   - ``create_years_col=True`` with a ``duration_col`` already expressed in
+     years divides by 365.25 and collapses the time window, so effectively no
+     patient reaches the horizon. Use ``create_years_col=False`` for
+     years-valued columns.
+   - ``uACR`` must be in **mg/g**. Passing mg/mmol understates risk by roughly
+     an order of magnitude. Convert with ``perform_conversions`` first.
+   - ``albumin`` in **g/dL**, ``phosphorous`` and ``calcium`` in **mg/dL**,
+     ``bicarbonate`` in **mEq/L** for the 8-variable model.
+   - Mixing North American and non-North American patients in a single
+     ``add_kfre_risk_col`` call applies one coefficient set to all rows.
+
+Approximations
+--------------
+
+.. warning::
+
+   The uPCR-to-uACR conversion is an estimate, not a measurement. See
+   :func:`upcr_uacr` for the full caveat. ``upcr_uacr()`` emits a runtime
+   warning whenever it produces estimated values.
+
+   ``class_esrd_outcome`` with ``censor_incomplete=False`` labels censored
+   patients as ``0``. See the warning under that function.
+
+Conditions that raise ``ValueError``
+------------------------------------
+
+- ``years`` is anything other than ``2`` or ``5``.
+- ``is_north_american`` is ``None``.
+- ``dm`` or ``htn`` is not in ``{0, 1, False, True}``.
+- Required columns for the requested ``num_vars`` are missing, for example
+  ``dm_col``/``htn_col`` for the 6-variable model, or any of ``albumin_col``,
+  ``phosphorous_col``, ``bicarbonate_col``, ``calcium_col`` for the
+  8-variable model.
+- ``sex_col`` values do not resolve to ``male`` or ``female``.
+- ``save_plots=True`` in ``plot_kfre_metrics`` without ``image_path_png`` or
+  ``image_path_svg``.
+- An unsupported ``metric`` name is passed to ``bootstrap_metric_ci``.
+
 Single Patient Risk Calculation
 ===============================
 

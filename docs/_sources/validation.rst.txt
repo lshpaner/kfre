@@ -1010,17 +1010,17 @@ Results
 
    <div class="no-click">
 
-.. image:: ../assets/performance_4_var_grid.svg
+.. image:: ../assets/performance_4_subplot.svg
    :alt: Performance Grid
    :align: left
    :width: 950px
 
-.. image:: ../assets/performance_6_var_grid.svg
+.. image:: ../assets/performance_6_subplot.svg
    :alt: Performance Grid
    :align: left
    :width: 950px
 
-.. image:: ../assets/performance_8_var_grid.svg
+.. image:: ../assets/performance_8_subplot.svg
    :alt: Performance Grid
    :align: left
    :width: 950px
@@ -1042,7 +1042,7 @@ Table below displays KFRE metrics across models.
     .kf2-wrap {
     overflow-x: auto;
     display: block;
-    max-width: 1000px;  /* ← semicolon added */
+    max-width: 1000px;
     }
     .kf2-table th:first-child {
     text-align: left;
@@ -1103,12 +1103,12 @@ Table below displays KFRE metrics across models.
         </tr>
     </thead>
     <tbody>
-        <tr><td class="kf2-metric-label">Precision/PPV</td><td>0.614641</td><td>0.590909</td><td>0.616874</td><td>0.593812</td><td>0.589202</td><td>0.558601</td></tr>
-        <tr><td class="kf2-metric-label">Average Precision</td><td>0.559144</td><td>0.602071</td><td>0.559212</td><td>0.603624</td><td>0.548023</td><td>0.587199</td></tr>
-        <tr><td class="kf2-metric-label">Sensitivity</td><td>0.445892</td><td>0.641297</td><td>0.446894</td><td>0.635659</td><td>0.503006</td><td>0.675123</td></tr>
-        <tr><td class="kf2-metric-label">Specificity</td><td>0.949919</td><td>0.877670</td><td>0.950278</td><td>0.880194</td><td>0.937175</td><td>0.853010</td></tr>
-        <tr><td class="kf2-metric-label">AUC ROC</td><td>0.875196</td><td>0.844687</td><td>0.875311</td><td>0.845210</td><td>0.877136</td><td>0.843695</td></tr>
-        <tr><td class="kf2-metric-label">Brier Score</td><td>0.091249</td><td>0.137478</td><td>0.091271</td><td>0.136473</td><td>0.096593</td><td>0.148403</td></tr>
+        <tr><td class="kf2-metric-label">Precision/PPV</td><td>0.615</td><td>0.591</td><td>0.617</td><td>0.594</td><td>0.589</td><td>0.559</td></tr>
+        <tr><td class="kf2-metric-label">Average Precision</td><td>0.561</td><td>0.605</td><td>0.561</td><td>0.606</td><td>0.550</td><td>0.589</td></tr>
+        <tr><td class="kf2-metric-label">Sensitivity</td><td>0.448</td><td>0.645</td><td>0.449</td><td>0.640</td><td>0.506</td><td>0.679</td></tr>
+        <tr><td class="kf2-metric-label">Specificity</td><td>0.950</td><td>0.877</td><td>0.950</td><td>0.879</td><td>0.937</td><td>0.852</td></tr>
+        <tr><td class="kf2-metric-label">AUC ROC</td><td>0.879</td><td>0.849</td><td>0.879</td><td>0.849</td><td>0.880</td><td>0.847</td></tr>
+        <tr><td class="kf2-metric-label">Brier Score</td><td>0.091</td><td>0.137</td><td>0.091</td><td>0.136</td><td>0.097</td><td>0.148</td></tr>
     </tbody>
     </table>
     </div>
@@ -1265,7 +1265,7 @@ Descriptive Statistics
 
    <div class="no-click">
 
-.. image:: ../assets/kde_distributions.svg
+.. image:: ../assets/count_distributions.svg
    :alt: KDE Density Distributions
    :align: center
    :width: 950px
@@ -1278,7 +1278,7 @@ Descriptive Statistics
    
    <div style="height: 50px;"></div>
 
-.. image:: ../assets/all_plots_comparisons_boxplot.svg
+.. image:: ../assets/age_group_boxplots.svg
    :alt: KDE Density Distributions
    :align: center
    :width: 950px
@@ -1290,7 +1290,7 @@ Descriptive Statistics
 Age-Related Distributions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: ../assets/Stacked_Bar_Age_HTN.svg
+.. image:: ../assets/stacked_bar_age_HTN.svg
    :alt: Stacked_Bar_Age_HTN
    :align: center
    :width: 950px
@@ -1314,7 +1314,7 @@ Age-Related Distributions
     Total                   10558           6061    16619               63.53             36.47
 
 
-.. image:: ../assets/Stacked_Bar_Age_DM.svg
+.. image:: ../assets/stacked_bar_age_DM.svg
    :alt: Stacked_Bar_Age_DM
    :align: center
    :width: 950px
@@ -1337,7 +1337,7 @@ Age-Related Distributions
     90-99               25        13     38          65.79       34.21
     Total            11599      5020  16619          69.79       30.21
 
-.. image:: ../assets/Stacked_Bar_Age_SEX.svg
+.. image:: ../assets/stacked_bar_age_SEX.svg
    :alt: Stacked_Bar_Age_SEX
    :align: center
    :width: 950px
@@ -1361,31 +1361,8 @@ Age-Related Distributions
     Total      3451   13168  16619   20.77     79.23
 
 
-.. image:: ../assets/Stacked_Bar_Age_ESRD_in_5_year_outcome.svg
-   :alt: Stacked_Bar_Age_ESRD_in_5_year_outcome
-   :align: center
-   :width: 950px
-
-.. raw:: html
-   
-   <div style="height: 50px;"></div>
-
-.. code:: text
-
-    ESRD_in_5_year_outcome  No_ESRD  ESRD  Total  No_ESRD_%  ESRD_%
-    Age_Group                                                      
-    18-29                      1778   126   1904      93.38    6.62
-    30-39                      1482   164   1646      90.04    9.96
-    40-49                      2019   296   2315      87.21   12.79
-    50-59                      2970   443   3413      87.02   12.98
-    60-69                      3395   417   3812      89.06   10.94
-    70-79                      2586   241   2827      91.48    8.52
-    80-89                       610    54    664      91.87    8.13
-    90-99                        35     3     38      92.11    7.89
-    Total                     14875  1744  16619      89.51   10.49
-
-.. image:: ../assets/Stacked_Bar_Age_ESRD_in_2_year_outcome.svg
-   :alt: Stacked_Bar_Age_ESRD_in_2_year_outcome
+.. image:: ../assets/stacked_bar_age_ESRD_in_2_year_outcome.svg
+   :alt: stacked_bar_age_ESRD_in_2_year_outcome
    :align: center
    :width: 950px
 
@@ -1408,8 +1385,31 @@ Age-Related Distributions
     Total                     15440  1179  16619      92.91    7.09
 
 
-.. image:: ../assets/Stacked_Bar_Age_ckd_stage.svg
-   :alt: Stacked_Bar_Age_ckd_stage
+.. image:: ../assets/stacked_bar_age_ESRD_in_5_year_outcome.svg
+   :alt: Stacked_Bar_Age_ESRD_in_5_year_outcome
+   :align: center
+   :width: 950px
+
+.. raw:: html
+   
+   <div style="height: 50px;"></div>
+
+.. code:: text
+
+    ESRD_in_5_year_outcome  No_ESRD  ESRD  Total  No_ESRD_%  ESRD_%
+    Age_Group                                                      
+    18-29                      1778   126   1904      93.38    6.62
+    30-39                      1482   164   1646      90.04    9.96
+    40-49                      2019   296   2315      87.21   12.79
+    50-59                      2970   443   3413      87.02   12.98
+    60-69                      3395   417   3812      89.06   10.94
+    70-79                      2586   241   2827      91.48    8.52
+    80-89                       610    54    664      91.87    8.13
+    90-99                        35     3     38      92.11    7.89
+    Total                     14875  1744  16619      89.51   10.49
+
+.. image:: ../assets/stacked_bar_age_ckd_stage.svg
+   :alt: stacked_bar_age_ckd_stage
    :align: center
    :width: 950px
 
@@ -1495,8 +1495,8 @@ Age-Related Distributions
 CKD-Related Distributions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: ../assets/Stacked_Bar_CKD_HTN.svg
-   :alt: KDE Density Distributions
+.. image:: ../assets/stacked_bar_ckd_HTN.svg
+   :alt: stacked_bar_ckd_HTN
    :align: center
    :width: 950px
 
@@ -1516,8 +1516,8 @@ CKD-Related Distributions
     Total                       10558           6061    16619               63.53             36.47
 
 
-.. image:: ../assets/Stacked_Bar_CKD_DM.svg
-   :alt: KDE Density Distributions
+.. image:: ../assets/stacked_bar_ckd_DM.svg
+   :alt: stacked_bar_ckd_DM
    :align: center
    :width: 950px
 
@@ -1538,8 +1538,8 @@ CKD-Related Distributions
     Total               11599      5020  16619          69.79       30.21
 
 
-.. image:: ../assets/Stacked_Bar_CKD_SEX.svg
-   :alt: KDE Density Distributions
+.. image:: ../assets/stacked_bar_ckd_SEX.svg
+   :alt: stacked_bar_ckd_SEX
    :align: center
    :width: 950px
 
@@ -1559,8 +1559,8 @@ CKD-Related Distributions
     CKD Stage 5    173     743    916   18.89     81.11
     Total         3451   13168  16619   20.77     79.23
 
-.. image:: ../assets/Stacked_Bar_CKD_ESRD_in_2_year_outcome.svg
-   :alt: KDE Density Distributions
+.. image:: ../assets/stacked_bar_ckd_ESRD_in_2_year_outcome.svg
+   :alt: stacked_bar_ckd_ESRD_in_2_year_outcome
    :align: center
    :width: 950px
 
@@ -1580,8 +1580,8 @@ CKD-Related Distributions
     CKD Stage 5                 386   530    916      42.14   57.86
     Total                     15440  1179  16619      92.91    7.09
 
-.. image:: ../assets/Stacked_Bar_CKD_ESRD_in_5_year_outcome.svg
-   :alt: KDE Density Distributions
+.. image:: ../assets/stacked_bar_ckd_ESRD_in_5_year_outcome.svg
+   :alt: stacked_bar_ckd_ESRD_in_5_year_outcome
    :align: center
    :width: 950px
 

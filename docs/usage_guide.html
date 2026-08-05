@@ -51,10 +51,18 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Welcome to the KFRE Python Library Documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#table-of-contents">Table of Contents</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Usage Guide</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#input-requirements-and-common-pitfalls">Input Requirements and Common Pitfalls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#values-that-break-the-risk-equations">Values that break the risk equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unit-mismatches-that-fail-silently">Unit mismatches that fail silently</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#approximations">Approximations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conditions-that-raise-valueerror">Conditions that raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="#single-patient-risk-calculation">Single Patient Risk Calculation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#kfre_person"><code class="docutils literal notranslate"><span class="pre">kfre_person()</span></code></a></li>
 </ul>
@@ -119,6 +127,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="getting_started.html">Welcome to the KFRE Python Library Documentation!</a></li>
       <li class="breadcrumb-item active">Description</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -139,6 +148,77 @@ risk of kidney failure for individual patients using the KFRE model developed by
 <code class="docutils literal notranslate"><span class="pre">kfre</span></code>, you can calculate the risk using the classic 4-variable model, the
 detailed 8-variable model, and, uniquely, a 6-variable model that is not commonly
 found in online calculators.</p>
+</section>
+<section id="input-requirements-and-common-pitfalls">
+<span id="input-validation"></span><h1>Input Requirements and Common Pitfalls<a class="headerlink" href="#input-requirements-and-common-pitfalls" title="Link to this heading"></a></h1>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Read this before running any risk calculation. The conditions below either
+raise an error, emit a runtime warning, or silently return values that look
+plausible but are wrong.</p>
+</div>
+<section id="values-that-break-the-risk-equations">
+<h2>Values that break the risk equations<a class="headerlink" href="#values-that-break-the-risk-equations" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>uACR must be strictly greater than 0.</strong> The KFRE risk equations take the
+natural logarithm of uACR, which is undefined at <code class="docutils literal notranslate"><span class="pre">0</span></code> and for negative
+values. A <code class="docutils literal notranslate"><span class="pre">0</span></code> propagates as <code class="docutils literal notranslate"><span class="pre">-inf</span></code> through the linear predictor and
+drives the returned risk to <code class="docutils literal notranslate"><span class="pre">0</span></code>, which is indistinguishable from a
+genuinely low-risk patient. Screen for non-positive uACR before calling
+<code class="docutils literal notranslate"><span class="pre">kfre_person</span></code> or <code class="docutils literal notranslate"><span class="pre">add_kfre_risk_col</span></code>, and either drop those rows or
+substitute the assay’s lower limit of detection.</p>
+<p>The same constraint applies to <code class="docutils literal notranslate"><span class="pre">uPCR</span></code> when converting through
+<code class="docutils literal notranslate"><span class="pre">upcr_uacr</span></code>, since a non-positive uPCR yields a non-positive uACR.</p>
+<p><strong>eGFR must be strictly greater than 0</strong> for the same reason.</p>
+</div>
+</section>
+<section id="unit-mismatches-that-fail-silently">
+<h2>Unit mismatches that fail silently<a class="headerlink" href="#unit-mismatches-that-fail-silently" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>These produce no error and no warning. The output is simply wrong.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">create_years_col=True</span></code> with a <code class="docutils literal notranslate"><span class="pre">duration_col</span></code> already expressed in
+years divides by 365.25 and collapses the time window, so effectively no
+patient reaches the horizon. Use <code class="docutils literal notranslate"><span class="pre">create_years_col=False</span></code> for
+years-valued columns.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uACR</span></code> must be in <strong>mg/g</strong>. Passing mg/mmol understates risk by roughly
+an order of magnitude. Convert with <code class="docutils literal notranslate"><span class="pre">perform_conversions</span></code> first.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">albumin</span></code> in <strong>g/dL</strong>, <code class="docutils literal notranslate"><span class="pre">phosphorous</span></code> and <code class="docutils literal notranslate"><span class="pre">calcium</span></code> in <strong>mg/dL</strong>,
+<code class="docutils literal notranslate"><span class="pre">bicarbonate</span></code> in <strong>mEq/L</strong> for the 8-variable model.</p></li>
+<li><p>Mixing North American and non-North American patients in a single
+<code class="docutils literal notranslate"><span class="pre">add_kfre_risk_col</span></code> call applies one coefficient set to all rows.</p></li>
+</ul>
+</div>
+</section>
+<section id="approximations">
+<h2>Approximations<a class="headerlink" href="#approximations" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The uPCR-to-uACR conversion is an estimate, not a measurement. See
+<a class="reference internal" href="#upcr_uacr" title="upcr_uacr"><code class="xref py py-func docutils literal notranslate"><span class="pre">upcr_uacr()</span></code></a> for the full caveat. <code class="docutils literal notranslate"><span class="pre">upcr_uacr()</span></code> emits a runtime
+warning whenever it produces estimated values.</p>
+<p><code class="docutils literal notranslate"><span class="pre">class_esrd_outcome</span></code> with <code class="docutils literal notranslate"><span class="pre">censor_incomplete=False</span></code> labels censored
+patients as <code class="docutils literal notranslate"><span class="pre">0</span></code>. See the warning under that function.</p>
+</div>
+</section>
+<section id="conditions-that-raise-valueerror">
+<h2>Conditions that raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code><a class="headerlink" href="#conditions-that-raise-valueerror" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">years</span></code> is anything other than <code class="docutils literal notranslate"><span class="pre">2</span></code> or <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_north_american</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dm</span></code> or <code class="docutils literal notranslate"><span class="pre">htn</span></code> is not in <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1,</span> <span class="pre">False,</span> <span class="pre">True}</span></code>.</p></li>
+<li><p>Required columns for the requested <code class="docutils literal notranslate"><span class="pre">num_vars</span></code> are missing, for example
+<code class="docutils literal notranslate"><span class="pre">dm_col</span></code>/<code class="docutils literal notranslate"><span class="pre">htn_col</span></code> for the 6-variable model, or any of <code class="docutils literal notranslate"><span class="pre">albumin_col</span></code>,
+<code class="docutils literal notranslate"><span class="pre">phosphorous_col</span></code>, <code class="docutils literal notranslate"><span class="pre">bicarbonate_col</span></code>, <code class="docutils literal notranslate"><span class="pre">calcium_col</span></code> for the
+8-variable model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sex_col</span></code> values do not resolve to <code class="docutils literal notranslate"><span class="pre">male</span></code> or <code class="docutils literal notranslate"><span class="pre">female</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">save_plots=True</span></code> in <code class="docutils literal notranslate"><span class="pre">plot_kfre_metrics</span></code> without <code class="docutils literal notranslate"><span class="pre">image_path_png</span></code> or
+<code class="docutils literal notranslate"><span class="pre">image_path_svg</span></code>.</p></li>
+<li><p>An unsupported <code class="docutils literal notranslate"><span class="pre">metric</span></code> name is passed to <code class="docutils literal notranslate"><span class="pre">bootstrap_metric_ci</span></code>.</p></li>
+</ul>
+</section>
 </section>
 <section id="single-patient-risk-calculation">
 <h1>Single Patient Risk Calculation<a class="headerlink" href="#single-patient-risk-calculation" title="Link to this heading"></a></h1>
